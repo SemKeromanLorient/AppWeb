@@ -1,0 +1,163 @@
+
+.borne-control-container{
+
+
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+
+
+}
+
+.loader{
+
+    width: 80vw;
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    max-width: 350px;
+
+}
+
+
+.loader h2{
+
+    margin: 0 10px;
+    margin-bottom: 10px;
+    text-align: center;
+
+}
+
+.loader-animation{
+
+    width: 200px;
+
+}
+
+
+.control-container{
+
+
+    background-color: white;
+    border-radius: 10px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.control-container h1{
+    font-weight: bold;
+}
+
+.control-container h1, h3{
+    margin: 0 10px;
+}
+
+.energy-icon{
+
+    width: 100px;
+    height: 100px;
+    margin: 20px 0;
+
+}
+
+.rotate-container{
+
+    width: 50%;
+    height: 90%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.rotate-anim{
+    width: 50%;
+    height: 50%;
+}
+
+.power-button{
+
+    background-color: rgb(241, 241, 241);
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 200ms;
+    margin:20px 0;
+   
+}
+
+.power-button.press{
+
+    transform: scale(0.9);
+
+}
+
+.power-button.on *{
+    fill: rgb(47, 168, 78);
+}
+
+.power-button.off *{
+    fill: rgb(255, 48, 48);
+}
+
+.power-button.off{
+    background-color: rgb(255, 206, 206);
+    border: 1px solid rgb(255, 48, 48);
+}
+
+.power-button.on{
+    background-color: rgba(206, 255, 210, 0.2);
+    border: 1px solid rgb(47, 168, 78);
+}
+
+.power-button.press{
+    opacity: 0.5;
+}
+
+.loading-anim-btn{
+
+    position: absolute;
+    width: 190px;
+    height: 190px;
+
+}
+
+.consomation-container{
+
+    background-color: white;
+    width: 95vw;
+    padding: 20px 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.consomation-container h1{
+    font-weight: bolder;
+}

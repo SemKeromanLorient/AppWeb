@@ -1,0 +1,16 @@
+.video-scanner{
+    width: 90vw;
+    height: 90vw;
+    border-radius: 10px;
+}
+
+.video-wrapper{
+    width: 90vw;
+    height: 90vw;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 10px solid white;
+}

@@ -1,0 +1,21 @@
+.qr-code{
+    border-radius: 10px;
+    border: 10px solid white;
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.share-access-container{
+
+    width: 90vw;
+    max-width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+}

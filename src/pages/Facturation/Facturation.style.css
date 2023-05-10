@@ -1,0 +1,11 @@
+.confirm-facture{
+    height: 40px;
+    padding: 0px 10px ;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    outline-style: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}

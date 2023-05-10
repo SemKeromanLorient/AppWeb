@@ -1,0 +1,22 @@
+
+
+.progress-bar-container{
+    background-color: var(--border-color);
+    border-radius: 20px;
+    width: 100%;
+    height: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.progress-bar{
+    position: relative;
+    background-color: var(--primary-color);
+    height: 100%;
+}
+
+.progress-bar.error{
+    background-color: #c04141;
+}

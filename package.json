@@ -1,0 +1,75 @@
+{
+  "name": "borne",
+  "homepage": "./",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.27.2",
+    "buffer": "^6.0.3",
+    "bwip-js": "^3.2.2",
+    "clipboardy": "^3.0.0",
+    "device-uuid": "^1.0.4",
+    "exceljs": "^4.3.0",
+    "express-xml-bodyparser": "^0.3.0",
+    "fast-xml-parser": "^4.0.12",
+    "fastest-levenshtein": "^1.0.16",
+    "file-saver": "^2.0.5",
+    "html-webpack-plugin": "^5.5.0",
+    "lottie-react": "^2.3.1",
+    "mapbox-gl": "^2.10.0",
+    "moment": "^2.29.4",
+    "ping": "^0.4.2",
+    "react": "^18.2.0",
+    "react-calendar": "^3.9.0",
+    "react-dom": "^18.2.0",
+    "react-geolocated": "^4.0.3",
+    "react-hook-screen-orientation": "^1.0.4",
+    "react-json-to-csv": "^1.2.0",
+    "react-map-gl": "^7.0.19",
+    "react-qr-code": "^2.0.8",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "react-router-dom": "^6.4.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.4.0",
+    "socket.io-client": "^4.5.2",
+    "stream": "^0.0.2",
+    "xml-js": "^1.6.11",
+    "xml2js": "^0.4.23"
+  },
+  "scripts": {
+    "start": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "test": "react-scripts test"
+  },
+  "presets": [
+    "react",
+    "es2015"
+  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^6.3.1",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.2.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "cson-loader": "^0.1.0",
+    "css-loader": "^6.7.1",
+    "json-loader": "^0.5.7",
+    "svg-url-loader": "^8.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.0"
+  }
+}

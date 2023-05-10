@@ -1,0 +1,21 @@
+
+
+.loader-container{
+
+    width: 50vw;
+    max-width: 200px;
+    padding: 20px;
+    background-color: var(--menu-color);
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    color: white;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}

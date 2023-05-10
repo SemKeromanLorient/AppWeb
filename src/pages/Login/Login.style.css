@@ -1,0 +1,84 @@
+.login-container{
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: calc(100% - 20px);
+    max-width: 400px;
+    color: var(--primary-text-color);
+    padding: 10px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    gap: 10px;
+    background-color: var(--menu-item-color);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    padding-top: 70px;
+
+}
+
+
+.icon-input{
+    width: 20px;
+    height: 20px;
+    filter: var(--icon-color);
+    position: absolute;
+    left: 5px;
+    bottom: 15px;
+    opacity: .5;
+}
+
+.input-section-login{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 20px;
+    width: calc(100% - 20px);
+}
+
+.input-credentials{
+
+    background-color: var(--input-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 45px;
+    width: calc(100% - 60px);
+    outline-style: none;
+    padding: 0 30px;
+    font-size: 15px;
+    color: var(--primary-text-color);
+    transition-duration: 200ms;
+}
+
+.input-credentials:focus{
+    border: 1px solid var(--primary-color);
+}
+
+.input-credentials:focus+.icon-input{
+    filter: var(--primary-filter-color);
+}
+
+.submit-credentials{
+
+    background-color: var(--primary-color);
+    height: 45px;
+    border: none;
+    border-radius: 5px;
+    outline-style: none;
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+    width: calc(100% - 20px);
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.login-icon{
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+

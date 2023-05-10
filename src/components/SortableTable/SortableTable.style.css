@@ -1,0 +1,130 @@
+.table-container{
+
+    background-color: var(--menu-color);
+    border-radius: 5px;
+    margin: 10px;
+    overflow: auto;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    max-height: 100%;  
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    width: calc(100% - 20px);
+    color: var(--secondary-text-color);
+
+}
+
+.table-container table{
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-collapse: collapse;
+}
+
+
+.table-container tr:nth-child(2n) {
+    background-color: var(--soft-hover-color);
+}
+
+
+.table-container tbody tr:hover{
+    opacity: 0.8;
+    color: var(--primary-color);
+}
+
+
+.table-container tbody td{
+    border-right: 1px solid var(--border-color);
+}
+
+
+
+.table-container thead th{
+    position: relative;
+    color: var(--primary-color);
+    background-color: var(--soft-hover-color);
+    transition-duration: 200ms;
+    border-right: 1px solid var(--border-color);
+
+
+}
+
+.table-container thead th svg{
+    filter: var(--icon-color);
+}
+
+.table-container thead th.selected{
+    background-color: var(--input-background-color);
+}
+
+.table-container thead th:hover{
+    background-color: var(--input-background-color);
+    transition-duration: 200ms;
+
+}
+
+.table-container tr{
+    border: none;
+    -webkit-touch-callout: all; /* iOS Safari */
+    -webkit-user-select: all; /* Safari */
+     -khtml-user-select: all; /* Konqueror HTML */
+       -moz-user-select: all; /* Old versions of Firefox */
+        -ms-user-select: all; /* Internet Explorer/Edge */
+            user-select: all; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.order-icon{
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition-duration: 200ms;
+}
+
+.order-icon.asc{
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.order-icon.desc{
+    transform: translateY(-50%) rotate(90deg);
+}
+
+
+
+.table-container th,td{
+    padding-left: 10px;
+}
+
+.result-amount{
+    position: sticky;
+    height: 25px;
+    background-color: var(--primary-color);
+    padding-left: 10px;
+    bottom: 0;
+    left: 0;
+    color: white;
+}
+
+.total-table{
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+
+}
+
+
+.empty-total-table{
+    border-top: 1px solid  var(--border-color);
+}
+
+.empty-message-container{
+    height: 150px;
+    width: 100%;
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:var(--primary-color);
+}

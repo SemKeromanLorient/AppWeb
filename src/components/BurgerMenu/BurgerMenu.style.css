@@ -1,0 +1,106 @@
+.burger-menu-container{
+
+    position: absolute;
+
+    width: 70%;
+    max-width: 300px;
+    height: calc(100vh - var(--menu-height));
+    top: var(--menu-height);
+    background-color: var(--buger-menu-color);
+    overflow: auto;
+    transition-duration: 300ms;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.burger-menu-container.visible{
+
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: all;
+  
+
+}
+
+.burger-menu-container.hidden{
+
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+
+}
+
+.burger-menu-item-container{
+
+    height: 60px;
+    width: calc(100% - 20px);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 20px;
+    transition-duration: 200ms;
+
+}
+
+.burger-menu-item-container h2{
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.burger-menu-item-container:first-child{
+    margin-top: 10px;
+}
+
+.burger-menu-item-container.active{
+    background-color: var(--input-background-color);
+    color: var(--primary-color);
+    filter: var(--primary-filter-color);
+}
+
+
+.burger-menu-item-icon{
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    filter: var(--icon-color);
+}
+
+.dim-background{
+    position: absolute;
+    top: var(--menu-height);
+    width: 100vw;
+    height: calc(100vh - var(--menu-height));
+    background-color: rgba(0, 0, 0, 0.5);
+    transition-duration: 200ms;
+}
+
+.dim-background.visible{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.dim-background.hidden{
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media screen and (min-width: 500px)
+{
+    .burger-menu-item-container:hover{
+        background-color: var(--soft-hover-color);
+        cursor: pointer;
+    }
+
+    .phone-user-info{
+        display: none;
+    }
+    
+}
+
+
+

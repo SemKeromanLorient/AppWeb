@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,600;0,800;1,900&display=swap');
+
+:root{
+
+    --menu-height: 60px;
+    --primary-color: #519e62;
+   
+    --primary-filter-color:  invert(55%) sepia(29%) saturate(646%) hue-rotate(81deg) brightness(94%) contrast(92%);
+    --red-filter-color: invert(76%) sepia(32%) saturate(1272%) hue-rotate(306deg) brightness(93%) contrast(116%);
+
+    
+
+}
+
+
+.dark-theme{
+  --menu-color: #1f201f;
+  --buger-menu-color: #1f201f;
+  --menu-item-color: #303130;
+  --primary-text-color: white;
+  --secondary-text-color: rgba(255,255,255,0.5);
+  --third-text-color: rgba(255,255,255,0.3); 
+  --icon-color: none;
+  --input-background-color: rgba(255, 255, 255, 0.1);
+  --input-border-color: rgba(255, 255, 255, 0.2);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --soft-hover-color: rgba(255, 255, 255, .05);
+  --background-color:#2f3532;
+}
+
+.light-theme{
+  --menu-color: #ffffff;
+  --buger-menu-color: var(--menu-color);
+  --menu-item-color: #ececec;
+  --primary-text-color: rgb(0, 0, 0);
+  --secondary-text-color: rgba(0, 0, 0, 0.5);
+  --third-text-color: rgba(0, 0, 0, 0.3); 
+  --icon-color: invert(38%) sepia(9%) saturate(6%) hue-rotate(348deg) brightness(94%) contrast(83%);
+  --input-background-color: rgba(0, 0, 0, 0.1);
+  --input-border-color: rgba(0, 0, 0, 0.2);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --background-color:#9baca3;
+  --soft-hover-color: rgba(0,0,0, .05);
+
+}
+
+.mapboxgl-ctrl-logo{
+  pointer-events: none;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--menu-item-color) rgba(0,0,0,0);
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--menu-item-color);
+    border-radius: 20px;
+  }
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+
+*{
+
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;;
+    font-weight: normal;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
+}
+
+
+
+.main-container{
+
+    background-color: var(--background-color);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+}
+
+
+
+.pages-container{
+
+    position: absolute;
+    height: calc(100% - var(--menu-height));
+    top: var(--menu-height);
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+
+}

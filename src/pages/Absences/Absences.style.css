@@ -1,0 +1,346 @@
+.absent-container{
+
+
+    width: 100%;
+    height: 100%;
+
+}
+
+
+.form-container{
+
+    position: absolute;
+    right: 0;
+    height: calc(100% - 20px - var(--menu-height));
+    width: calc(100% - 20px);
+    max-width: 400px;
+    background-color: var(--menu-color);
+    border-left: 1px solid rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8);
+    padding: 10px;
+    overflow: auto;
+}
+
+.separator{
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, .1);
+    margin: 20px 0;
+}
+
+.input-auto{
+    margin-top: 20px;
+}
+
+.input-auto div{
+    width: calc(100% - 20px);
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, .2);
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 5px;
+    color: rgba(255, 255, 255, .5);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px;
+    opacity: 0.8;
+}
+
+.absence-form section{
+
+    width: calc(100% - 20px);
+   
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+
+}
+
+
+
+.absence-form section fieldset{
+    border: none;
+}
+
+.check-row{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+.selection-input{
+
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0.3;
+    transition-duration: 200ms;
+}
+
+.title-section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+
+.absent-icon{
+    filter: var(--primary-filter-color);
+}
+
+.selection-input.selected{
+    opacity: 1;
+}
+
+.calendar-container{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* -- custom calendar --*/
+
+.react-calendar{
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, .1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    transition-duration: 200ms;
+}
+
+.react-calendar *{
+    border: none;
+    outline-style: none;
+    border: 5px;
+}
+
+.react-calendar__navigation{
+
+    display: inline-flex;
+    height: 40px;
+    width: 100%;
+
+
+}
+
+.react-calendar__navigation button{
+
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, .1) ;
+    font-size: 15px;
+
+}
+
+.react-calendar__navigation button:hover{
+
+    background-color: rgba(255, 255, 255, .1);
+
+}
+
+.react-calendar__navigation__arrow{
+    width: 10%;
+}
+
+.react-calendar__navigation__label{
+    width: 60%;
+   
+}
+
+.react-calendar__tile{
+
+    background-color: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .8);
+    padding: 10px 0;
+    
+}
+
+.react-calendar__tile:hover{
+
+
+    background-color: rgba(255, 255, 255, .1);
+
+}
+
+.react-calendar__month-view__days__day--neighboringMonth{
+    opacity: 0.5;
+}
+
+
+
+.react-calendar__month-view__weekdays__weekday{
+
+    text-align: center;
+    font-style: none;
+
+}
+
+abbr{
+    border-bottom: none !important;
+    cursor: inherit !important;
+    text-decoration: none !important;
+}
+
+.react-calendar__month-view__days__day--weekend{
+
+    color: rgb(197, 71, 71);
+
+}
+
+
+.react-calendar__tile--active{
+
+    filter: var(--primary-filter-color);
+    color: white;
+    transition-duration: 200ms;
+
+
+}
+
+.react-calendar__tile--hover{
+
+    filter: var(--primary-filter-color);
+    transform: scale(0.8);
+    transition-duration: 200ms;
+
+
+}
+
+
+.selection-input{
+    background-color: rgba(255, 255, 255, .1);
+    color: white;
+    opacity: 0.3;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+.selection-input.selected{
+    opacity: 1;
+}
+
+.valid-absent{
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.precision-time{
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+
+}
+
+.precision-time input{
+    width: 100%;
+    height: 40px;
+    background-color: var(--menu-item-color);
+    border: none;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, .8);
+}
+
+.abs-header{
+
+    width: 100%;
+    height: var(--menu-height);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    background-color: var(--menu-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.new-request{
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    padding: 0px 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.left-section{
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    color: var(--primary-text-color);
+    gap: 20px;
+}
+
+.left-section h4{
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.left-section h4:hover{
+    background-color: var(--input-background-color);
+}
+
+.right-section{
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.new-request{
+
+}
+
+.cancel-btb{
+    background-color: rgba(255, 255, 255, .1);
+    color: white;
+    padding: 0px 10px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    position: absolute;
+
+}
+
+.left-section{
+
+    color: var(--primary-text-color);
+
+}
