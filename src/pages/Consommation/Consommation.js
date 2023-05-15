@@ -22,6 +22,7 @@ function Consommation({}){
     const [displayNull, setDisplayNull] = useState(false);
     const [boatFilter, setBoatFilter] = useState('');
     const [borneFilter, setBorneFilter] = useState('');
+    const [priseFilter, setPriseFilter] = useState('');
     const [stateFilter, setStateFilter] = useState(-1);
     const [typeFilter, setTypeFilter] = useState('');
     const [sourceFilter, setSourceFilter] = useState('');
@@ -195,20 +196,65 @@ function Consommation({}){
     function handleStateFilterChange({nativeEvent}){
         setStateFilter(nativeEvent.target.value)
     }
-/** 
-    function generateExcel(){
-        console.log("Test generate")
-        const workbook = new ExcelJS.workbook();
-        workbook.addWorsheet('Consommation d eau').addRows(consommations);
-        workbook.addWorsheet('Consommation d electricité').addRows(consommations);
 
-        // Créer le fichier Excel et télécharger
-        workbook.xlsx.writeBuffer().then(buffer => {
-            saveAs(new Blob([buffer]), 'consommations.xlsx');
-        });
+    /**
+     * Fonction permettant d'obtenir le cumul d'un type de consommation, Attention si les données ne sont pas trié alors ajoute l'eau et l'elec ensemble
+     * @param {*} data Donnée à observer pour obtenir le cumul des consommations
+     * @param {*} type Type de consommation a trié et a récap
+     * @param {*} callback 
+     */
+    function cumulConsoBateau(data,type){
 
-    }*/
-    
+        console.log("Fonction cumulConsoBateau");
+
+        let dataCumul = [
+            {
+            user: "",
+            conso: 0,
+            typeConso: type,
+            
+        } ];
+
+        let hasToAdd = true;
+
+        // Parcours le tableau des cumuls pour ajouter si le bateau n'est pas présent dans ce nouveau tableau
+        for (const row of data){
+            for (const rowCumul of dataCumul){
+                if (rowCumul.user === row.user){
+                    hasToAdd = false;
+                }
+            }
+            if (hasToAdd){
+                const newData = {
+                    user: row.user,
+                    conso: 0,
+                    typeConso: type
+                };
+                dataCumul.push(newData)
+            }
+            hasToAdd = true;
+        }
+
+        console.log("1 ere étape réussi");
+        // Parcours le tableau cumul et ajoute les conso a la ligne conso du bateau
+
+        for (let i = 0; i < data.length; i++){
+            for (let j = 0; j < dataCumul.length; j++){
+                if (data[i].user === dataCumul[j].user){
+                    dataCumul[j].conso += data[i].kw
+                }
+            }
+        }
+
+        console.log("Data du nouveau tableau cumul : " + JSON.stringify(dataCumul));
+        return dataCumul
+        
+    }
+
+
+    /**
+     * Génere un fichier excel séparé en différentes parties un worksheet avec les détails des conso d'electricité, un autre avec les conso d'eau et un dernier avec des récaps de données
+     */
     function generateExcel() {
         const wb = new ExcelJS.Workbook();
         // Données facturation pour les différentes pages
@@ -219,14 +265,7 @@ function Consommation({}){
         const dataElec = Object.values(data2);
 
         // définir la largeur souhaitée de la première colonne (numéro 1)
-        const columnWidth = 20;
-
-        console.log("Filtre data de l'eau" + data1.length);
-        console.log("Filtre data de l'elec " + data2.length);
-
-        console.log("Test JSON : " + JSON.stringify(dataEau));
-        console.log("Data eau : " + dataEau[0]);
-        console.log("Data elec : " + dataElec[0]);
+        const columnWidth = 40;
         
         const headerEau = ['Activé par', 'A facturer a', 'Source', 'm3', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
         const headerElec = ['Activé par', 'A facturer a', 'Source', 'KW/h', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
@@ -243,33 +282,77 @@ function Consommation({}){
         
         // Appliquer une largeur de colonne de 40 à toutes les colonnes
         
-        
+        //for (let i = 0; i < 9; i++){
+          //  ws2.getColumn(i).width = 40;
+        //}
        
-        ws1.getColumn('A').width = 40;
-        ws1.getColumn('B').width = 40;
-        ws1.getColumn('C').width = 40;
-        ws1.getColumn('D').width = 40;
-        ws1.getColumn('E').width = 40;
-        ws1.getColumn('F').width = 40;
-        ws1.getColumn('G').width = 40;
-        ws1.getColumn('H').width = 40;
-        ws1.getColumn('I').width = 40;
+        ws1.getColumn('A').width = columnWidth;
+        ws1.getColumn('B').width = columnWidth;
+        ws1.getColumn('C').width = columnWidth;
+        ws1.getColumn('D').width = columnWidth;
+        ws1.getColumn('E').width = columnWidth;
+        ws1.getColumn('F').width = columnWidth;
+        ws1.getColumn('G').width = columnWidth;
+        ws1.getColumn('H').width = columnWidth;
+        ws1.getColumn('I').width = columnWidth;
+        /** 
+        ws1.columns = [
+            {header: 'Activé par', key: 'activation', width: 40},
+            {header: 'A facturer a', key: 'facture', width: 40},
+            {header: 'Source', key: 'source', width: 40},
+            {header: 'm3', key: 'quantite', width: 40},
+            {header: "Date d'ouverture", key: 'ouverture', width: 40},
+            {header: 'Date de fermeture', key: 'fermeture', width: 40},
+            {header: 'Zone', key: 'zone', width: 40},
+            {header: 'Borne', key: 'borne', width: 40},
+            {header: 'Prise', key: 'prise', width: 40}
 
+        ] */
+        ws1.autoFilter = {
+            from: 'A1',
+            to: 'I1',
+        }
+        /** 
+        ws2.columns = [
+            {header: 'Activé par', key: 'activation', width: 40},
+            {header: 'A facturer a', key: 'facture', width: 40},
+            {header: 'Source', key: 'source', width: 40},
+            {header: 'KW/h', key: 'quantite', width: 40},
+            {header: "Date d'ouverture", key: 'ouverture', width: 40},
+            {header: 'Date de fermeture', key: 'fermeture', width: 40},
+            {header: 'Zone', key: 'zone', width: 40},
+            {header: 'Borne', key: 'borne', width: 40},
+            {header: 'Prise', key: 'prise', width: 40}
+
+        ] */
+        
         // Insérer les données de chaque ligne de dataEau
         for (const row of dataEau) {
             if (row.kw > 0){
+                const dateFormat = date => {
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear().toString();
+                    const hour = date.getHours().toString().padStart(2, '0');
+                    const minute = date.getMinutes().toString().padStart(2, '0');
+                    const second = date.getSeconds().toString().padStart(2, '0');
+                    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+                  }
                 const rowData = [
                     row.open_by,
                     row.user,
                     'EAU',
                     row.kw,
-                    row.start_date,
-                    row.end_date,
+                    dateFormat(new Date(row.start_date)),
+                    dateFormat(new Date (row.end_date)),
                     row.zone,
                     row.borne,
                     row.prise
                     ];
                     ws1.addRow(rowData);
+                    const lastRow = ws1.lastRow;
+                    lastRow.getCell(5).style.number_format = 'dd/mm/yyyy hh:mm:ss';
+                    lastRow.getCell(6).style.number_format = 'dd/mm/yyyy hh:mm:ss';
             }
             
         }
@@ -280,7 +363,7 @@ function Consommation({}){
             cell.alignment = { horizontal: 'center' };
             });
         });
-        //ws1.addRows(data1);
+
     
       
         // Créer une nouvelle feuille dans le classeur et ajouter les données
@@ -293,26 +376,38 @@ function Consommation({}){
             fgColor: { argb: 'A6A6A6' } // gris
         };
         });
-
-        ws2.getColumn('A').width = 40;
-        ws2.getColumn('B').width = 40;
-        ws2.getColumn('C').width = 40;
-        ws2.getColumn('D').width = 40;
-        ws2.getColumn('E').width = 40;
-        ws2.getColumn('F').width = 40;
-        ws2.getColumn('G').width = 40;
-        ws2.getColumn('H').width = 40;
-        ws2.getColumn('I').width = 40;
+        ws2.autoFilter = {
+            from: 'A1',
+            to: 'I1',
+        }
+        ws2.getColumn('A').width = columnWidth;
+        ws2.getColumn('B').width = columnWidth;
+        ws2.getColumn('C').width = columnWidth;
+        ws2.getColumn('D').width = columnWidth;
+        ws2.getColumn('E').width = columnWidth;
+        ws2.getColumn('F').width = columnWidth;
+        ws2.getColumn('G').width = columnWidth;
+        ws2.getColumn('H').width = columnWidth;
+        ws2.getColumn('I').width = columnWidth;
 
         for (const row of dataElec) {
             if (row.kw > 0){
+                const dateFormat = date => {
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear().toString();
+                    const hour = date.getHours().toString().padStart(2, '0');
+                    const minute = date.getMinutes().toString().padStart(2, '0');
+                    const second = date.getSeconds().toString().padStart(2, '0');
+                    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+                  }
                 const rowData = [
                     row.open_by,
                     row.user,
                     row.source,
                     row.kw,
-                    row.start_date,
-                    row.end_date,
+                    dateFormat(new Date(row.start_date)),
+                    dateFormat(new Date(row.end_date)),
                     row.zone,
                     row.borne,
                     row.prise
@@ -329,19 +424,154 @@ function Consommation({}){
             });
         });
 
+        ws2.autoFilter = {
+            from: 'A1',
+            to: 'I1',
+        }
+
+        const headerRecap = ['Facturer a','Cumul','Type-Conso']
+        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        const ws3 = wb.addWorksheet('Récap');
+        const headerRow3 = ws3.addRow(headerRecap);
+        headerRow3.eachCell((cell) => {
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'A6A6A6' } // gris
+        };
+        });
+        
+        let dataCumulEau = cumulConsoBateau(dataEau,"EAU")
+        let dataCumulElec = cumulConsoBateau(dataElec,"ELECTRICITE")
+
+        
+        for (const row of dataCumulEau){
+            if (row.conso > 0 && !row.user.includes("SEM")){
+                const rowData = [
+                    row.user,
+                    row.conso,
+                    row.typeConso
+                ];
+                ws3.addRow(rowData);
+            }
+        }
+
+        for (const row of dataCumulElec){
+            if (row.conso > 0 && !row.user.includes("SEM")) {
+                const rowData = [
+                    row.user,
+                    row.conso,
+                    row.typeConso
+                ];
+                ws3.addRow(rowData);
+            }
+        }
+        
+        ws3.columns.forEach((column) => {
+            // Centrer les données dans chaque cellule
+            column.eachCell((cell) => {
+            cell.alignment = { horizontal: 'center' };
+            });
+        });
+
+        ws3.getColumn('A').width = columnWidth;
+        ws3.getColumn('B').width = columnWidth;
+        ws3.getColumn('C').width = columnWidth;
+
+        
+        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        const ws4 = wb.addWorksheet('Maitre de port');
+
+        const headerMaitrePort = ['Badge/utilisation par','Type-Conso','Quantité', "Date d'ouverture", 'Date de fermeture','Zone', 'Borne', 'Prise']
+        const headerRow4 = ws4.addRow(headerMaitrePort);
+        headerRow4.eachCell((cell) => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'A6A6A6' } // gris
+            };
+        });
+
+        ws4.getColumn('A').width = columnWidth;
+        ws4.getColumn('B').width = columnWidth;
+        ws4.getColumn('C').width = columnWidth;
+        ws4.getColumn('D').width = columnWidth;
+        ws4.getColumn('E').width = columnWidth;
+        ws4.getColumn('F').width = columnWidth;
+        ws4.getColumn('G').width = columnWidth;
+        ws4.getColumn('H').width = columnWidth;
+
+
+        for (const row of dataEau) {
+            if (row.kw > 0 && row.user.includes("SEM")){
+                const dateFormat = date => {
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear().toString();
+                    const hour = date.getHours().toString().padStart(2, '0');
+                    const minute = date.getMinutes().toString().padStart(2, '0');
+                    const second = date.getSeconds().toString().padStart(2, '0');
+                    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+                  }
+                const rowData = [
+                    row.user,
+                    "EAU",
+                    row.kw,
+                    dateFormat(new Date(row.start_date)),
+                    dateFormat(new Date(row.end_date)),
+                    row.zone,
+                    row.borne,
+                    row.prise
+                    ];
+                    ws4.addRow(rowData);
+            }
+            
+        }
+
+        for (const row of dataElec) {
+            if (row.kw > 0 && row.user.includes("SEM")){
+                const dateFormat = date => {
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear().toString();
+                    const hour = date.getHours().toString().padStart(2, '0');
+                    const minute = date.getMinutes().toString().padStart(2, '0');
+                    const second = date.getSeconds().toString().padStart(2, '0');
+                    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+                  }
+                const rowData = [
+                    row.user,
+                    "ELECTRICITE",
+                    row.kw,
+                    dateFormat(new Date(row.start_date)),
+                    dateFormat(new Date(row.end_date)),
+                    row.zone,
+                    row.borne,
+                    row.prise
+                    ];
+                    ws4.addRow(rowData);
+            }
+            
+        }
+
+        console.log("Data conso JSON : " + JSON.stringify(consommations));
+
+        console.log("Data conso : " + consommations);
+
         //Créer le fichier Excel et télécharger
         wb.xlsx.writeBuffer().then(buffer => {
             saveAs(new Blob([buffer]), 'CONSO_FACTURE.xlsx');
         });
       }
-
+// onChange={handleBornePriseSearch}
     return <div className="conso-container">
 
         <div className="filter-section">
 
             <div className="search-section">
                 <input value={boatFilter} onChange={({target}) => setBoatFilter(target.value)} className="search-conso-input" placeholder="Bateau" />
-                <input value={borneFilter} onChange={handleBornePriseSearch} className="search-conso-input" placeholder="Borne/Prise" />
+                <input value={borneFilter} onChange={({target}) => setBorneFilter(target.value)} className="search-conso-input" placeholder="Borne" /> 
+                <input value={priseFilter} onChange={({target}) => setPriseFilter(target.value)} className="search-conso-input" placeholder="Prise" />
                 <input value={sourceFilter} onChange={({target}) => setSourceFilter(target.value)} className="search-conso-input" placeholder="Source" />
             </div>
 
@@ -384,7 +614,7 @@ function Consommation({}){
             </div>
 
             <div className="search-section">
-                <button className="confirm-facture" onClick={generateExcel}>Facturation Bornes</button>
+                <button className="confirm-facture" onClick={generateExcel}>Facturation</button>
             </div>
 
             {compareValue !== '' && <div onClick={() => setCompareValue('')} className="cancel-closest">
@@ -399,6 +629,7 @@ function Consommation({}){
         <SortableTable
         emptyMessage={'Aucune consommation sur cette période'}
         data={consommations.filter(filterFunction)} header={[
+            {label: "Numéro", column: 'numero', type:'number'},
             {label: "Bateau/entreprise", column: 'user', type: 'string', onDoubleClick: (boatname) => setCompareValue(boatname)},
             {label: "Date d'ouverture", column: 'start_date', type: 'date', processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},
             {label: "Date de fermeture", column: 'end_date', type: 'date',defaultValue: '-',  processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},

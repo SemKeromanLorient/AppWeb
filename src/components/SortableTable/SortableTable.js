@@ -102,6 +102,9 @@ function SortableTable({data, header, filter, emptyMessage}){
 
 function HeaderColumn({data, setSort, sort}){
 
+    /**
+     * Lorsqu'on click sur une colonne du header on passe le filtre de croissant a décroissant et vice versa. Le onclick regarde le nom de la colonne et actualise le param sort en fonction de celui-ci.
+     */
     function onClick(){
 
         console.log("Data : " + data.column + "\n");

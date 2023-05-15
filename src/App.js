@@ -32,6 +32,9 @@ import { POPUP_ERROR } from "./components/Popup/Popup";
 import ThemeContext, { DARK_THEME, LIGHT_THEME } from "./contexts/ThemeContext";
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2VydmljZXNpIiwiYSI6ImNsODRtaXpiYjAxMmIzc2xkcjhvdzY4MHYifQ.5IFeaz7cElI08IZLGrxiFA';
 
+
+
+
 function App() {
 
   const [user, setUser] = useState(null);
@@ -179,7 +182,8 @@ function App() {
 
     return '/supervision/map'
   }
-//"webpack serve --config webpack.dev.js"
+// <Route path="supervision/factures" element={<ProtectedRoute useFor={'FACTURE'} redirect={'/supervision/'}><Facturation /></ProtectedRoute>}/>
+// Header paths = [ {name: "Facturation", path: "/supervision/factures", Icon: FacturesIcon, secure: "FACTURE"},
   return  <div onClick={handleCloseContextMenu} className={"main-container no-select "+(theme)}>
   
 
@@ -205,7 +209,6 @@ function App() {
                               {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
                               {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
                               {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
-                              {name: "Facturation", path: "/supervision/factures", Icon: FacturesIcon, secure: "FACTURE"},
                               {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                               {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"}
 
@@ -224,7 +227,7 @@ function App() {
                                   <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                   <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
                                   <Route path="supervision/settings" element={<ProtectedRoute useFor={'SETTINGS'} redirect={'/supervision/'}><Settings /></ProtectedRoute>}/>
-                                  <Route path="supervision/factures" element={<ProtectedRoute useFor={'FACTURE'} redirect={'/supervision/'}><Facturation /></ProtectedRoute>}/>
+                                  
                                   <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
                                   <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
                                   <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
