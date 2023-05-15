@@ -549,6 +549,13 @@ function Consommation({}){
             
         }
 
+        ws4.columns.forEach((column) => {
+            // Centrer les données dans chaque cellule
+            column.eachCell((cell) => {
+            cell.alignment = { horizontal: 'center' };
+            });
+        });
+
         console.log("Data conso JSON : " + JSON.stringify(consommations));
 
         console.log("Data conso : " + consommations);
@@ -621,9 +628,6 @@ function Consommation({}){
                 <button className="confirm-facture" onClick={generateExcel}>Facturation</button>
             </div>
 
-            <div className="search-section">
-                <button className="confirm-facture" onClick={test}>Test</button>
-            </div>
 
             {compareValue !== '' && <div onClick={() => setCompareValue('')} className="cancel-closest">
                 <h4>Annuler le regroupement "{compareValue}"</h4>
