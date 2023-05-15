@@ -112,21 +112,16 @@ function Consommation({}){
         if(sourceFilter != '' && !conso.source.includes(sourceFilter))return false;
 
         if(borneFilter != ''){
+            //let borne = Number(borneFilter)
+
+            if(borneFilter !== conso.borne)return false;
             
-            if(borneFilter.length <= 2){
-                let borne = Number(borneFilter)
 
-                if(borne !== conso.borne)return false;
+        }
 
-            }else{
-
-                let borne = Number(borneFilter.substring(0, 2))
-                let prise = Number(borneFilter.substring(2, 4))
-
-                if(borne !== conso.borne || prise !== conso.prise)return false;
-
-            }
-
+        if (priseFilter != ''){
+            if (priseFilter !== conso.prise) return false;
+            
         }
 
 
@@ -563,6 +558,15 @@ function Consommation({}){
             saveAs(new Blob([buffer]), 'CONSO_FACTURE.xlsx');
         });
       }
+
+
+//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
+    function test(){
+        console.log("Prise numéro : " + priseFilter);
+    }
+//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
+
+
 // onChange={handleBornePriseSearch}
     return <div className="conso-container">
 
@@ -615,6 +619,10 @@ function Consommation({}){
 
             <div className="search-section">
                 <button className="confirm-facture" onClick={generateExcel}>Facturation</button>
+            </div>
+
+            <div className="search-section">
+                <button className="confirm-facture" onClick={test}>Test</button>
             </div>
 
             {compareValue !== '' && <div onClick={() => setCompareValue('')} className="cancel-closest">
