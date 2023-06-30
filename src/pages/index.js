@@ -14,7 +14,9 @@ import Facturation from "./Facturation/Facturation";
 import Absences from "./Absences/Absences";
 import BorneList from "./BorneList/BorneList";
 import Tickets from "./Tickets/Tickets";
-
+import Badges from "./Badges/Badges";
+import SwitchPages from "./SwitchPages/SwitchPages";
+import WriteInfo from "./WriteInfo/WriteInfo";
 
 export {
     Bornecontrol,
@@ -32,5 +34,8 @@ export {
     Facturation,
     Absences,
     BorneList,
-    Tickets
+    Tickets,
+    Badges,
+    SwitchPages,
+    WriteInfo
 }

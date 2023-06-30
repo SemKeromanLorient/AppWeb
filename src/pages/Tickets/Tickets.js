@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Tickets.style.css"
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import { XMLParser } from 'fast-xml-parser';
 var convert = require('xml-js');
 import bwipjs from 'bwip-js';

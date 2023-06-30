@@ -80,7 +80,7 @@
     
     border: 1px solid var(--border-color);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-    padding: 10px;
+    padding: 40px;
     transition-duration: 200ms;
     color: var(--primary-text-color);
     gap: 20px;
@@ -347,7 +347,7 @@
     justify-content: space-between;
     padding: 10px;
     padding-top: 30px;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -594,4 +594,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+.lock-icon-2{
+    width: 60px;
+    height: 30px;
+    padding-left: 0px;
+}
+.back-icon{
+    width: 60px;
+    height: 30px;
+}
+.close-btn-new{
+
+    background-color: var(--primary-color);
+    padding: 0 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 200ms;
+    overflow: hidden;
+    white-space: nowrap;    
+    right: 0;
+    margin-left: auto;
+    margin-top: auto;
+
+}
+
+.close-btn-new:hover{
+
+    opacity: 0.7;
+
 }

@@ -1,0 +1,102 @@
+.Meteo{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}
+
+
+.division-3-1{
+    height: 40%;
+    color: white;
+}
+.division-3-2{
+    height: 40%;
+    color: white;
+    margin-top: 80px !important ;
+}
+.division-3-3{
+    height: 60%;
+    color: white;
+
+}
+
+
+.meteo-container {
+    max-width: 100vw !important;
+    min-height: 80vh !important;
+    text-align: center;
+    width: 100%;
+    height: 105%;   
+}
+
+.title-sec{
+    text-align: center;
+}
+
+.title{
+    height:20%
+}
+
+.title-meteo{
+    margin-top: -20px;
+    font-size: 45px;
+    color: var(--primary-color);
+}
+
+.title-sect{
+    color: var(--primary-color);
+}
+
+.first-row {
+    height: 100px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
+.icone-meteo{
+    min-width: 150px;
+    min-height: 150px;
+}
+
+.arrow{
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto;
+}
+
+
+  .wind-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .wind-table th,
+  .wind-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+  
+  
+  .wind-table th:first-child,
+  td:first-child {
+    width: 20%;
+  }
+  
+  .wind-table{
+    margin-left: 12px;
+    margin-right: 15px;
+  }
+
+  .text-meteo-jour{
+    font-size: 16px;
+  }
+  .text-meteo-prevision{
+    font-size: 14px;
+  }
+  .text-date-jour{
+    font-size: 22px ;
+  }

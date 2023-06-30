@@ -63,7 +63,7 @@ function BorneController({currentlySelected}){
                 <div className={"section"}>
                     <div className="title-section-prise">
                         <ElecIcon className="title-icon"/>
-                        <h3>Prises élèctriques</h3>
+                        <h3>Prises électriques</h3>
                     </div>
                     <div className={"prise-list-container"}>
 

@@ -3,21 +3,21 @@
 :root{
 
     --menu-height: 60px;
-    --primary-color: #519e62;
+    --primary-color: #519e62 ;
    
     --primary-filter-color:  invert(55%) sepia(29%) saturate(646%) hue-rotate(81deg) brightness(94%) contrast(92%);
     --red-filter-color: invert(76%) sepia(32%) saturate(1272%) hue-rotate(306deg) brightness(93%) contrast(116%);
 
-    
+    --fourth-color: #00508D;
 
 }
 
 
 .dark-theme{
   --menu-color: #1f201f;
-  --buger-menu-color: #1f201f;
-  --menu-item-color: #303130;
-  --primary-text-color: white;
+  --buger-menu-color: #1f201f ;
+  --menu-item-color: #303130 ;
+  --primary-text-color: white ;
   --secondary-text-color: rgba(255,255,255,0.5);
   --third-text-color: rgba(255,255,255,0.3); 
   --icon-color: none;
@@ -123,4 +123,8 @@
     justify-content: center;
     z-index: 0;
 
+}
+
+button:hover {
+  opacity: 90%;
 }

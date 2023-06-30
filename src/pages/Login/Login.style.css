@@ -50,6 +50,7 @@
     font-size: 15px;
     color: var(--primary-text-color);
     transition-duration: 200ms;
+    padding-left: 30px;
 }
 
 .input-credentials:focus{

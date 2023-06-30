@@ -14,7 +14,8 @@
     justify-content: space-between;
     color: var(--primary-text-color);
     z-index: 1;
-    border-bottom: 1px solid var(--border-color)
+    border-bottom: 1px solid var(--border-color);
+    transition: height 0.3s ease-in-out;
 }
 
 .left-side, .right-side{
@@ -466,3 +467,11 @@
   
 }
 
+.header-notHovering{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #2f3532;
+    height: 50px; /* Modifier la hauteur selon vos besoins */
+}

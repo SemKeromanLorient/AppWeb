@@ -1,6 +1,6 @@
 import "./Consommation.style.css"
 import React, { useEffect, useState } from "react";
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import { SortableTable } from "../../components";
 import moment from 'moment';
 import { UserContext } from "../../contexts";
@@ -28,6 +28,8 @@ function Consommation({}){
     const [sourceFilter, setSourceFilter] = useState('');
     const [compareValue, setCompareValue] = useState('');
     const [zoneFilter, setZoneFilter] = useState('ALL');
+
+    const [val,setVal] = useState('');
 
     useEffect(() => {
         document.title = 'Supervision | Consommations'
@@ -112,21 +114,16 @@ function Consommation({}){
         if(sourceFilter != '' && !conso.source.includes(sourceFilter))return false;
 
         if(borneFilter != ''){
+            //let borne = Number(borneFilter)
+
+            if(borneFilter !== conso.borne)return false;
             
-            if(borneFilter.length <= 2){
-                let borne = Number(borneFilter)
 
-                if(borne !== conso.borne)return false;
+        }
 
-            }else{
-
-                let borne = Number(borneFilter.substring(0, 2))
-                let prise = Number(borneFilter.substring(2, 4))
-
-                if(borne !== conso.borne || prise !== conso.prise)return false;
-
-            }
-
+        if (priseFilter != ''){
+            if (priseFilter !== conso.prise) return false;
+            
         }
 
 
@@ -333,9 +330,10 @@ function Consommation({}){
                     const day = date.getDate().toString().padStart(2, '0');
                     const month = (date.getMonth() + 1).toString().padStart(2, '0');
                     const year = date.getFullYear().toString();
-                    const hour = date.getHours().toString().padStart(2, '0');
+                    const hour = date.getHours().toString().padStart(2, '0') - 2;
                     const minute = date.getMinutes().toString().padStart(2, '0');
                     const second = date.getSeconds().toString().padStart(2, '0');
+                    //Decaler de 2h, pas trouver la raison               
                     return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
                   }
                 const rowData = [
@@ -554,6 +552,13 @@ function Consommation({}){
             
         }
 
+        ws4.columns.forEach((column) => {
+            // Centrer les données dans chaque cellule
+            column.eachCell((cell) => {
+            cell.alignment = { horizontal: 'center' };
+            });
+        });
+
         console.log("Data conso JSON : " + JSON.stringify(consommations));
 
         console.log("Data conso : " + consommations);
@@ -563,11 +568,19 @@ function Consommation({}){
             saveAs(new Blob([buffer]), 'CONSO_FACTURE.xlsx');
         });
       }
+
+
+//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
+    function test(){
+        console.log("Prise numéro : " + priseFilter);
+    }
+//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
+
+
 // onChange={handleBornePriseSearch}
     return <div className="conso-container">
-
         <div className="filter-section">
-
+            
             <div className="search-section">
                 <input value={boatFilter} onChange={({target}) => setBoatFilter(target.value)} className="search-conso-input" placeholder="Bateau" />
                 <input value={borneFilter} onChange={({target}) => setBorneFilter(target.value)} className="search-conso-input" placeholder="Borne" /> 
@@ -617,6 +630,7 @@ function Consommation({}){
                 <button className="confirm-facture" onClick={generateExcel}>Facturation</button>
             </div>
 
+
             {compareValue !== '' && <div onClick={() => setCompareValue('')} className="cancel-closest">
                 <h4>Annuler le regroupement "{compareValue}"</h4>
             </div>}
@@ -642,7 +656,9 @@ function Consommation({}){
             {label: "Activé par", column: 'open_by', type: 'string', processValue: (value) => value? value : 'Système'},
             {label: "Etat facturation", column: 'facture', type: 'number', processValue: (value) => value === 1? 'Facturé' : 'En attente...'}
 
-            ]} />
+            ]} 
+            setVal={setVal}
+            />
 
     </div>
 }

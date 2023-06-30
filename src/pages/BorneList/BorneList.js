@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ProgressBar } from "../../components";
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
+
 import { removeSocketFlag, socketFlag, socketSend } from "../../utils/serverSocketCom";
 import {ReactComponent as ElecticIcon} from '../../assets/icons/energy.svg';
 import {ReactComponent as NoElecIcon} from '../../assets/icons/no-power.svg';
@@ -8,6 +9,9 @@ import {ReactComponent as StopIcon} from '../../assets/icons/stop (1).svg';
 import {ReactComponent as IssueIcon} from '../../assets/icons/error.svg';
 import {ReactComponent as ActivateIcon} from '../../assets/icons/electricity.svg';
 import {ReactComponent as ListIcon} from '../../assets/icons/list-format.svg';
+import {ReactComponent as LockIcon} from '../../assets/icons/lock-icon.svg';
+import {ReactComponent as BackIcon} from '../../assets/icons/retour-fleche.svg';
+
 
 import loadingAnimation from "../../assets/lotties/end-conso.json";
 import WaitingAnimation from "../../assets/lotties/loading.json";
@@ -22,6 +26,7 @@ import { getAuthorizationFor, getConnectedUser } from "../../utils/storageUtil";
 
 function BorneList(){
 
+    const [badges,setBadges] = useState('');
     const [bornes, setBornes] = useState([]);
     const [currentSelection, setCurrentSelection] = useState(null);
     const [quickSearch, setQuickSearch] = useState('');
@@ -29,13 +34,17 @@ function BorneList(){
     const navigate = useNavigate();
     let quickSearchTimeout;
     const {borne_id} = useParams();
+    
 
     useEffect(() => {
+        console.log("Borne id : " + borne_id);
+        console.log("Bornes.length : " + bornes.length);
         if(borne_id && bornes.length > 0){
 
             let selected = bornes.find((value) => value.borne === Number(borne_id) && value.enable == 1);
 
             if(selected){
+                //console.log("Selected : " + JSON.stringify(selected))
                 setCurrentSelection(selected)
             }else{
                 navigate('/supervision/list')
@@ -80,7 +89,15 @@ function BorneList(){
         })
 
         document.title = 'Supervision | Liste des bornes'
-    
+        
+        getToServer('/badges/', {}, ({data}) => {
+            setBadges(data.badge)
+
+        }, (err) => {
+
+            console.log(err)
+
+        })
 
         return () => {
 
@@ -120,8 +137,17 @@ function BorneList(){
                 
 
 
-        {currentSelection && <BorneControl borne={currentSelection} />}
+        {
+            currentSelection &&
+            currentSelection.borne <= 9 && <BorneControl borne={currentSelection} />
+        }
 
+        {
+            currentSelection &&
+            currentSelection.borne > 9 && <BorneControlNew borne={currentSelection} badges={badges} />
+        }
+
+ 
         <ActiveUserList bornes={bornes} isOpen={isActiveMenuOPen} setOpen={setActiveMenuOpen} />
     </div>
 
@@ -130,6 +156,7 @@ function BorneList(){
 
 function BorneItem({borne, setCurrentSelection}){
 
+    
     const navigate = useNavigate();
 
 
@@ -142,7 +169,7 @@ function BorneItem({borne, setCurrentSelection}){
 
 
 
-        <h2>Borne {borne.borne}</h2>
+        <h2>Borne {borne.display}</h2>
 
         <ProgressBar error={borne.state.error || borne.state.stop} currentProgress={(borne.capacity - borne.available)} range={[0, borne.capacity]} />
 
@@ -154,7 +181,135 @@ function BorneItem({borne, setCurrentSelection}){
 
 }
 
+function BorneControlNew({borne,badges}){
 
+    const navigate = useNavigate();
+    const [priseOpen, setPriseOpen] = useState(false);
+    const [currentPriseOpen, setCurrentPriseOpen] = useState(null);
+    const [badgeFilter, setBadgeFilter] = useState('');
+    const {prise_id} = useParams();
+    const selectBadge = React.useRef();
+    const [selectedBadge,setSelectedBadge] = useState('');
+
+    function handleClose(){
+
+        navigate('/supervision/list')
+        setCurrentPriseOpen(null);
+
+    }
+
+    function filterFunction(badge){
+
+        if(badgeFilter !== '' && !badge.username.toUpperCase().includes(badgeFilter.toUpperCase())) return false;
+
+        return true;
+
+    }
+
+    function toPrise(){
+        const value = selectBadge.current.value;
+        setSelectedBadge(value);
+    }
+
+    function sortPrise(prise_a, prise_b){
+
+        if(prise_a.prise > prise_b.prise)return 1;
+        if(prise_a.prise < prise_b.prise)return -1;
+
+        return 0
+
+    }
+
+    //Envoie une socket des données à modifier sur la prise
+    function send(data){
+        data.zone = borne.zone;
+        data.borne = borne.borne;
+        socketSend('prise_update', data)
+    }
+
+    useEffect(() => {
+
+        document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            var isEscape = false;
+            if ("key" in evt) {
+                isEscape = (evt.key === "Escape" || evt.key === "Esc");
+            } else {
+                isEscape = (evt.keyCode === 27);
+            }
+            if (isEscape) {
+                
+                if(!currentPriseOpen)handleClose()
+
+            }
+        };
+
+    }, [currentPriseOpen])
+
+    useEffect(() => {
+        console.log(selectedBadge)
+    },[selectedBadge])
+ //
+    return <>
+    {borne && <div className="background-dim"/>}
+        <div className={"borne-control-container "+(!borne? 'hidden' : '')}>
+
+            {!selectedBadge && (
+                <>
+                {borne && <>
+                    
+                    <h2>Borne {borne.display} <LockIcon className="lock-icon-2" /></h2>
+                    
+                    
+                </>}
+
+                <div className="search-section">
+                    <input value={badgeFilter} onChange={({target}) => setBadgeFilter(target.value)} className="add-info-conso" placeholder="Username"   style={{ marginTop: '15px', textAlign: 'center' }}/>  
+                </div> 
+        
+                <div className="title-section-badge"  style={{ display: "flex", justifyContent: "center",marginTop: "15px"}}> 
+                    <select className="list-section-badges" ref={selectBadge}>
+                            {badges.filter(filterFunction).map((badge, index) => (
+                                <option key={index} value={badge.username}>
+                                {badge.name} - {badge.username}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+                
+                <div className="search-section">
+                    <button className="close-btn" onClick={toPrise}> Valider </button>
+                </div>
+                <div onClick={handleClose} className="close-btn-new">
+                    <BackIcon className="back-icon" />
+                </div>
+                </>
+            )}
+
+            {selectedBadge && (
+                <>
+                    {borne && <>
+                
+                        <h2>Borne {borne.display}</h2>
+
+                        {borne.prises && borne.prises.sort(sortPrise).map((prise, index) => <PriseRow send={send} setCurrentPriseOpen={setCurrentPriseOpen} prise={prise} key={index} />)}
+                    </>}
+                    
+                    <div onClick={handleClose} className="close-btn">
+                        <h3>Fermer</h3>
+                    </div>
+                    {currentPriseOpen && <div className="background-dim"/>}
+                    {currentPriseOpen && <UserSelectionPrise nouveau={true} send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen}/>}
+                </>
+            )}
+            
+        </div>
+    
+
+
+    </>
+
+}
 
 function BorneControl({borne}){
 
@@ -228,17 +383,22 @@ function BorneControl({borne}){
     
     {currentPriseOpen && <div className="background-dim"/>}
     
-    {currentPriseOpen && <UserSelectionPrise send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen}/>}
+    {currentPriseOpen && <UserSelectionPrise nouveau={false} send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen}/>}
 
     </>
 
 }
 
-function UserSelectionPrise({send, prise, setOpen}){
+function UserSelectionPrise({nouveau, send, prise, setOpen}){
 
     const [username, setUsername] = useState('');
     const [inputErr, setInputErr] = useState(false)
     const {setPopupOption} = useContext(PopupContext);
+
+
+    useEffect(() => {
+        console.log("Test : " + username)
+    }, [username])
 
     function handleCancel(){
         setOpen(null);
@@ -296,13 +456,38 @@ function UserSelectionPrise({send, prise, setOpen}){
 
     }
 
+    function handleValidNew(){
+        setPopupOption({
+            type: POPUP_QUESTION,
+            text: 'Etes-vous sur de vouloir activer la prise '+prise.prise.name+' pour '+username,
+            secondaryText: 'Ne pas oubliez de fermer la prise',
+            acceptText: 'Oui, j\'active la prise',
+            declineText: 'Non, annuler',
+            onAccept: () => { //ICI QUE SE TROUVE LE POINT DE DEBUT DE L ACTIVATION DES BORNES
+                prise.callback()
+                send({
+                    prise: prise.prise.prise,
+                    state: "ON",
+                    user: (getAuthorizationFor('MAP', 'update')? username : getConnectedUser('username')),   
+                })
+                setOpen(null);
+            }
+        })
+
+
+    }
+
+
     return <div className="user-prompt-container">
+
+            {
+                !nouveau && <>
 
                 <ActivateIcon />
 
                 <h2>Activation de la prise {prise.name}</h2>
                 <h3>Veuillez indiquer le nom du bateau pour lequel la consommation sera facturée.</h3>
-             
+
                 <div className="input-section">
                     <input value={username} onChange={({target}) => setUsername(target.value)} className={"user-input "+(inputErr? 'err' : '')} placeholder="Ex: BATEAU X..." />
                     <div>
@@ -322,6 +507,36 @@ function UserSelectionPrise({send, prise, setOpen}){
 
                     
                 </div>
+                </>
+            }
+                
+
+                {nouveau && <>
+                    <ActivateIcon />
+
+                    <h2>Activation de la prise {prise.name}</h2>
+                    <h3>Vous pouvez renseigner une information de plus à la consommation.</h3>
+
+                    <div className="input-section">
+                        <input value={username} onChange={({target}) => setUsername(target.value)} className={"user-input "+(inputErr? 'err' : '')} placeholder="Ex: BATEAU X..." />
+                        <div>
+
+                        </div>
+                    </div>
+
+                    <div className=" button-section">
+
+                        <div onClick={handleValidNew} className="action-btn valid">
+                            <h3>Activer</h3>
+                        </div>
+
+                        <div onClick={handleCancel} className="action-btn cancel">
+                            <h3>Annuler</h3>
+                        </div>
+
+                        
+                    </div>
+                </>}
 
     </div>
 
@@ -334,6 +549,8 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
 
     const {setPopupOption} = useContext(PopupContext);
     const [onLoad, setOnLoad] = useState(false);
+    const [optionalText, setOptionalText] = useState('');
+
     let connectionIssueTimer = useRef(null);
     
     useEffect(() => {
@@ -361,7 +578,7 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
 
                 connectionIssueTimer.current = setTimeout(onTimerOut, 10 * 1000)
 
-                console.log(send)
+                console.log("TEST send" + send)
                 setOnLoad(true);
                 send({
                     prise: prise.prise,
@@ -392,7 +609,7 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
     return <div className="prise-container">
 
         
-        <h2>{prise.name}</h2>
+        <h2>{prise.prise}</h2>
 
         <div className="prise-state-container">
 
@@ -411,11 +628,13 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
             {onLoad ? <Lottie className="loading-response" animationData={WaitingAnimation} /> : <>
                 {prise.state === 1 && <h4>Activer</h4>}
                 {prise.state === 4 && <h4>Désactiver</h4>}
-                {prise.state === 3 && <h4>Focer</h4>}
+                {prise.state === 3 && <h4>Forcer</h4>}
                 {prise.state === 5 && <h4>-</h4>}
                 {prise.state === 8 && <h4>-</h4>}
             </>}
         </div>
+
+        
 
     </div>
 
