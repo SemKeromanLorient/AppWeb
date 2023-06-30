@@ -25,7 +25,7 @@ import Map, {
   } from 'react-map-gl';
 import "mapbox-gl/src/css/mapbox-gl.css";
 import {BornePin, ZonePin} from "./Balise";
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import { ContextMenuContext, PopupContext, ThemeContext } from "../../contexts";
 import { POPUP_QUESTION, POPUP_VALID } from "../../components/Popup/Popup";
 

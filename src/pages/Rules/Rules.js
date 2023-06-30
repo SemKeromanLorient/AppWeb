@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Rules.style.css";
 import Select from 'react-select';
 import {ReactComponent as DeleteIcon} from '../../assets/icons/remove.svg';
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import {ReactComponent as MoreIcon} from '../../assets/icons/more-vert.svg';
 import {ReactComponent as ArrowIcon} from '../../assets/icons/arrow.svg';
 import { PopupContext } from "../../contexts";
@@ -92,7 +92,7 @@ function Rules(){
 
         <div className="rules-header">
             <input value={searchFilter} onChange={({target}) => setSearchFilter(target.value)} type={"text"}  placeholder={"Rechercher une règle, Admin, Op..."} />
-            <input type={"button"} onClick={onAddNew} value={"nouvellle règle"} />
+            <input type={"button"} onClick={onAddNew} value={"nouvelle règle"} />
         </div>
 
         <div className="rules-list">

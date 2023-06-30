@@ -18,25 +18,32 @@ import {ReactComponent as FacturesIcon} from './assets/icons/facture.svg';
 import {ReactComponent as AbsentsIcon} from './assets/icons/absent.svg';
 import {ReactComponent as BorneListIcon} from './assets/icons/table-grid.svg';
 import {ReactComponent as TicketIcon} from './assets/icons/ticket.svg';
+import {ReactComponent as BadgeIcon} from './assets/icons/badge.svg'
+import {ReactComponent as MeteoIcon} from './assets/icons/meteo.svg'
+import {ReactComponent as PortIcon} from './assets/icons/MaitreDePort2.svg'
 
 import connectionAnimation from "./assets/lotties/wifi-connection.json";
 
-import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, DashBoard, Facturation, Login, Rules, Settings, ShareAccess, Tickets, UserManager } from './pages';
+import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, DashBoard, Facturation, Login, Rules, Settings, ShareAccess, Tickets, UserManager, Badges, SwitchPages, WriteInfo} from './pages';
 import { PopupContext, ToastContext, UserContext, ContextMenuContext } from "./contexts";
 import React,{ useEffect, useMemo, useRef, useState } from "react";
 import { connectAutomate, connectToServer, disconnectSocket, reconnectSavedFlag } from "./utils/serverSocketCom";
-import mapboxgl from '!mapbox-gl';
+//import mapboxgl from '!mapbox-gl';
 import { disconnectUser, getConnectedUser, setConnectedUser } from "./utils/storageUtil";
-import { postToServer } from "./utils/serverHttpCom";
+import { postToServer } from "./utils/serverHttpCom.js";
 import { POPUP_ERROR } from "./components/Popup/Popup";
 import ThemeContext, { DARK_THEME, LIGHT_THEME } from "./contexts/ThemeContext";
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2VydmljZXNpIiwiYSI6ImNsODRtaXpiYjAxMmIzc2xkcjhvdzY4MHYifQ.5IFeaz7cElI08IZLGrxiFA';
+//mapboxgl.accessToken = 'pk.eyJ1Ijoic2VydmljZXNpIiwiYSI6ImNsODRtaXpiYjAxMmIzc2xkcjhvdzY4MHYifQ.5IFeaz7cElI08IZLGrxiFA';
+import * as mapboxgl from 'mapbox-gl';
+
+Object.getOwnPropertyDescriptor(mapboxgl, "accessToken").set('pk.eyJ1Ijoic2VydmljZXNpIiwiYSI6ImNsODRtaXpiYjAxMmIzc2xkcjhvdzY4MHYifQ.5IFeaz7cElI08IZLGrxiFA')
 
 
 
 
 function App() {
 
+  const [display,setDisplay] = useState(true)
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [popupOption, setPopupOption] = useState(null);
@@ -194,25 +201,29 @@ function App() {
                   <ContextMenuContext.Provider value={contextMenuContextValue}>
 
                   {
-                    connected? <>
+                    connected ? (<> 
 
-                          {user?  <>
+                          { user ? (<>
+                            
+                              <Router>
+                                  <Header paths={[
+                                    {name: "Carte des bornes", path: "/supervision/map",Icon: MapIcon, secure: "MAP"},
+                                    {name: "Liste des bornes", path: "/supervision/list",Icon: BorneListIcon, secure: "LIST"},
+                                    {name: "Balisage", path: "/supervision/balise", Icon: PinIcon, secure: "BALISE"},
+                                    {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
+                                    {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
+                                    {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
+                                    {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
+                                    {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
+                                    {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"},
+                                    {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
+                                    {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
+                                    {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
+                                  ]}/>
 
-                          <Router>
-
-                            <Header paths={[
-
-                              {name: "Carte des bornes", path: "/supervision/map",Icon: MapIcon, secure: "MAP"},
-                              {name: "Liste des bornes", path: "/supervision/list",Icon: BorneListIcon, secure: "LIST"},
-                              {name: "Balisage", path: "/supervision/balise", Icon: PinIcon, secure: "BALISE"},
-                              {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
-                              {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
-                              {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
-                              {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
-                              {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
-                              {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"}
-
-                            ]}/>
+                            
+                        
+                            
 
                             <div className="pages-container">
 
@@ -225,14 +236,18 @@ function App() {
                                   <Route path="supervision/map" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                   <Route path="supervision/map/:borne_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                   <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                  <Route path="supervision/map/:borne_id/prises" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                   <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
                                   <Route path="supervision/settings" element={<ProtectedRoute useFor={'SETTINGS'} redirect={'/supervision/'}><Settings /></ProtectedRoute>}/>
-                                  
                                   <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
                                   <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
                                   <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                   <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                   <Route path="supervision/tickets" element={<ProtectedRoute useFor={'TICKET'} redirect={'/supervision/'}><Tickets /></ProtectedRoute>}/> 
+                                  <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
+                                  <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
+                                  <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
+
 
                               </Routes>
 
@@ -240,7 +255,8 @@ function App() {
 
                           </Router>
                         
-                        </> : <Login />}
+                        
+                        </> ): <Login />}
 
 
                         <Toast option={toastOption} setOption={setToastOption} />
@@ -248,7 +264,7 @@ function App() {
                         <ContextMenu option={contextMenuOption} setContextMenuOption={setContextMenuOption} />
 
                         
-                    </>
+                    </>)
                     :
                     <Loader option={{
                       text: "Chargement...",
@@ -259,6 +275,7 @@ function App() {
                         redirection: "/supervision/register-device"
                       }
                     }} />
+                    
                   }
 
                   </ContextMenuContext.Provider>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {distance, closest}from 'fastest-levenshtein'
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import moment from "moment";
 import { SortableTable } from "../../components";
 import './Facturation.style.css'

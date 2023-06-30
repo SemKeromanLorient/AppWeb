@@ -35,10 +35,12 @@
 }
 
 .cancel{
-    position: absolute;
+    position: relative;
     z-index: 5;
     left: 10px;
     top: 10px;
     font-weight: bold;
-    
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
 }

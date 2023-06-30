@@ -44,7 +44,7 @@ function BornePin({borne,  currentlySelected,  index, onClick}){
 
         {borne.enable === 1 && hasError && <div className="blink-led" />}
 
-        <h5>Borne {borne.borne}</h5>
+        <h5>Borne {borne.display}</h5>
 
         {borne.enable === 1 && <ProgressBar error={onForceStop} currentProgress={(borne.capacity - borne.available)} range={[0, borne.capacity]} />}
 

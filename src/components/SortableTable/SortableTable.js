@@ -1,11 +1,11 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SortableTable.style.css";
 import {ReactComponent as OrderIcon} from '../../assets/icons/arrow.svg';
+import { TableContext } from '../../contexts';
 
 
-
-function SortableTable({data, header, filter, emptyMessage}){
+function SortableTable({data, header, filter, emptyMessage, setVal}){
 
     //order -> asc = Du plus petit au plus grand, desc = du plus grand au plus petit.
 
@@ -13,6 +13,16 @@ function SortableTable({data, header, filter, emptyMessage}){
         column: 'start_date',
         order: 'desc'
     });
+    const [row, setRow] = useState("");    
+
+
+    useEffect(() => {
+        let rowString = JSON.stringify(row);
+        localStorage.setItem("row", rowString);
+        
+        setVal(rowString)
+      }, [row]);
+      
 
     function sortFunction(previous, current){
 
@@ -52,6 +62,11 @@ function SortableTable({data, header, filter, emptyMessage}){
 
     }
 
+    function handleRowClick(rowTable){
+        setRow(rowTable.number);
+        //console.log("idBadge : " + idBadge);
+    }   
+
     return <div className="table-container">
 
 
@@ -67,7 +82,7 @@ function SortableTable({data, header, filter, emptyMessage}){
 
             <tbody>
 
-                {data.sort(sortFunction).map((item, index) => <TableRow key={index} data={item} header={header}/>)}
+                {data.sort(sortFunction).map((item, index) => (<TableRow key={index} data={item} header={header} onClick={handleRowClick}/> ))}
 
                 <tr>
 
@@ -75,9 +90,9 @@ function SortableTable({data, header, filter, emptyMessage}){
 
                     if(headerValue.calculateTotal){
 
-                        let totlal = data.reduce((previous, current) => previous + current[headerValue.column], 0)
+                        let total = data.reduce((previous, current) => previous + current[headerValue.column], 0)
 
-                        return <th key={index} className="total-table">total:{"\xa0\xa0\xa0"}{totlal.toFixed(1)} {headerValue.label}</th>
+                        return <th key={index} className="total-table">total:{"\xa0\xa0\xa0"}{total.toFixed(1)} {headerValue.label}</th>
                     }
 
                     return <th key={index}  className="empty-total-table"> </th>
@@ -99,6 +114,8 @@ function SortableTable({data, header, filter, emptyMessage}){
     </div>
 
 }
+
+
 
 function HeaderColumn({data, setSort, sort}){
 
@@ -136,12 +153,11 @@ function HeaderColumn({data, setSort, sort}){
 
 
 
-function TableRow({data, header}){
+function TableRow({data, header, onClick}){
     
-    console.log("Data : " + data + "\n");
-    console.log("Header : " + header + "\n");
+    //console.log("Data : " + JSON.stringify(data));
 
-    return <tr>
+    return <tr onClick={() => onClick(data)}>
 
         {header.map((headerValue, index) => <Cell key={index} row={data} value={data[headerValue.column]} headerValue={headerValue} />)}
 

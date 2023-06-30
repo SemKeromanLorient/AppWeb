@@ -1,0 +1,12 @@
+/* OrdreCriee.css */
+
+.ordre-image {
+    max-width: 90%;
+    max-height: 100vh;
+    display: block;
+    margin: 0 auto;
+  }
+
+h1{
+    color: white;
+}

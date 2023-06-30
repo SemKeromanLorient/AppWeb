@@ -4,6 +4,7 @@ import PopupContext from "./PopupContext";
 import ContextMenuContext from "./ContextMenuContext";
 import NotificationContext from './NotificationContext';
 import ThemeContext from "./ThemeContext";
+import TableContext from "./TableContext.js";
 
 export {
     UserContext,
@@ -12,4 +13,5 @@ export {
     ContextMenuContext,
     NotificationContext,
     ThemeContext,
+    TableContext,
 }

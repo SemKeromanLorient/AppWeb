@@ -1,0 +1,139 @@
+
+  form {
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    width: 90%;
+    height: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .update-policy {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .switch-page{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .save-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  .save-button-criee{
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .delete-button:hover {
+    background-color: #f44336;
+    opacity: 90%;
+  }
+  .file{
+    color: white;
+  }
+  .form-text{
+    padding-top: 20px;
+    width: 100%;
+    height: 100%;
+  }
+  .switch-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .arrow-icon{
+    padding-left: 10px;
+    max-width: 25px;
+    max-height: 25px;
+  }
+  .params-update{
+    width: 100%;
+    height: 100%;
+  }
+  .update-policy{
+    margin: 15px;
+    padding: 12px;
+    border-radius: 6px;
+
+  }
+  .sect-policy{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+  }
+  .sect-policy-2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+  }
+  .sect-navigation{
+    padding-top: 10px;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .button-gauche{
+    margin-top: 5px;
+    margin-left: 4.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left
+  }
+  .button-droite{
+    margin-top: 5px;
+    margin-right: 4.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+  }
+  .file-criee{
+    color: white;
+  }
+  .policy-title{
+    text-align: center;
+  }

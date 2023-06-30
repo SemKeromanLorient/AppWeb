@@ -1,6 +1,6 @@
 import "./Consommation.style.css"
 import React, { useEffect, useState } from "react";
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import { SortableTable } from "../../components";
 import moment from 'moment';
 import { UserContext } from "../../contexts";
@@ -28,6 +28,8 @@ function Consommation({}){
     const [sourceFilter, setSourceFilter] = useState('');
     const [compareValue, setCompareValue] = useState('');
     const [zoneFilter, setZoneFilter] = useState('ALL');
+
+    const [val,setVal] = useState('');
 
     useEffect(() => {
         document.title = 'Supervision | Consommations'
@@ -328,9 +330,10 @@ function Consommation({}){
                     const day = date.getDate().toString().padStart(2, '0');
                     const month = (date.getMonth() + 1).toString().padStart(2, '0');
                     const year = date.getFullYear().toString();
-                    const hour = date.getHours().toString().padStart(2, '0');
+                    const hour = date.getHours().toString().padStart(2, '0') - 2;
                     const minute = date.getMinutes().toString().padStart(2, '0');
                     const second = date.getSeconds().toString().padStart(2, '0');
+                    //Decaler de 2h, pas trouver la raison               
                     return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
                   }
                 const rowData = [
@@ -576,9 +579,8 @@ function Consommation({}){
 
 // onChange={handleBornePriseSearch}
     return <div className="conso-container">
-
         <div className="filter-section">
-
+            
             <div className="search-section">
                 <input value={boatFilter} onChange={({target}) => setBoatFilter(target.value)} className="search-conso-input" placeholder="Bateau" />
                 <input value={borneFilter} onChange={({target}) => setBorneFilter(target.value)} className="search-conso-input" placeholder="Borne" /> 
@@ -654,7 +656,9 @@ function Consommation({}){
             {label: "Activé par", column: 'open_by', type: 'string', processValue: (value) => value? value : 'Système'},
             {label: "Etat facturation", column: 'facture', type: 'number', processValue: (value) => value === 1? 'Facturé' : 'En attente...'}
 
-            ]} />
+            ]} 
+            setVal={setVal}
+            />
 
     </div>
 }

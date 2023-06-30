@@ -1,5 +1,5 @@
 import React,{ useContext, useEffect, useState } from "react";
-import { postToServer } from "../../utils/serverHttpCom";
+import { postToServer } from "../../utils/serverHttpCom.js";
 import "./UserManager.style.css"
 import {ReactComponent as MoreIcon} from '../../assets/icons/more-vert.svg';
 import {ReactComponent as AddUserIcon} from '../../assets/icons/add-person.svg';
@@ -14,8 +14,9 @@ function UserManager(){
     const [currentUser, setCurrentUser] = useState(null);
     const [isFormOpen, setFormOpen] = useState(false);
     const [searchFilter, setSearchFilter] = useState("");
- 
 
+    //Empeche les bugs avec sortable table
+    const [val,setVal] = useState("");   
 
     useEffect(() => {
 
@@ -70,7 +71,9 @@ function UserManager(){
                 {label: 'Nom affiché', column: 'name'},
                 {label: 'Type d\'utilisateur', column: 'access_level'}
 
-            ]} />
+            ]} 
+            setVal={setVal}
+            />
 
         <UserForm userList={userList} onValid={fetchUserList} user={currentUser} isOpen={isFormOpen} setUser={setCurrentUser} setFormOpen={setFormOpen} />
 
@@ -83,7 +86,7 @@ function UserManager(){
 
 function UserControlHeader({filter, setFilter, setFormOpen, setCurrentUser}){
 
-
+    
     function handleOnNewPress(){
 
         setCurrentUser(null);
@@ -120,6 +123,9 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
     const [accessLevel, setAccessLevel] = useState("");
     const [userTypes, setUserTypes] = useState([])
     const {setPopupOption} = useContext(PopupContext);
+
+    //Empeche les bugs avec sortable table
+    const [val,setVal] = useState("");  
 
     function handleUpdateUser(e){
         e.preventDefault();
@@ -349,7 +355,9 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                         <SortableTable emptyMessage={"Aucun code"} data={codes} header={[
                             {label: "Utiliter", column: "usage"},
                             {label: "Valeur", column: "value"}
-                        ]} />
+                        ]} 
+                        setVal={setVal}
+                        />
                         <div className="row-input">
                             <input onChange={({target}) => setUsage(target.value)} value={usage} placeholder="Utilité..." />
                             <input onChange={({target}) => setValue(target.value)} value={value} placeholder="Valeur..." />
@@ -363,7 +371,8 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                         <h3>Groupe(s) *</h3>
                         <SortableTable emptyMessage={"Aucun groupe"} data={groups} header={[
                             {label: "Nom de groupe", column: "name"},
-                        ]} />
+                        ]} 
+                        setVal={setVal}/>
                         <div className="row-input">
                             <select required defaultValue={accessLevel} onChange={({nativeEvent}) => setAccessLevel(nativeEvent.target.value)} className="select-type">
                                 <option selected={!user} disabled>Ajouter un groupe</option>
