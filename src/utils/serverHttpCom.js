@@ -13,7 +13,6 @@ function postToServer(uri, data, onSuccess, onError){
 }
 
 function getToServer(uri, data, onSuccess, onError){
-    console.log("TEST")
     let token = getConnectedUser('token');
 
     if(token)data.token = token;

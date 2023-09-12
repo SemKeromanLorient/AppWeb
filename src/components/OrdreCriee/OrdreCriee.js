@@ -1,17 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import "./OrdreCriee.css"; 
+import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
 
 function OrdreCriee(){
     
-    if (!localStorage.getItem('image2')){
+    const [image, setImage] = useState(null)
+
+    useEffect(() => {
+        fetchCriee()
+    },[])
+
+    useEffect( () => {
+        console.log("Image : " + image);
+    },[image])
+
+    function fetchCriee() {
+        getToServer('/criee/lastCriee', {}, ({data}) => {
+            console.log(data[0])
+            setImage(data[0].image)
+        })
+    }
+
+
+    
+    if (!image){
         return <h1> Ordre de vente criée indisponible </h1>
     }
-    
-    const imageDataUrl = localStorage.getItem('image2');
 
     return (
         <div>
-            <img src={imageDataUrl} alt="Ordre de criée" className="ordre-image" />
+            <img src={image} alt="Ordre de criée" className="ordre-image" />
         </div>
     )
 }

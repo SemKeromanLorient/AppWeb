@@ -70,24 +70,24 @@ function App() {
   const connectedLock = useRef(false);
  
   function connect(){
-
+    //On récupere le userConnecté (Set depuis la page login.js)
     let userStorage = getConnectedUser();
 
-    if(getConnectedUser('token')){
 
+    if(getConnectedUser('token')){
+      //console.log("getConnectedUser (token): " + JSON.stringify(getConnectedUser('token')))
       if(!connectedLock.current){
         connectedLock.current = true;
 
         console.log('Send need-update')
-
+        //Update du profile connecté
         postToServer('/need-upgrade',{}, (({data}) => {
 
-          console.log(data)
-
+          //Vérification de la validité du user
           if(data.valid){
 
             console.log(data)
-
+            //On setup le user dans le localstorage
             setConnectedUser(data.user)
 
             connectToServer(getConnectedUser('token'), (connected) => {

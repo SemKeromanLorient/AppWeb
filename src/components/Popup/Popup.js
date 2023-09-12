@@ -1,5 +1,5 @@
 import "./Popup.style.css";
-import React from 'react';
+import React, { useEffect } from 'react';
 import {ReactComponent as QuestionIcon} from '../../assets/icons/question.svg';
 import {ReactComponent as ErrorIcon} from '../../assets/icons/error.svg';
 import {ReactComponent as ValidIcon} from '../../assets/icons/correct.svg';
@@ -12,6 +12,10 @@ const POPUP_QUESTION = 3;
 
 
 function Popup({option, setOption}){
+
+    //useEffect( () => {
+      //  console.log("Options : " + JSON.stringify(option))
+    //},[option])
 
     function handleOnAccept(){
         if(option.onAccept){
@@ -41,13 +45,14 @@ function Popup({option, setOption}){
                 </> : <>
 
                     {option.lottie && <>
+
                         <Lottie className="popup-animation" animationData={option.lottie} />
+
                     </>}
 
 
                     {option.type === POPUP_VALID && <>
-                    
-                    
+            
                     
                         <ValidIcon className="popup-icon valid" />
 

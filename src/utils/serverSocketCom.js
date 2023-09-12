@@ -22,7 +22,9 @@ function reconnectSavedFlag(){
 
 function connectToServer(token, callback){
 
+    //Avec ce if on créer une connexion unique 
     if(!socket || !socket.connected ){
+    //if(!socket || !socket.connected ){
         socket = io("https://service.keroman.fr/", {
             query:  {
                 token,
@@ -30,7 +32,8 @@ function connectToServer(token, callback){
             }
         });
 
-      
+        //console.log("TEST CONNECTOSERVER")
+        //console.log("socket : " + JSON.stringify(socket))
 
         socket.on('ping', () => {
             socket.emit('ping', {alive: true})
@@ -50,12 +53,14 @@ function connectToServer(token, callback){
         })
     
         socket.on('disconnect', (error) => {
+            //On arrive ici pour le problème de l'onglet maitre de port
             console.log(error)
             callback(false)
             if(listenerState)listenerState(false)
         })
     
         socket.on('reconnect', (error) => {
+            //console.log("TEST RECONNECT")
             callback(true)
             if(listenerState)listenerState(true)
         })
