@@ -44,27 +44,18 @@ function Info() {
             SetFontSize2((data[0]).sectInf)
         })
     }
-
-    /*
-    if (!localStorage.getItem('information1') && !localStorage.getItem('information2') && !localStorage.getItem('information3') && !localStorage.getItem('information4')) {
-        return <div style={{color:"white"}}> Aucune information indiquée par les maîtres du port</div>;
-    }*/
+      
 
     useEffect(() => {
         fetchInfo()
         fetchFont()
-        if (localStorage.getItem('text-size')) {
-          SetFontSize(localStorage.getItem('text-size'));
-        } else if (localStorage.getItem('text-size-2')){
-            SetFontSize2(localStorage.getItem('text-size-2'))
-        }
       
         if (fontSize >= 19) {
           SetMarginTitle('30px');
         } else {
           SetMarginTitle('20px'); // Remettre la valeur de marginTitle à une chaîne vide si la condition n'est pas satisfaite
         }
-      }, [fontSize]); // Observer les changements de fontSize
+      }, []); // Observer les changements de fontSize
       
 
       if (!info1 && !info2 && !info3 && !info4 && !img1){

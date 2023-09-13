@@ -27,8 +27,9 @@ function Widget(data) {
       <iframe
         ref={iframeRef}
         src="about:blank"
-        width="680"
-        height="890"
+        width="700"
+        height="916"
+        frameBorder={0}
         title="Widget IFrame"
       ></iframe>
     </div>

@@ -19,7 +19,7 @@ function reconnectSavedFlag(){
 }
 
 
-
+//Probleme lors de l'utilisation de ceux-ci, réseau cassé (ne fonctionne que si on a été déco du réseau)
 function connectToServer(token, callback){
 
     //Avec ce if on créer une connexion unique 

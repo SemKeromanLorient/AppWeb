@@ -44,14 +44,14 @@ const PageSwitcher = () => {
     })
     const interval = setInterval(() => {
       setCurrentPage(currentPage => {
-        if (currentPage === 4){
+        if (currentPage === 3){
           return 1;
         } else{
           return currentPage + 1;
         }
       });
       console.log("CurrentPage : " + currentPage)
-    }, 900000);
+    }, 15000);
 
     return () => {
       clearInterval(interval);

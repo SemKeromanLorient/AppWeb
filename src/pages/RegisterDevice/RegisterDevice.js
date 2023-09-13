@@ -1,6 +1,7 @@
-import "./RegisterDevice.style.css";
+/*import "./RegisterDevice.style.css";
 import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { QrReader } from 'react-qr-reader'; //npm i react-qr-reader
+
 
 function RegisterDevice(){
 
@@ -38,4 +39,4 @@ function RegisterDevice(){
 
 }
 
-export default RegisterDevice;
+export default RegisterDevice;*/

@@ -3,7 +3,7 @@ import './WriteInfo.css';
 import { ReactComponent as ArrowNav } from "../../assets/icons/retour-fleche.svg";
 import { validate } from 'schema-utils';
 import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
-
+//import ImageCompressor from 'image-compressor';
 
 const WriteInfo = () => {
       
@@ -39,16 +39,18 @@ const WriteInfo = () => {
   useEffect( () => {
     updateFontSize(textSizeSectInf,2)
   },[textSizeSectInf])
-  
+
+
   const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = e.target.value;
     setInputValues(newInputValues);
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     setImageFile(file);
+    
   };
 
   const handleImageChangeOrdreCriee = (e) => {
@@ -81,8 +83,6 @@ const WriteInfo = () => {
     } else{
       addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],img1);
     }
-
-
   };
 
   //C'est ici qu'a lieu la demande de reconnexion (lorsqu'on fait le postToServer)
@@ -171,9 +171,7 @@ const WriteInfo = () => {
   function Affichage6() {
     setTextSizeSectInf(30);
   }
-  function test() {
-    console.log("WOAW")
-  }
+
   return (
     <>
       {!writingPage && (

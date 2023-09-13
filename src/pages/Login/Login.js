@@ -29,20 +29,22 @@ function Login(){
             password
         }, ({data}) => {
 
-
             if(data.valid){
+                //Problème ici, data valid mais impossible de faire connectToServer
                 connectToServer(data.user.token, (connected) => {
-
+                    console.log("TEST CONNECTOSERVER")
                     setConnectedUser(data.user)
     
                     if(connected){
                         setUser(data.user)
                     }else{
                         setUser(null);
+                        
                     }
-    
+                    console.log("TEST")
     
                 })
+                console.log("TEST FIN IF")
             }
 
         }, () => {
