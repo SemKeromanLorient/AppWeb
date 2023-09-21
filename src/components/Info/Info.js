@@ -47,6 +47,8 @@ function Info() {
       
 
     useEffect(() => {
+        console.log("TEST DoubleUseEffect")
+
         fetchInfo()
         fetchFont()
       

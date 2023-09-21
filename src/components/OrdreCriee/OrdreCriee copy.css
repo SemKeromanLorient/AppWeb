@@ -1,3 +1,4 @@
+/* BACK UP */
 /* OrdreCriee.css */
 
 .ordre-image {
@@ -18,7 +19,7 @@
 
 /* Style pour le titre */
 .titleTable {
-  font-size: 300%;
+  font-size: 40px;
   font-weight: bold;
   margin-bottom: 3%; /* Ajoute une marge en bas du titre */
   color: white
@@ -33,26 +34,22 @@
 }
 
 td{
-  /*font-size: 140%;*/
+  font-size: 100%;
   color: whitesmoke;
 }
 
 th{
-  font-size: 160%;
+  font-size: 24px;
   color:green;
   padding-bottom: 15px;
 }
 
 .totalTxt{
-  font-size: 180%;
-  color: whitesmoke;
-  text-align: center ;
-  vertical-align: middle;
-  margin-bottom: 2%;
+  font-size: 150%;
 }
 
 .totalTxt2{
-  font-size: 180%;
+  font-size: 130%;
   width: 24%;
 }
 
@@ -65,7 +62,6 @@ th{
 .tablesGauche {
   width: 50%; /* Réglez la largeur comme vous le souhaitez */
   flex: 1;
-  margin-bottom: 3%;
 }
 
 .tablesDroite {
@@ -73,55 +69,36 @@ th{
   flex: 1; /* Permet de prendre automatiquement toutes la hauteur du containeur disponible*/
   max-height: 70vh; /* Ajustez la hauteur maximale selon vos besoins */
   overflow-y: auto; /* Ajoutez le débordement automatique si nécessaire */
-  margin-bottom: 3%;
 }
 
-.resumeGauche {
-  border-top: 2px solid #000;
-  border-right: 2px solid #000;
-  width: 50%;
+.delimiter {
+  margin-top: 1%; /* Espace en haut */
+  margin-bottom: 1%; /* Espace en bas */
+  border: none; /* Pour supprimer la ligne horizontale par défaut */
+  border-top: 1px solid #000; /* Ajoutez une ligne horizontale personnalisée */
 }
-
-.resumeDroite {
-  border-top: 2px solid #000;
-  width: 50%;
-}
-
 .titleCotiere{
- font-size: 280%; 
- color: green;
- margin-bottom: 4%;
+ font-size: 45px; 
 }
 .adjustementTable{
   margin-bottom: 40px;
 }
 
 .especeTotal{
-  font-size: 140%;
-  width: 20%;
+  font-size: 22px;
 }
 
 .totalEspece{
-  font-size: 140%;
+  font-size: 22px;
 }
 
 .tableTirage{
   width: 100%;
-  border-right: 2px solid #000;
 }
 
 .tableTirage2{
   width:100%;
-  display:ruby;
-  margin-bottom: 15%;
-}
-
-.tableTirage3{
-  width: 100%;
-}
-
-.tableTirage4{
-  width: 100%;
+  display:ruby
 }
 
 .containeurBas{
@@ -137,18 +114,4 @@ th{
 
 .ligneAffichageCot2{
 
-}
-.testDivCot{
-  display: flex;
-}
-
-.testTHEAD{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.infPart1Cot{
-  border-top: 2px solid #000;
-  margin-top: 2%;
 }

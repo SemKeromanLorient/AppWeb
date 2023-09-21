@@ -44,14 +44,14 @@ const PageSwitcher = () => {
     })
     const interval = setInterval(() => {
       setCurrentPage(currentPage => {
-        if (currentPage === 3){
+        if (currentPage === 4){
           return 1;
         } else{
           return currentPage + 1;
         }
       });
       console.log("CurrentPage : " + currentPage)
-    }, 15000);
+    }, 9000000);
 
     return () => {
       clearInterval(interval);
@@ -61,8 +61,8 @@ const PageSwitcher = () => {
   return ( <>
       {currentPage === 2 && <Maree/>   }
       {currentPage === 3 && <Meteo data={dataMeteo} dataMarine={dataMeteoMarine} dataWind={dataWind} />}
-      {currentPage === 1 && <Info/>}
-      {currentPage === 4 && <OrdreCriee/>}
+      {currentPage === 4 && <Info/>}
+      {currentPage === 1 && <OrdreCriee/>}
       </>);
 };
 

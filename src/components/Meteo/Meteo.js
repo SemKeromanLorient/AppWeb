@@ -7,6 +7,10 @@ import { ReactComponent as ArrowIcon } from "../../assets/icons/fleche.svg";
 
 function Meteo({data,dataMarine,dataWind}){
 
+    useEffect( () => {
+        console.log("TEST DoubleUseEffect")
+    },[])
+
     if (!data || !dataMarine || !dataWind) {
         // Gérez le cas où les données météo ne sont pas encore disponibles
         return <div>Chargement des données météo...</div>;

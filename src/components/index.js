@@ -15,7 +15,6 @@ import Info from "./Info/Info.js";
 import Ventes from "./Ventes/Ventes.js";
 import Maree from "./Maree/Maree.js";
 import OrdreCriee from "./OrdreCriee/OrdreCriee.js";
-
 export {
     Header,
     Popup,

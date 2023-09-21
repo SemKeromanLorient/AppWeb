@@ -22,6 +22,8 @@ function UserManager(){
 
         fetchUserList();
 
+        console.log("TEST DoubleUseEffect")
+
     }, [])
 
     function fetchUserList(){

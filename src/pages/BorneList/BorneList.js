@@ -81,6 +81,7 @@ function BorneList(){
 
 
     useEffect(() => {
+        console.log("TEST DoubleUseEffect")
 
         fetchBornes()
 

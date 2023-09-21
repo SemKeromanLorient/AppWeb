@@ -18,6 +18,9 @@ function BorneMap(){
 
     useEffect(() => {
 
+        console.log("TEST DoubleUseEffect")
+
+
         socketFlag('bornes', (bornes) => {
             //Le filter !!borne permet de vérifier que borne n'est pas null, undefined, égale à 0 ou vide
             setBornes(bornes.filter((borne) => !!borne))
