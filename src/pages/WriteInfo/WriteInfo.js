@@ -40,7 +40,12 @@ const WriteInfo = () => {
     updateFontSize(textSizeSectInf,2)
   },[textSizeSectInf])
 
-
+  useEffect( () => {
+    if(imageFile){
+      console.log("Image file : "+ imageFile.name)
+    }
+  },[imageFile])
+  
   const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = e.target.value;
@@ -69,20 +74,38 @@ const WriteInfo = () => {
     addInfoCriee(null)
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     //Permet d'afficher la popup de demande de reconnexion
     e.preventDefault();
 
-    if (imageFile) {
+    if (imageFile) {  
+      const formData = new FormData();
+      formData.append('file', imageFile);
+
+      try {
+        const response = await fetch('http://localhost:3001/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log('Fichier téléchargé avec succès !');
+        } else {
+          console.error('Erreur lors du téléchargement du fichier.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la requête : ', error);
+      }
+      /*
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageDataUrl = event.target.result;
         addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],imageDataUrl);
       };
-      reader.readAsDataURL(imageFile); // Permet de stocker l'image comme un url
-    } else{
+      reader.readAsDataURL(imageFile); // Permet de stocker l'image comme un url*/
+    } /*else{
       addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],img1);
-    }
+    }*/
   };
 
   //C'est ici qu'a lieu la demande de reconnexion (lorsqu'on fait le postToServer)
