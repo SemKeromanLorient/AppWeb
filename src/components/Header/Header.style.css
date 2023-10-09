@@ -472,6 +472,8 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: #2f3532;
+    background-color: var(--background-color
+    );
+    opacity: 50px;
     height: 50px; /* Modifier la hauteur selon vos besoins */
 }

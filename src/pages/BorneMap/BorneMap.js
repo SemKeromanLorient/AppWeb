@@ -62,6 +62,7 @@ function BorneMap(){
     useEffect(() => {
 
         console.log("sect:",currentlySelected)
+        console.log("TEST CURRENTLYSELECTED BORNEMAP")
         //console.log("bornes : " + JSON.stringify(bornes))
 
     }, [currentlySelected])

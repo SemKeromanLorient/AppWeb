@@ -36,7 +36,7 @@ const downloadAndProcessExcel = async () => {
 };
 
 // Planifier l'exécution tout les jours à 21 heures
-cron.schedule('0 */21 * * *', () => {
+cron.schedule('10 */9 * * *', () => {
   console.log('Exécution toutes les 21 heures');
   downloadAndProcessExcel();
 });

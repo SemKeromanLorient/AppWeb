@@ -8,7 +8,7 @@ const port = 3001;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'images/');
+    cb(null, './src/images/');
   },
   filename: function (req, file, cb) {
     cb(null, "imageCriee.jpg");

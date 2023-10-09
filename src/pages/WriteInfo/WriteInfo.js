@@ -1,51 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useRef  } from 'react';
 import './WriteInfo.css';
 import { ReactComponent as ArrowNav } from "../../assets/icons/retour-fleche.svg";
+import { ReactComponent as AddNew } from "../../assets/icons/add-new.svg";
+import { ReactComponent as Remove } from "../../assets/icons/remove.svg";
 import { validate } from 'schema-utils';
 import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
-//import ImageCompressor from 'image-compressor';
 
 const WriteInfo = () => {
-      
+
+  const [button1State, setButton1State] = useState(true);
+  const [button2State, setButton2State] = useState(true);
+  const [button3State, setButton3State] = useState(true);
+  const [button4State, setButton4State] = useState(true);
+
+  const [policySize1, setPolicySize1] = useState('');
+  const [policySize2, setPolicySize2] = useState('');
+  const [policySize3, setPolicySize3] = useState('');
+  const [policySize4, setPolicySize4] = useState('');
+
+  const [currentPolicySize1, setCurrentPolicySize1] = useState(0);
+  const [currentPolicySize2, setCurrentPolicySize2] = useState(0);
+  const [currentPolicySize3, setCurrentPolicySize3] = useState(0);
+  const [currentPolicySize4, setCurrentPolicySize4] = useState(0);
+
   const [info1, setInfo1] = useState(null)
   const [info2, setInfo2] = useState(null)
   const [info3, setInfo3] = useState(null)
   const [info4, setInfo4] = useState(null)
 
-  const [img1, setImg1] = useState(null)
+  const [delaiPage, setDelaiPage] = useState('');
+  const [currentDelaiPage, setCurrentDelaiPage] = useState(10);
 
-  const [textSize, setTextSize] = useState(14);
-  const [textSizeSectInf, setTextSizeSectInf] = useState(18);
-  const [writingPage, setWritingPage] = useState(false);
   const [inputValues, setInputValues] = useState(['', '', '', '']);
   const [imageFile, setImageFile] = useState(null);
-  const [imageFileOrdreCriee, setImageFileOrdreCriee] = useState(null);
+
+  //Booléens pour se déplacer entre les sous-pages
+  const [writingPage, setWritingPage] = useState(false);
+  const [moreOptions, setMoreOptions] = useState(false);
+
 
   useEffect(() => {
     //Récupérer l'image de la derniere modif pour la stocké
     fetchInfo();
+    fetchStateButton();
+    fetchFontSize();
   }, []);
+
+  useEffect( () => {
+    console.log("WRITING PAGE : " + writingPage)
+  },[writingPage])
+
+  useEffect( () => {
+    console.log("MORE OPTIONS : " + moreOptions)
+  },[moreOptions])
 
   useEffect( () =>{
     setInputValues([info1,info2,info3,info4])
 
   },[info1, info2, info3, info4])
 
-  useEffect(() => {
-    updateFontSize(textSize,1)
-
-  }, [textSize]);
-
-  useEffect( () => {
-    updateFontSize(textSizeSectInf,2)
-  },[textSizeSectInf])
-
   useEffect( () => {
     if(imageFile){
       console.log("Image file : "+ imageFile.name)
     }
   },[imageFile])
-  
+
   const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = e.target.value;
@@ -58,32 +77,24 @@ const WriteInfo = () => {
     
   };
 
-  const handleImageChangeOrdreCriee = (e) => {
-    const file = e.target.files[0];
-    setImageFileOrdreCriee(file);
-
-  };
 
   const handleDeleteImage = () => {
     setImageFile(null);
-    addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],null);
-  };
-
-  const handleDeleteImageCriee = () => {
-    setImageFileOrdreCriee(null);
-    addInfoCriee(null)
+    //Voir pour supprimer l'image (il faut passer par le backend server)
   };
 
   const handleSubmit = async (e) => {
     //Permet d'afficher la popup de demande de reconnexion
     e.preventDefault();
 
+    addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3]);
+
     if (imageFile) {  
       const formData = new FormData();
       formData.append('file', imageFile);
 
       try {
-        const response = await fetch('http://localhost:3001/upload', {
+        const response = await fetch('https://service.keroman.fr/api/upload', {
           method: 'POST',
           body: formData,
         });
@@ -96,62 +107,77 @@ const WriteInfo = () => {
       } catch (error) {
         console.error('Erreur lors de la requête : ', error);
       }
-      /*
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageDataUrl = event.target.result;
-        addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],imageDataUrl);
-      };
-      reader.readAsDataURL(imageFile); // Permet de stocker l'image comme un url*/
-    } /*else{
-      addInfoMDP(inputValues[0],inputValues[1],inputValues[2],inputValues[3],img1);
-    }*/
+    } 
+
   };
 
+  function savePolicySize(number){
+    switch(number){
+      case 1:
+        updateFontSize2(policySize1,"1");
+        break;
+      case 2:
+        updateFontSize2(policySize2,"2");
+        break;
+      case 3:
+        updateFontSize2(policySize3,"3");
+        break;
+      case 4:
+        updateFontSize2(policySize4,"4"); 
+        break;
+      //Délai entre les pages
+      case 5: 
+        updateDelaiPage(delaiPage)
+    }
+  }
+
+  function toggleButtonState (buttonNumber) {
+    switch (buttonNumber) { 
+      case 1:
+        setButton1State(!button1State);
+        updateAffichage("1")
+        break;
+      case 2:
+        setButton2State(!button2State);
+        updateAffichage("2")
+        break;
+      case 3:
+        setButton3State(!button3State);
+        updateAffichage("3")
+        break;
+      case 4:
+        setButton4State(!button4State);
+        updateAffichage("4")
+        break;
+      default:
+        break;
+    }
+  };
+
+  function updateDelaiPage(delai){
+    postToServer('/switchPage/updateDelai',{delai},({data}) => {
+      console.log("Success, updateDelaiPage : " + JSON.stringify(data))
+    })
+  }
+
+  function updateAffichage(index){
+    postToServer('/switchPage/updateAffichage', {index}, ({data}) => {
+      console.log("Success, updateAffichage : " + JSON.stringify(data))
+    })
+  }
+
+  function updateFontSize2(size,index){
+    postToServer('/font2/update', {size,index}, ({data}) => {
+      console.log("Success, update : " + JSON.stringify(data));
+    })
+  }
+
   //C'est ici qu'a lieu la demande de reconnexion (lorsqu'on fait le postToServer)
-  function addInfoMDP(INFO1, INFO2, INFO3, INFO4, Img1, Img2){
+  function addInfoMDP(INFO1, INFO2, INFO3, INFO4){
     
-      postToServer('/infos/add', {INFO1, INFO2, INFO3, INFO4, Img1, Img2}, ({data}) => {
+      postToServer('/infos/add', {INFO1, INFO2, INFO3, INFO4}, ({data}) => {
         console.log("Success, add : " + data);
     })
-  }
-
-  /**
-   * Inscrit dans la bdd l'information de la taille d'écriture
-   * @param {*} Size Taille d'écriture a inscrire
-   * @param {*} ind Emplacement pour la taille d'écriture (partie supérieur ou inférieur)
-   */
-  function updateFontSize(Size,ind){
-    if (ind === 1){
-      let Size1 = Size;
-      let Size2 = textSizeSectInf
-      postToServer('/font/add', {Size1, Size2}, ({data}) => {
-        console.log("Success, add : " + data)
-      })
-    } else if (ind == 2){
-      let Size1 = textSize;
-      let Size2 = Size;
-      postToServer('/font/add', {Size1 , Size2}, ({data}) => {
-        console.log("Success, add : " + data)
-      })
-    }
-  }
-
-  function addInfoCriee(image){
-    postToServer('/criee/add', {image}, ({data}) => {
-      console.log("Succes, add : " + data)
-    })
-  }
-
-  function validateImageCriee(){
-    if (imageFileOrdreCriee) {
-      const reader2 = new FileReader();
-      reader2.onload = (event) => {
-        const imageDataUrl = event.target.result;
-        addInfoCriee(imageDataUrl);
-      };
-      reader2.readAsDataURL(imageFileOrdreCriee);
-    }
   }
 
   function fetchInfo(){
@@ -162,42 +188,75 @@ const WriteInfo = () => {
         setInfo3(data[0].Info3.replace(/\n/g, '<br>'));
         setInfo4(data[0].Info4.replace(/\n/g, '<br>'));
 
-        setImg1(data[0].Image1);
+    })
+  }
 
+  function fetchStateButton(){
+    getToServer('/switchPage/',{}, ({data}) => {
+      const state1 = (data[0].Page_Info === 1) ? true : false;
+      setButton1State(state1);
+      const state2 = (data[0].Page_Maree === 1) ? true : false;
+      setButton2State(state2);
+      const state3 = (data[0].Page_MeteoCotiere === 1) ? true : false;
+      setButton3State(state3);
+      const state4 = (data[0].Page_TirageCriee === 1) ? true : false;
+      setButton4State(state4);
+      
+      setCurrentDelaiPage(data[0].delai);
+    })
+  }
+
+  function fetchFontSize(){
+    getToServer('/font2/', {} , ({data}) => {
+      setCurrentPolicySize1(data[0].Size1);
+      setCurrentPolicySize2(data[0].Size2);
+      setCurrentPolicySize3(data[0].Size3);
+      setCurrentPolicySize4(data[0].Size4);
 
     })
-}
+  }
+
   function switchPage() {
     setWritingPage(!writingPage);
   }
 
   function Affichage1() {
-    setTextSize(14);
+    updateFontSize2(14,"1");
+    updateFontSize2(14,"2");
+    updateFontSize2(14,"3");
   }
 
   function Affichage2() {
-    setTextSize(18);
+    updateFontSize2(18,"1");
+    updateFontSize2(18,"2");
+    updateFontSize2(18,"3");
   }
 
   function Affichage3() {
-    setTextSize(24);
+    updateFontSize2(24,"1");
+    updateFontSize2(24,"2");
+    updateFontSize2(24,"3");
   }
   
   function Affichage4() {
-    setTextSizeSectInf(18);
+    updateFontSize2(18,"4");
   }
 
   function Affichage5() {
-    setTextSizeSectInf(24);
+    updateFontSize2(24,"4");
   }
 
   function Affichage6() {
-    setTextSizeSectInf(30);
+    updateFontSize2(30,"4");
+  }
+
+  function moreOptionsMenu(){
+    setMoreOptions(!moreOptions)
   }
 
   return (
     <>
-      {!writingPage && (
+      {(!writingPage && !moreOptions) && (
         <div className='form-text'>
           <div className='sect-navigation'>
             <button className='switch-page' onClick={switchPage}>
@@ -222,28 +281,26 @@ const WriteInfo = () => {
                   Supprimer l'image
                 </button>
               </div>
-              <div className='button-droite'>
-                <input className='file-criee' type="file" onChange={handleImageChangeOrdreCriee} />
-                <button type='button' onClick={validateImageCriee} className="save-button-criee">
-                  Enregistrer - Ordre criée
-                </button>
-                <button type='button' className='delete-button' onClick={handleDeleteImageCriee} style={{marginLeft:'10px'}}>
-                  Supprimer l'image
-                </button>
-              </div>
             </div>
           </form>
         </div>
       )}
 
-      {writingPage && (
+      {(writingPage && !moreOptions) && (
         <div className='params-update'>
           <div className='sect-navigation'>
-            <button className='switch-page' onClick={switchPage}>
-              Informations <ArrowNav className='arrow-icon' />
-            </button>
+            <div className='MedColum-col1'></div>
+            <div className='MedColum-col2'>
+              <button className='switch-page' onClick={switchPage}>
+                Informations <ArrowNav className='arrow-icon' />
+              </button>
+              </div>
+            <div className='MedColum-col3'>
+              <AddNew className="addMenu" onClick={moreOptionsMenu}></AddNew>
+            </div>
           </div>
-          <br/><br/><br/>
+
+          <br/><br/>
           <h1 className='policy-title'>Section supérieur :  </h1>
           <div className='sect-policy'>
             <button className='update-policy' onClick={Affichage1}>
@@ -271,6 +328,136 @@ const WriteInfo = () => {
           </div>
         </div>
       )}
+
+      {
+        (writingPage && moreOptions) && (
+          <div className='params-update'>
+            <div className='sect-navigation-rem'>
+              <div className='MedColum-col1'></div>
+              <div className='MedColum-col2'> </div>
+              <div className='MedColum-col3'>
+                <Remove className="remMenu" onClick={moreOptionsMenu}></Remove>
+              </div>
+            </div>
+            <div className='mainSect'>
+              <div className='upSect'>
+                <div className='High-col1'>
+
+                  <div className="MedRow-row1"><h1 className='policy-title'> Police/Size </h1></div>
+
+                  <div className="MedRow-row2">
+                    <h2 className='policy-subTitle'> Première partie</h2>
+                    <input type="number" className='input-policy' id="nombre" name="nombre" min="1"  
+                    style={{
+                        WebkitAppearance: "none", /* Pour les navigateurs Webkit (Chrome, Safari) */
+                        MozAppearance: "textfield" /* Pour Firefox */
+                    }}
+                    placeholder={currentPolicySize1}
+                    onChange={(e) => setPolicySize1(e.target.value)}
+                    />
+                    <button className='update-policy2' onClick={() => savePolicySize(1)}> Valider</button>
+                  </div>
+
+                  <div className="MedRow-row3">
+                    <h2 className='policy-subTitle'> Deuxième partie</h2>
+                    <input type="number" className='input-policy' id="nombre" name="nombre" min="1"  
+                    style={{
+                        WebkitAppearance: "none", /* Pour les navigateurs Webkit (Chrome, Safari) */
+                        MozAppearance: "textfield" /* Pour Firefox */
+                    }}
+                    placeholder={currentPolicySize2}
+                    onChange={(e) => setPolicySize2(e.target.value)}
+                    /> 
+                    <button className='update-policy2' onClick={() => savePolicySize(2)}> Valider</button>
+                  </div>
+
+                  <div className="MedRow-row4">
+                    <h2 className='policy-subTitle'> Troisième partie</h2>
+                    <input type="number" className='input-policy' id="nombre" name="nombre" min="1"  
+                    style={{
+                        WebkitAppearance: "none", /* Pour les navigateurs Webkit (Chrome, Safari) */
+                        MozAppearance: "textfield" /* Pour Firefox */
+                    }}
+                    placeholder={currentPolicySize3}
+                    onChange={(e) => setPolicySize3(e.target.value)}
+                    /> 
+                    <button className='update-policy2' onClick={() => savePolicySize(3)}> Valider</button>
+                  </div>
+
+                  <div className="MedRow-row5">
+                    <h2 className='policy-subTitle'> Quatrième partie</h2>
+                    <input type="number" className='input-policy' id="nombre" name="nombre" min="1"  
+                    style={{
+                        WebkitAppearance: "none", /* Pour les navigateurs Webkit (Chrome, Safari) */
+                        MozAppearance: "textfield" /* Pour Firefox */
+                    }}
+                    placeholder={currentPolicySize4}
+                    onChange={(e) => setPolicySize4(e.target.value)}
+                    /> 
+                    <button className='update-policy2' onClick={() => savePolicySize(4)}> Valider</button>
+                  </div>
+
+
+
+                </div>
+                <div className='High-col2'>
+                <div className="MedRow-row1"><h1 className='policy-title'> ON/OFF </h1></div>
+                <div className="MedRow-row2">
+                  <button 
+                    className={`on-off-button ${button1State ? 'on' : 'off'}`}
+                    onClick={() => toggleButtonState(1)}
+                  > 
+                  INFOS PORT DE PECHE </button>
+                </div>
+                <div className="MedRow-row3">
+                <button 
+                    className={`on-off-button ${button2State ? 'on' : 'off'}`}
+                    onClick={() => toggleButtonState(2)}
+                  > 
+                  MARÉE SHOM </button>
+
+                </div>
+                <div className="MedRow-row4">
+                <button 
+                    className={`on-off-button ${button3State ? 'on' : 'off'}`}
+                    onClick={() => toggleButtonState(3)}
+                  > 
+                  MÉTÉO MARINE COTIÈRE </button>
+
+                </div>
+                <div className="MedRow-row5">
+                <button 
+                    className={`on-off-button ${button4State ? 'on' : 'off'}`}
+                    onClick={() => toggleButtonState(4)}
+                  > 
+                  TIRAGE DU JOUR </button>
+
+                </div>
+                </div>
+              </div>
+              <div className='infSect'>
+                <div className='delai-div'>
+                  <h1 className='policy-title-delai'> Délai page : </h1>
+                  <input className='input-delai' type="number" id="nombre" name="nombre" min="1"  
+                  style={{
+                    WebkitAppearance: "none", /* Pour les navigateurs Webkit (Chrome, Safari) */
+                    MozAppearance: "textfield" /* Pour Firefox */
+                  }}
+                  onChange={(e) => setDelaiPage(e.target.value)}
+                  placeholder={currentDelaiPage}
+                  />
+                </div>
+                <div className='validate-delai-div'>
+                  <button className='update-policy2'
+                  onClick={() => savePolicySize(5)}
+                  >Valider</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        )
+      }
     </>
   );
 };

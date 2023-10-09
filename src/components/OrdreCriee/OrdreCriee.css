@@ -21,7 +21,7 @@
   font-size: 300%;
   font-weight: bold;
   margin-bottom: 3%; /* Ajoute une marge en bas du titre */
-  color: white
+  color: var(--primary-text-color);
 
 }
 
@@ -34,10 +34,10 @@
 
 td{
   /*font-size: 140%;*/
-  color: whitesmoke;
+  color: var(--primary-text-color);
 }
 
-th{
+.subTitle{
   font-size: 160%;
   color:green;
   padding-bottom: 15px;
@@ -45,7 +45,7 @@ th{
 
 .totalTxt{
   font-size: 180%;
-  color: whitesmoke;
+  color: var(--primary-text-color);
   text-align: center ;
   vertical-align: middle;
   margin-bottom: 2%;

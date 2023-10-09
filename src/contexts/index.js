@@ -5,6 +5,7 @@ import ContextMenuContext from "./ContextMenuContext";
 import NotificationContext from './NotificationContext';
 import ThemeContext from "./ThemeContext";
 import TableContext from "./TableContext.js";
+import { AffichageContext, AffichageContextProvider } from "./AffichageContext"; // Importez NumberContext et NumberProvider
 
 export {
     UserContext,
@@ -14,4 +15,6 @@ export {
     NotificationContext,
     ThemeContext,
     TableContext,
+    AffichageContext,
+    AffichageContextProvider,
 }

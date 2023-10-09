@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import "./OrdreCriee.css"; 
 import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
-import jsonData from '../../excel/excel_data.json';
+//import jsonData from '../../excel/excel_data.json';
 import { SortableTable, Toast } from "../../components";
+import axios from 'axios';
 
 //import { json } from 'stream/consumers';
 
 function OrdreCriee(){
-    
+    const [jsonData, setJsonData] = useState({});
+
     const [image, setImage] = useState(null)
     const [cotiere1, setCotiere1] = useState([])
     const [cotiere2, setCotiere2] = useState([])
@@ -34,8 +36,20 @@ function OrdreCriee(){
     const [sizeTotal2,setSizeTotal2] = useState("")
 
     useEffect(() => {
+        fetchJSON()
+     },[])
+
+    useEffect(() => {
         remplirTab()
-    },[])
+        setNumRowsCot1(cotiere1.length)
+        setNumRowsCot2(cotiere2.length)
+        setNumRowsTotalEspece1(Object.keys(totalEspece1).length)
+        setNumRowsTotalEspece2(Object.keys(totalEspece2).length)
+    },[jsonData])
+
+    // useEffect(() => {
+    //     remplirTab()
+    // },[])
 
     useEffect(() => {
         console.log("DATE : " + date)
@@ -109,7 +123,7 @@ function OrdreCriee(){
     },[numRowsCot2])
 
     useEffect(() => {
-        console.log("TEST IN numRowsTotalEspece1")
+        console.log("TEST IN numRowsTotalEspece1 : " + numRowsTotalEspece1)
         if (numRowsTotalEspece1 >= 0 && numRowsTotalEspece1 <= 4){
             setSizeTotal1("140%");
         } else if (numRowsTotalEspece1 > 4 && numRowsTotalEspece1 <= 6){
@@ -142,6 +156,22 @@ function OrdreCriee(){
         }
     },[numRowsTotalEspece2])
 
+    async function fetchJSON() {
+        try {
+          const response = await axios.get('https://service.keroman.fr/api/get-json');
+          
+          if (response.status === 200) {
+            const data = response.data;
+            // Utilisez les données comme vous le souhaitez
+            console.log('Données JSON récupérées :', data);
+            setJsonData(data)
+          } else {
+            console.error('La requête a échoué avec un statut :', response.status);
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données :', error);
+        }
+      }
 
     function chunkArray(arr, chunkSize) {
         const chunkedArray = [];
@@ -162,6 +192,11 @@ function OrdreCriee(){
 
         let date = new Date();
         let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
+
+        if (date.getDay() === 0) {
+            // Si c'est dimanche, soustrayez un jour à la date
+            date.setDate(date.getDate() - 1);
+          }
 
         const dateFormatee = date.toLocaleDateString('fr-FR', options);
         setDate(dateFormatee);
@@ -237,10 +272,10 @@ function OrdreCriee(){
                             <table>
                                 <thead>
                                 <tr>
-                                        <th>Numéro</th>
-                                        <th>Nom</th>
-                                        <th>Numéro</th>
-                                        <th>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -285,10 +320,10 @@ function OrdreCriee(){
                                 <table className='tableTirage'>
                                 <thead>
                                     <tr>
-                                        <th>Numéro</th>
-                                        <th>Nom</th>
-                                        <th>Numéro</th>
-                                        <th>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -308,8 +343,8 @@ function OrdreCriee(){
                                 <table className='tableTirage2'>
                                     <thead>
                                     <tr>
-                                        <th>Numéro</th>
-                                        <th>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
                                     </tr>
                                     </thead>
                                     <tbody className='adjustementTable'>

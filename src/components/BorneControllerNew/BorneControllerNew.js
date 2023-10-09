@@ -14,7 +14,7 @@ import { POPUP_QUESTION } from "../Popup/Popup";
 import Lottie from 'lottie-react'
 import loadingAnimation from "../../assets/lotties/loading-animation.json";
 import { useNavigate, useParams } from "react-router-dom";
-
+// !!! DOUBLE COMPTE CONNECTER PEUT FAIRE DISFONCTIONNER L AFFICHAGE
 
 /**
  * 
@@ -41,6 +41,13 @@ function BorneControllerNew({currentlySelected,badges}){
     //Variable stockant le text optionnel avant l'activation d'une prise
     const [optionalText, setOptionalText] = useState("");
 
+    useEffect( () => {
+        navigate('/supervision/map/'+currentlySelected.display)
+        setPageHub(true)
+        setPagePrise(false)
+        setPageActivate(false)
+    },[])
+
     //Debug
     useEffect( () => {
         console.log("PagePrise : " + pagePrise);
@@ -55,12 +62,13 @@ function BorneControllerNew({currentlySelected,badges}){
     const navigate = useNavigate();
     const selectBadge = React.useRef();
 
-    useEffect(() => {
+    /*useEffect(() => {
+        console.log("CURENTLYSELECTED : " + JSON.stringify(currentlySelected))
         navigate('/supervision/map/'+currentlySelected.display)
         setPageHub(true)
         setPagePrise(false)
         setPageActivate(false)
-    }, [currentlySelected])
+    }, [currentlySelected])*/
 
     //Quand on clique sur la fleche dans le menu
     function handleExpand(){
@@ -69,7 +77,7 @@ function BorneControllerNew({currentlySelected,badges}){
             navigate('/supervision/map/'+currentlySelected.display)
         }
         setExpand(!isExpand); // passe isExpand a l'inverse de ce qu'il est (true ou false)
-
+        // console.log("TEST")
         setPagePrise(false)
         setPageActivate(false)
         setPageHub(true)
@@ -78,7 +86,8 @@ function BorneControllerNew({currentlySelected,badges}){
     //Lancer quand on appuie sur "Retour | borne (num)"
     function handleGoBack(){
         navigate('/supervision/map/'+currentlySelected.display);
-        
+        // console.log("TEST2")
+
 
         if(pageActivate){
             setPageHub(false)

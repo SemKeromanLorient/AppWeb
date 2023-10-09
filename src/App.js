@@ -25,7 +25,7 @@ import {ReactComponent as PortIcon} from './assets/icons/MaitreDePort2.svg'
 import connectionAnimation from "./assets/lotties/wifi-connection.json";
 
 import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, DashBoard, Facturation, Login, Rules, Settings, ShareAccess, Tickets, UserManager, Badges, SwitchPages, WriteInfo} from './pages';
-import { PopupContext, ToastContext, UserContext, ContextMenuContext } from "./contexts";
+import { PopupContext, ToastContext, UserContext, ContextMenuContext, AffichageContextProvider} from "./contexts";
 import React,{ useEffect, useMemo, useRef, useState } from "react";
 import { connectAutomate, connectToServer, disconnectSocket, reconnectSavedFlag } from "./utils/serverSocketCom";
 //import mapboxgl from '!mapbox-gl';
@@ -199,85 +199,85 @@ function App() {
               <PopupContext.Provider value={popupContextValue}>
                 <ToastContext.Provider value={toastContextValue}>
                   <ContextMenuContext.Provider value={contextMenuContextValue}>
+                    <AffichageContextProvider>
+                    {
+                      connected ? (<> 
 
-                  {
-                    connected ? (<> 
+                            { user ? (<>
+                              
+                                <Router>
+                                    <Header paths={[
+                                      {name: "Carte des bornes", path: "/supervision/map",Icon: MapIcon, secure: "MAP"},
+                                      {name: "Liste des bornes", path: "/supervision/list",Icon: BorneListIcon, secure: "LIST"},
+                                      {name: "Balisage", path: "/supervision/balise", Icon: PinIcon, secure: "BALISE"},
+                                      {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
+                                      {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
+                                      {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
+                                      {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
+                                      {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
+                                      {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"},
+                                      {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
+                                      {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
+                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
+                                    ]}/>
 
-                          { user ? (<>
-                            
-                              <Router>
-                                  <Header paths={[
-                                    {name: "Carte des bornes", path: "/supervision/map",Icon: MapIcon, secure: "MAP"},
-                                    {name: "Liste des bornes", path: "/supervision/list",Icon: BorneListIcon, secure: "LIST"},
-                                    {name: "Balisage", path: "/supervision/balise", Icon: PinIcon, secure: "BALISE"},
-                                    {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
-                                    {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
-                                    {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
-                                    {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
-                                    {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
-                                    {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"},
-                                    {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
-                                    {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
-                                    {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
-                                  ]}/>
+                              
+                          
+                              
 
-                            
-                        
-                            
+                              <div className="pages-container">
 
-                            <div className="pages-container">
+                                <Routes>
 
-                              <Routes>
-
-                                  <Route path="/supervision/" element={<Navigate replace to={defaultRedirection()} />} />
-                                  <Route path="supervision/conso" element={<ProtectedRoute useFor={'CONSO'} redirect={'/supervision/'} ><Consommation /></ProtectedRoute>} />
-                                  <Route path="supervision/balise" element={<ProtectedRoute useFor={'BALISE'} redirect={'/supervision/'} ><BorneBalise /></ProtectedRoute>} />
-                                  <Route path="supervision/user-manager" element={<ProtectedRoute useFor={'USERS'} redirect={'/supervision/'} ><UserManager /></ProtectedRoute>} />
-                                  <Route path="supervision/map" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
-                                  <Route path="supervision/map/:borne_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
-                                  <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
-                                  <Route path="supervision/map/:borne_id/prises" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
-                                  <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
-                                  <Route path="supervision/settings" element={<ProtectedRoute useFor={'SETTINGS'} redirect={'/supervision/'}><Settings /></ProtectedRoute>}/>
-                                  <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
-                                  <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
-                                  <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
-                                  <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
-                                  <Route path="supervision/tickets" element={<ProtectedRoute useFor={'TICKET'} redirect={'/supervision/'}><Tickets /></ProtectedRoute>}/> 
-                                  <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
-                                  <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
-                                  <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
-
-
-                              </Routes>
-
-                            </div>
-
-                          </Router>
-                        
-                        
-                        </> ): <Login />}
+                                    <Route path="/supervision/" element={<Navigate replace to={defaultRedirection()} />} />
+                                    <Route path="supervision/conso" element={<ProtectedRoute useFor={'CONSO'} redirect={'/supervision/'} ><Consommation /></ProtectedRoute>} />
+                                    <Route path="supervision/balise" element={<ProtectedRoute useFor={'BALISE'} redirect={'/supervision/'} ><BorneBalise /></ProtectedRoute>} />
+                                    <Route path="supervision/user-manager" element={<ProtectedRoute useFor={'USERS'} redirect={'/supervision/'} ><UserManager /></ProtectedRoute>} />
+                                    <Route path="supervision/map" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id/prises" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
+                                    <Route path="supervision/settings" element={<ProtectedRoute useFor={'SETTINGS'} redirect={'/supervision/'}><Settings /></ProtectedRoute>}/>
+                                    <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
+                                    <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
+                                    <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
+                                    <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
+                                    <Route path="supervision/tickets" element={<ProtectedRoute useFor={'TICKET'} redirect={'/supervision/'}><Tickets /></ProtectedRoute>}/> 
+                                    <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
+                                    <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
+                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
 
 
-                        <Toast option={toastOption} setOption={setToastOption} />
-                        <Popup option={popupOption} setOption={setPopupOption} />
-                        <ContextMenu option={contextMenuOption} setContextMenuOption={setContextMenuOption} />
+                                </Routes>
 
-                        
-                    </>)
-                    :
-                    <Loader option={{
-                      text: "Chargement...",
-                      duration: "infinite",
-                      timeout: {
-                        time: 10000,
-                        message: "Impossible de se connecter",
-                        redirection: "/supervision/register-device"
-                      }
-                    }} />
-                    
-                  }
+                              </div>
 
+                            </Router>
+                          
+                          
+                          </> ): <Login />}
+
+
+                          <Toast option={toastOption} setOption={setToastOption} />
+                          <Popup option={popupOption} setOption={setPopupOption} />
+                          <ContextMenu option={contextMenuOption} setContextMenuOption={setContextMenuOption} />
+
+                          
+                      </>)
+                      :
+                      <Loader option={{
+                        text: "Chargement...",
+                        duration: "infinite",
+                        timeout: {
+                          time: 10000,
+                          message: "Impossible de se connecter",
+                          redirection: "/supervision/register-device"
+                        }
+                      }} />
+                      
+                    }
+                    </AffichageContextProvider>
                   </ContextMenuContext.Provider>
                 </ToastContext.Provider>
               </PopupContext.Provider>

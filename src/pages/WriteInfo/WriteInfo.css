@@ -26,6 +26,15 @@
     border-radius: 5px;
     cursor: pointer;
   }
+  .update-policy2 {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   .switch-page{
     padding: 10px 20px;
     font-size: 16px;
@@ -109,7 +118,14 @@
     height: 30%;
   }
   .sect-navigation{
-    padding-top: 10px;
+    padding-top: 1%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .sect-navigation-rem{
+    padding-top: 1%;
     height: 10%;
     display: flex;
     justify-content: center;
@@ -136,4 +152,167 @@
   }
   .policy-title{
     text-align: center;
+    color: var(--primary-text-color);
   }
+  .policy-subTitle{
+    color: var(--primary-text-color);
+  }
+  .policy-title-delai{
+    text-align: center;
+    color: var(--primary-text-color);
+    width: 220px;
+  }
+  .input-policy{
+    text-align: center;
+    margin-right: 2%;
+  }
+  .addMenu{
+    max-width: 40px;
+    max-height: 40px;
+    float:right;
+    padding-right: 6%;
+    padding-bottom: 1%;
+  }
+  .addMenu:hover{
+   cursor: pointer; 
+  }
+
+  .remMenu{
+    max-width: 40px;
+    max-height: 40px;
+    float:right;
+    padding-right: 6%;
+    padding-bottom: 1%;
+  }
+  .remMenu:hover{
+    cursor: pointer; 
+   }
+  .testMenu{
+    padding-top: 1.5%;
+    height: 6%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .MedColum-col1{
+    width: 33%;
+  }
+  .MedColum-col2{
+    width: 33%;
+  }
+  .MedColum-col3{
+    width: 33%;
+  }
+
+  .mainSect{
+    height: 100%;
+  }
+  .upSect{
+    
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .infSect{
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+  }
+  .High-col1{
+    height: 80%;
+    width: 40%;
+    margin-right: 2.5%;
+  }
+  .High-col2{
+    height: 80%;
+    width: 40%;
+    margin-left: 2.5%;
+  }
+
+  .MedRow-row1{
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+  }
+  
+  .MedRow-row2,
+  .MedRow-row3,
+  .MedRow-row4,
+  .MedRow-row5{
+    height: 9%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+  }
+
+  .MedRow-row2 h2,
+  .MedRow-row3 h2,
+  .MedRow-row4 h2,
+  .MedRow-row5 h2 {
+    margin-right: 3%;
+    width: 220px;
+  }
+
+  .MedRow-row6{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1%;
+  }
+
+  .infSect h1{
+    margin-right: 2%;
+  }
+
+  .delai-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .validate-delai-div{
+    margin-top: 1%;
+  }
+
+/* Styles de base pour le bouton */
+.on-off-button {
+  display: inline-block;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 280px;
+}
+
+/* Style initial pour le bouton "Off" */
+.off {
+  background-color: #ff0000; /* Rouge */
+  color: #ffffff; /* Texte blanc */
+}
+
+/* Style pour le bouton "On" lorsque activé */
+.on {
+  background-color: #4caf50; /* Vert */
+  color: #ffffff; /* Texte blanc */
+}
+
+/* Effet hover */
+.on-off-button:hover {
+  background-color: #555; /* Couleur sombre lors du survol */
+  color: #ffffff; /* Texte blanc */
+}
+
+.input-delai{
+  width: 25%;
+  text-align: center;
+  font-size: 17px;
+}

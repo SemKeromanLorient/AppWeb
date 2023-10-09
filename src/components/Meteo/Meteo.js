@@ -174,7 +174,7 @@ function Meteo({data,dataMarine,dataWind}){
                     <tbody>
                         <tr>
                             <th> Direction du vent</th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[1]}deg)` }} /></th>
+                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[1]}deg)`}} /></th>
                             <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[4]}deg)`}} /></th>
                             <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[7]}deg)`}}/></th>
                             <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[10]}deg)`}}/></th>
