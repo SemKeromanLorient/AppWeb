@@ -4,11 +4,11 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const XLSX = require('xlsx');
 const cron = require('node-cron');
-// Fonction pour télécharger le fichier Excel et le convertir en JSON
+
 // Fonction pour télécharger le fichier Excel et le convertir en JSON
 const downloadAndProcessExcel = async () => {
   try {
-    
+    //https://criee.keroman.fr/lor/data/data_cotiere_acheteur_exempleCriee2Only.xls
     const excelUrl =  'https://criee.keroman.fr/lor/data/data_cotiere_acheteur.xls';
 
     // Télécharge le fichier Excel
@@ -36,7 +36,19 @@ const downloadAndProcessExcel = async () => {
 };
 
 // Planifier l'exécution tout les jours à 21 heures
-cron.schedule('10 */9 * * *', () => {
-  console.log('Exécution toutes les 21 heures');
-  downloadAndProcessExcel();
+// cron.schedule('0 */21 * * *', () => {
+//     console.log('Exécution toutes les 21 heures');
+//     downloadAndProcessExcel();
+//   });
+
+// Planifier l'exécution toutes les 5 minutes
+cron.schedule('*/1 * * * *', () => {
+ console.log('Exécution toutes les 5 minutes');
+ downloadAndProcessExcel();
 });
+
+// cron.schedule('*/5 20-00 * * *', () => {
+//   console.log('Exécution toutes les 5 minutes entre 20h et 00h');
+//   downloadAndProcessExcel();
+// });
+

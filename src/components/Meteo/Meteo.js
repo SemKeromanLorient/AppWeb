@@ -9,6 +9,7 @@ function Meteo({data,dataMarine,dataWind}){
 
     useEffect( () => {
         console.log("TEST DoubleUseEffect")
+        console.log("Data marine : " + JSON.stringify(dataMarine))
     },[])
 
     if (!data || !dataMarine || !dataWind) {

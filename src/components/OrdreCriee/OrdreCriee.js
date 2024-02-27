@@ -8,37 +8,42 @@ import axios from 'axios';
 //import { json } from 'stream/consumers';
 
 function OrdreCriee(){
+    //Corresponds à toutes les données sous format json (Pas encore trié)
     const [jsonData, setJsonData] = useState({});
 
-    const [image, setImage] = useState(null)
+    //Corresponds au données de cotières avec chaque info des prévisions sur chaque tableau de cotière
     const [cotiere1, setCotiere1] = useState([])
     const [cotiere2, setCotiere2] = useState([])
+
+    //Corresponds à la date du fichier (indiqué dans ce fichier)
     const [date, setDate] = useState(null)
     const [total, setTotal] = useState([])
-    //const [totalEspeceCriee1, setTotalEspeceCriee1] = useState({})
-    //const [totalEspeceCriee2, setTotalEspeceCriee2] = useState({})
 
+    //Corresponds au total par espèce de chaque poisson pour les cotières 1 et 2
     const [totalEspece1,setTotalEspece1] = useState({});
     const [totalEspece2,setTotalEspece2] = useState({});
 
-    //let numRowsCot1 = cotiere1.length;
-    //let numRowsCot2 = cotiere2.length;
+    //Corresponds au nombre de ligne dans les cotières 1 et 2
     const [numRowsCot1, setNumRowsCot1] = useState(cotiere1.length)
     const [numRowsCot2, setNumRowsCot2] = useState(cotiere2.length)
 
+    //Corresponds à la taille d'écriture correspondant pour les cotières 1 et 2
     const [sizeRowsCot1,setSizeRowsCot1] = useState("")
     const [sizeRowsCot2,setSizeRowsCot2] = useState("")
 
     const [numRowsTotalEspece1, setNumRowsTotalEspece1] = useState(Object.keys(totalEspece1).length)
     const [numRowsTotalEspece2, setNumRowsTotalEspece2] = useState(Object.keys(totalEspece2).length)
 
+    //Corresponds à la taille d'écriture correspondant pour les totaux des cotières 1 et 2
     const [sizeTotal1,setSizeTotal1] = useState("")
     const [sizeTotal2,setSizeTotal2] = useState("")
 
+    //On récupère les données JSON (donnée du excel) à chaque refresh de page
     useEffect(() => {
         fetchJSON()
      },[])
 
+    //Ensuite dès qu'on a ces données JSON, on setup les variables pour l'affichage (notamment pour la taille de celui-ci)
     useEffect(() => {
         remplirTab()
         setNumRowsCot1(cotiere1.length)
@@ -46,10 +51,6 @@ function OrdreCriee(){
         setNumRowsTotalEspece1(Object.keys(totalEspece1).length)
         setNumRowsTotalEspece2(Object.keys(totalEspece2).length)
     },[jsonData])
-
-    // useEffect(() => {
-    //     remplirTab()
-    // },[])
 
     useEffect(() => {
         console.log("DATE : " + date)
@@ -70,6 +71,7 @@ function OrdreCriee(){
         console.log("TOTAL :  " + total)
     },[total])
 
+    //Semble obsolète
     useEffect(() => {
         if (cotiere1.length > 0){
             console.log("cotiere1 : " +  cotiere1)
@@ -79,6 +81,7 @@ function OrdreCriee(){
         }
     },[cotiere1])
 
+    //Semble obsolète
     useEffect(() => {
         if (cotiere2.length > 0){
             console.log("cotiere2 : " +  cotiere2)
@@ -182,32 +185,43 @@ function OrdreCriee(){
       }
 
     /**
-     * Initialise le tableau contenant toutes les données
+     * Initialise le tableau contenant toutes les données // FONCTIONNE PAS PARCEQUE ligne vide (revoir la logique pour ajouter les données)
      */
     function remplirTab(){
-        
-        let i = 3;
-        //Sert de booléeen
-        let j = 0;
+        let i,j;
+
+        //Vérifie si on est dans cotiere 1 ou cotiere 2
+        if (!jsonData[3] || (Array.isArray(jsonData[3]) && jsonData[3].length === 0)){
+            // i : On passe les éléments jusqu'a la première ligne correspondant au information du premier bateau
+            // j : Sert de booléeen | 0 = cotiere 1; 1 = cotiere 2; 3 = aucune cotiere
+            i = 9;
+            j = 1;
+        } else {
+            i = 3;
+            j = 0;
+        }
 
         let date = new Date();
         let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
 
         if (date.getDay() === 0) {
-            // Si c'est dimanche, soustrayez un jour à la date
+            // Si c'est dimanche, soustraire un jour à la date
             date.setDate(date.getDate() - 1);
-          }
+        }
 
         const dateFormatee = date.toLocaleDateString('fr-FR', options);
         setDate(dateFormatee);
 
+        //Tant qu'il reste une ligne à traiter alors on continue
+        while (i < jsonData.length && i < 40){
 
-        while (i < jsonData.length && jsonData[i][0] !== undefined){
-            //console.log("JSONDATA : " + jsonData[i][0])
-            if (jsonData[i][0] === "TOTAL VENTE COTIERE 1 "){
-                j++;
+            //Si on est à la fin de la vente cotière 1 + on vérifie si on a des données dans cotiere 1
+            if (jsonData[i][0] === "TOTAL VENTE COTIERE 1 " && cotiere1.length > 0){
+                console.log("Total vente cotiere 1 ")
+                j++; //On passe à la cotière 2
+                //On ajoute ce qui faut pour les totaux (correspondant au totaux des prévisions cotière 1)
                 total.push(jsonData[i][15])
-                for (let k = 1; k <jsonData[i].length - 2; k++){
+                for (let k = 1; k < jsonData[i].length - 2; k++){
                     if (jsonData[i][k] !== null){
                         let keyEspece1 = jsonData[i + 1][k];
                         keyEspece1 = keyEspece1.replace(/\n/g, '');
@@ -217,14 +231,12 @@ function OrdreCriee(){
                 }
                 i = i + 4
             }
-            else if(jsonData[i][0] != "TOTAL VENTE COTIERE 1 " && j === 0){
-                cotiere1.push(jsonData[i][0])
-            } 
-            else if(jsonData[i][0] != "TOTAL VENTE COTIERE2" && j === 1){
-                cotiere2.push(jsonData[i][0])
-            }
-            else {
-                j++
+
+            //Si on est à la fin de la vente cotière 2 + on vérifie si on a des données dans cotiere 2
+            else if(jsonData[i][0] === "TOTAL VENTE COTIERE2"){
+                console.log("Total vente cotiere 2 ")
+                j++; //Fin des push pour les cotières 1 et 2
+                //On ajoute ce qui faut pour les totaux (correspondant au totaux des prévisions cotière 2) 
                 total.push(jsonData[i][15])
                 for (let k = 1; k <jsonData[i].length - 2; k++){
                     if (jsonData[i][k] !== null){
@@ -236,29 +248,31 @@ function OrdreCriee(){
                 }
                 i = i + 4
             }
-            i++
 
+            //Données de vente cotière 1
+            else if(jsonData[i][0] != "TOTAL VENTE COTIERE 1 " && j === 0 && jsonData[i][0] !== undefined && jsonData[i][0] !== null){
+                cotiere1.push(jsonData[i][0])
+            } 
+
+            //Données de vente cotière 2
+            else if(jsonData[i][0] != "TOTAL VENTE COTIERE2" && jsonData[i][0] !== "TOTAL" && j === 1 && jsonData[i][0] !== undefined && jsonData[i][0] !== null){
+                cotiere2.push(jsonData[i][0])
             }
+
+            i++;
         }
 
-    if (!cotiere1 || cotiere1.length === 0){
-        return <h1> Ordre de vente criée indisponible </h1>
     }
 
     /*
-    <td className='totalTxt'>Tonnage total : </td>
-                        <td className='totalTxt2'>{total[0]} </td>
-                        {chunkArray(Object.entries(totalEspece1), 2).map((chunk, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {chunk.map(([key, value], cellIndex) => (
-                                    <React.Fragment key={cellIndex}>
-                                        <td className='especeTotal' style={{ fontSize: sizeTotal1 }}>{key}</td>
-                                        <td className='totalEspece' style={{ fontSize: sizeTotal1 }}>{value}</td>
-                                    </React.Fragment>
-                                ))}
-                            </tr>
-                        ))}
+        if (!cotiere1 || cotiere1.length === 0 ){
     */
+   /* code modifié le 9 février 
+            on affiche le message si les deux ventes sont vides
+   */
+    // if ((!cotiere1 || cotiere1.length === 0) && (!cotiere2 || cotiere2.length === 0)) {
+    //     return <h1> Ordre de vente criée indisponible </h1>
+    // }
 
     return (
         <>
@@ -267,7 +281,7 @@ function OrdreCriee(){
                 Tirage du {date}
             </h1>
             {
-                cotiere2.length === 0 && (
+                cotiere2.length === 0 && cotiere1.length != 0 && (
                     <div className='affichageDoubleCotiere'>
                             <table>
                                 <thead>
@@ -283,7 +297,7 @@ function OrdreCriee(){
                                     <tr key={index}>
                                         <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + 1}</td>
                                         <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{item}</td>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}> {index + Math.ceil(numRowsCot1/2) + 1}</td>
+                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + Math.ceil(numRowsCot1/2) + 1}</td>
                                         <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{cotiere1[index + Math.ceil(cotiere1.length / 2)]}</td>
                                     </tr>
                                     ))}
@@ -312,7 +326,52 @@ function OrdreCriee(){
                 )
             }
             {
-                cotiere2.length != 0 && (
+                cotiere1.length === 0 && cotiere2.length != 0 && (
+                    <div className='affichageDoubleCotiere'>
+                            <table>
+                                <thead>
+                                <tr>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
+                                        <th className='subTitle'>Numéro</th>
+                                        <th className='subTitle'>Nom</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => (
+                                    <tr key={index}>
+                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1}</td>
+                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
+                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                                <div className='infPart1Cot'>
+                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[1]} </h2>
+                                    <table className='tableTirage3'>
+                                        <thead className='testTHEAD'>
+                                        </thead>
+                                        <tbody>
+                                            {chunkArray(Object.entries(totalEspece2), 2).map((chunk, rowIndex) => (
+                                                <tr key={rowIndex}>
+                                                    {chunk.map(([key, value], cellIndex) => (
+                                                    <React.Fragment key={cellIndex}>
+                                                        <td className='especeTotal' style={{ fontSize: sizeTotal2 }}>{key}</td>
+                                                        <td className='totalEspece' style={{ fontSize: sizeTotal2 }}>{value}</td>
+                                                    </React.Fragment>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                    </div>
+                )
+            }
+            {
+                cotiere2.length != 0 && cotiere1.length != 0 && (
                     <div className='affichageDoubleCotiere'>
                         <div className='tablesContainer'>
                             <div className='tablesGauche'>

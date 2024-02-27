@@ -102,7 +102,7 @@ const PageSwitcher = () => {
         }
       });
       console.log("CurrentPage : " + currentPage)
-    }, delai);
+    }, Math.max(delai, 5000));
 
     return () => {
       clearInterval(interval);
