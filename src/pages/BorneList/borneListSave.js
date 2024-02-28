@@ -1,3 +1,7 @@
+/**
+ * Exact copy de la page borneList.js du 28/02/2024 lorsque l'activation des prises était proposé
+ */
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ProgressBar } from "../../components";
 import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
@@ -139,7 +143,7 @@ function BorneList(){
 
 
         {
-            currentSelection && <BorneControl borne={currentSelection} />
+            currentSelection && <BorneControlNew borne={currentSelection} badges={badges} />
         }
 
  
@@ -620,6 +624,17 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
         </div>
 
         <h2>{prise.type}</h2>
+
+        <div onClick={handleInteract} className={"interact-btn "+(onLoad ? 'loading' : '')}>
+            
+            {onLoad ? <Lottie className="loading-response" animationData={WaitingAnimation} /> : <>
+                {prise.state === 1 && <h4>Activer</h4>}
+                {prise.state === 4 && <h4>Désactiver</h4>}
+                {prise.state === 3 && <h4>Forcer</h4>}
+                {prise.state === 5 && <h4>-</h4>}
+                {prise.state === 8 && <h4>-</h4>}
+            </>}
+        </div>
 
         
 
