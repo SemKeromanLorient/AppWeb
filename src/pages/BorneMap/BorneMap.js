@@ -63,7 +63,7 @@ function BorneMap(){
 
         console.log("sect:",currentlySelected)
         console.log("TEST CURRENTLYSELECTED BORNEMAP")
-        //console.log("bornes : " + JSON.stringify(bornes))
+        console.log("bornes : " + JSON.stringify(bornes))
 
     }, [currentlySelected])
    
@@ -73,14 +73,21 @@ function BorneMap(){
         <MapView setCurrentSelected={setCurrentlySelected} bornes={bornes}>
 
         </MapView>
-        {currentlySelected < 9 ?(
-            <BorneController currentlySelected={bornes[currentlySelected]}  />
-        ) : (
-            <BorneControllerNew currentlySelected={bornes[currentlySelected]} badges = {badges}/>
-        )}
+        {
+            currentlySelected && (
+                <BorneController currentlySelected={bornes[currentlySelected]}  />
+            )
+        }
         
     </div>
 
 }
+
+
+// {currentlySelected < 9 ?(
+//     <BorneController currentlySelected={bornes[currentlySelected]}  />
+// ) : (
+//     <BorneControllerNew currentlySelected={bornes[currentlySelected]} badges = {badges}/>
+// )}
 
 export default BorneMap;

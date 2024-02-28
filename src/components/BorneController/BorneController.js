@@ -232,7 +232,7 @@ function PriseControl({prises, borne, priseData, setPriseData}){
             <div className="upper-section">
             <PlugIcon className="plug-icon" />
 
-            <h1>Prise {currentprise.name}</h1>
+            <h1>Prise {currentprise.prise}</h1>
 
 
 
@@ -242,7 +242,6 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                     {
                         currentprise.use_by? <>
                           <h2>Prise en cours d'utilisation par <br/> {currentprise.use_by}</h2>
-                            <h3>La fermeture de la prise terminera <br/> la consommation.</h3>
                         </> : 
                         <>
                               <h2>La prise semble etre forcé</h2>
@@ -259,8 +258,6 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                 currentprise .state === 3 && <>
 
                     <h2>Fin de consommation...</h2>
-                    <h3>Enregistrement de la consommation</h3>
-                    <h3>La prise devrait etre de <br/> nouveau disponible <br/> dans quelque instant...</h3>
 
                 </>
             }
@@ -269,7 +266,6 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                 currentprise .state === 5 && <>
 
                     <h2>Arrêt forcé de la prise</h2>
-                    <h3>Impossible de fermer ou d'ouvrir <br/> la prise</h3>
 
                 </>
             }
@@ -279,7 +275,6 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                 currentprise .state === 8 && <>
 
                     <h2>La prise est en défaut</h2>
-                    <h3>Impossible de fermer ou d'ouvrir <br/> la prise</h3>
 
                 </>
             }
@@ -288,31 +283,12 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                 currentprise .state === 1 && <>
 
                     <h2>Prise disponible</h2>
-                    <h3>Veuillez indiquer le nom du bateau<br/>(ou entreprise) pour lequel la<br/>consommation sera  facturé.</h3>
-
-                   
-                        {getAuthorizationFor('MAP', 'update') &&  <form className="facture-name-container" onSubmit={handleInteract} >
-                            <input value={userToOpen} onChange={({target}) => setUserToOpen(target.value)} className={"facturation-name "+(inputError? "error" : "")} type={'text'} placeholder={'Nom du bateau...'} />
-                            </form>}
-                    
                     
                 </>
             }
 
             </div>
            
-            {currentprise.state !== 5 && currentprise.state !== 8 && <div onClick={handleInteract} className={"control-button "+((currentprise.state === 1)? "toOpen" : "toClose")}>
-                {stateGoal !== currentprise.state? <Lottie animationData={loadingAnimation} className={"btn-loading"} /> : <>
-
-                    {(currentprise.state === 1) && <StartIcon className="icon-btn" />}     
-                    {(currentprise.state === 4 || currentprise.state === 3) && <StopIcon/>}    
-                    {currentprise.state === 1 && <h3>Ouvrir la prise</h3>}
-                    {currentprise.state === 4? (currentprise.use_by?  <h3>Fermer la prise</h3> : <h3>Tenter de fermer</h3> ) : null}
-                
-                </>}
-              
-            
-            </div>}
         </>}
 
         
@@ -321,8 +297,103 @@ function PriseControl({prises, borne, priseData, setPriseData}){
 
 }
 
+/////////////////////////////////////////////////////////////////// ANCIENNE AFFICHAGE AVEC ACTIVATION //////////////////////////////////////////////////////////////////////////////
+// return <div className={"prise-control-container "+ (!currentprise? "hidden" : "")}>
+
+// {currentprise && <>
+
+//     <div className="upper-section">
+//     <PlugIcon className="plug-icon" />
+
+//     <h1>Prise {currentprise.name}</h1>
 
 
+
+//     {
+//         currentprise.state === 4 && <>
+
+//             {
+//                 currentprise.use_by? <>
+//                   <h2>Prise en cours d'utilisation par <br/> {currentprise.use_by}</h2>
+//                     <h3>La fermeture de la prise terminera <br/> la consommation.</h3>
+//                 </> : 
+//                 <>
+//                       <h2>La prise semble etre forcé</h2>
+//                       <h3>Aucune consommation ne sera relevé.</h3>
+//                 </>
+
+//             }
+          
+
+//         </>
+//     }
+
+//     {
+//         currentprise .state === 3 && <>
+
+//             <h2>Fin de consommation...</h2>
+//             <h3>Enregistrement de la consommation</h3>
+//             <h3>La prise devrait etre de <br/> nouveau disponible <br/> dans quelque instant...</h3>
+
+//         </>
+//     }
+
+//     {
+//         currentprise .state === 5 && <>
+
+//             <h2>Arrêt forcé de la prise</h2>
+//             <h3>Impossible de fermer ou d'ouvrir <br/> la prise</h3>
+
+//         </>
+//     }
+
+
+//     {
+//         currentprise .state === 8 && <>
+
+//             <h2>La prise est en défaut</h2>
+//             <h3>Impossible de fermer ou d'ouvrir <br/> la prise</h3>
+
+//         </>
+//     }
+
+//     {
+//         currentprise .state === 1 && <>
+
+//             <h2>Prise disponible</h2>
+//             <h3>Veuillez indiquer le nom du bateau<br/>(ou entreprise) pour lequel la<br/>consommation sera  facturé.</h3>
+
+           
+//                 {getAuthorizationFor('MAP', 'update') &&  <form className="facture-name-container" onSubmit={handleInteract} >
+//                     <input value={userToOpen} onChange={({target}) => setUserToOpen(target.value)} className={"facturation-name "+(inputError? "error" : "")} type={'text'} placeholder={'Nom du bateau...'} />
+//                     </form>}
+            
+            
+//         </>
+//     }
+
+//     </div>
+   
+//     {currentprise.state !== 5 && currentprise.state !== 8 && <div onClick={handleInteract} className={"control-button "+((currentprise.state === 1)? "toOpen" : "toClose")}>
+//         {stateGoal !== currentprise.state? <Lottie animationData={loadingAnimation} className={"btn-loading"} /> : <>
+
+//             {(currentprise.state === 1) && <StartIcon className="icon-btn" />}     
+//             {(currentprise.state === 4 || currentprise.state === 3) && <StopIcon/>}    
+//             {currentprise.state === 1 && <h3>Ouvrir la prise</h3>}
+//             {currentprise.state === 4? (currentprise.use_by?  <h3>Fermer la prise</h3> : <h3>Tenter de fermer</h3> ) : null}
+        
+//         </>}
+      
+    
+//     </div>}
+// </>}
+
+
+
+// </div>
+
+// }
+/////////////////////////////////////////////////////////////////// FIN ANCIENNE AFFICHAGE AVEC ACTIVATION //////////////////////////////////////////////////////////////////////////////
 
 function PriseItem({priseData, onClick}){
 
@@ -341,7 +412,7 @@ function PriseItem({priseData, onClick}){
 
 
     return <div onClick={handleClick} className={"prise-access "+("state-"+priseData.state)}>
-        <h2>{priseData.name}</h2>
+        <h2>Prise {priseData.prise}</h2>
         <h4>{priseData.type} | {priseData.state_label}</h4>
 
        <ExpandIcon className="go-to-icon" />
