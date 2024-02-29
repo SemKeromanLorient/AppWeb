@@ -23,7 +23,7 @@ function Consommation({}){
     const [boatFilter, setBoatFilter] = useState('');
     const [borneFilter, setBorneFilter] = useState('');
     const [priseFilter, setPriseFilter] = useState('');
-    const [stateFilter, setStateFilter] = useState(-1);
+    const [monthFilter, setMonthFilter] = useState(0);
     const [typeFilter, setTypeFilter] = useState('');
     const [sourceFilter, setSourceFilter] = useState('');
     const [compareValue, setCompareValue] = useState('');
@@ -40,34 +40,228 @@ function Consommation({}){
         fetchConsommation();
 
     }, [startDate, endDate])
-//,convertDateData
-/** 
-        let newConso;
-        for (let row of consommations){
 
-        }
+    useEffect(() => {
+        console.log("Changement de mois : " + monthFilter)
+        const monthNumber = parseInt(monthFilter, 10);
+        const today = moment();  
+        console.log("Today (mois) : " + today.month())      
+        console.log("Today (année) : " + today.year())
         
-        setConsommations(newConso)
-            */
+        switch (monthNumber) {
+            case 0:
+                break;
+            case 1:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
 
-    /**
-     * Change les date format iso en date et meme chose pour uniformiser les points et virgules
-     */
-    function convertDateData (){
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 2:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
 
-        console.log("Test convertDate")
-        console.log(consommations)
-        // Recherche de l'élément correspondant dans le tableau "consommation"
-        //const element = consommations.find((element) => element.id === 102);
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 3:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
 
-        // Extraction de la propriété "start_date" de l'élément
-        //const startDate = element.start_date;
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 4:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
 
-        // Affichage de la date de début
-        //console.log("Date de début de l'élément " + 102 + " : " + startDate);
-    }
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 5:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
 
-    
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 6:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 7:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 8:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 9:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 10:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 11:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            case 12:
+                if ( (today.month() < monthNumber - 1)  || ( ((today.month() === monthNumber - 1) && (today.date() !== moment(today).endOf('month').date())) ) ) {
+                    const lastYear = today.year() - 1;
+                    const startDate = moment([lastYear, monthNumber - 1, 1]).startOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([lastYear, monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else if ( (today.month() > monthNumber - 1) || ( (today.month() === monthNumber - 1) && (today.date() === moment(today).endOf('month').date()) ) ) {
+                    const startDate = moment([today.year(), monthNumber - 1, 1]).subtract(1, 'day').format('YYYY-MM-DD');
+                    const endDate = moment([today.year(), monthNumber - 1]).endOf('month').subtract(1, 'day').format('YYYY-MM-DD');
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                } else {
+
+                    console.log("Problème cas inattendu")
+                }
+                break;
+            default:
+                console.log("monthNumber : " + monthNumber)
+                console.log("Month is not beetwen 0 and 12");
+                break;
+        }
+    },[monthFilter])
+
     function fetchConsommation(){    
 
         console.log('Get consommation from '+startDate+' to '+endDate+'... (/supervision/src/pages/Consommation/Consommation.js)')
@@ -105,8 +299,6 @@ function Consommation({}){
         
         if(boatFilter !== '' && !conso.user.toUpperCase().includes(boatFilter.toUpperCase()))return false;
         
-        if(Number(stateFilter) !== -1 && (conso.is_open !== Number(stateFilter)))return false;
-
         if(zoneFilter !== 'ALL' && conso.zone !== zoneFilter)return false;
 
         if(compareValue !== '' && distance(compareValue.toUpperCase(), conso.user.toUpperCase()) >= compareValue.length / 2)return false;
@@ -144,16 +336,6 @@ function Consommation({}){
         console.log("Conso.source : " + conso.source);
         if (conso.source === "Eau" && conso.zone != "ARN") return true;
         else return false;
-        /** 
-        if(!displayNull && conso.kw === 0) return false;
-        if(boatFilter !== '' && !conso.user.toUpperCase().includes(boatFilter.toUpperCase())) return false;
-        if(Number(stateFilter) !== -1 && (conso.is_open !== Number(stateFilter))) return false;
-        if(zoneFilter !== 'ALL' && conso.zone !== zoneFilter) return false;
-        if(compareValue !== '' && distance(compareValue.toUpperCase(), conso.user.toUpperCase()) >= compareValue.length / 2) return false;
-        if(sourceFilter != '' && !conso.source.includes(sourceFilter)) return false;
-        if(conso.arn) return false; // Filtre les données d'arn
-        return true;
-        */
     }
 
     /**
@@ -190,8 +372,9 @@ function Consommation({}){
         setZoneFilter(nativeEvent.target.value)
     }
 
-    function handleStateFilterChange({nativeEvent}){
-        setStateFilter(nativeEvent.target.value)
+    function handleMonthFilterChange({nativeEvent}){
+        console.log("Mois : " + nativeEvent.target.value)
+        setMonthFilter(nativeEvent.target.value)
     }
 
     /**
@@ -569,14 +752,6 @@ function Consommation({}){
         });
       }
 
-
-//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
-    function test(){
-        console.log("Prise numéro : " + priseFilter);
-    }
-//////////////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////////////////////////////
-
-
 // onChange={handleBornePriseSearch}
     return <div className="conso-container">
         <div className="filter-section">
@@ -589,12 +764,7 @@ function Consommation({}){
             </div>
 
             <div className="search-section">
-                <select onChange={handleStateFilterChange}>
-                    <option value={-1} checked={stateFilter === -1}>Etat: Tous</option>
-                    <option value={1} checked={stateFilter === 1}>Etat: En cours...</option>
-                    <option value={0} checked={stateFilter === 0}>Etat: Fini</option>
-                </select>
-
+                
                 <select onChange={handleChangeZoneFilter}>
                     <option value={'ALL'} checked={zoneFilter === 'ALL'}>Zone: tous</option>
                     {[...new Set(consommations.map((value) => value.zone))].map((zone, index) => <option key={index} value={zone} checked={zoneFilter === index}>Zone: {zone}</option>)}
@@ -603,6 +773,23 @@ function Consommation({}){
                 <div onClick={() => setDisplayNull(!displayNull)} className={"display-0 "+(displayNull? 'checked' : '')}>
                     <h4>Afficher les conso. à 0</h4>
                 </div>
+
+                <select onChange={handleMonthFilterChange}>
+                    <option value={0} checked={monthFilter === 0}>Mois : ∅ </option>
+                    <option value={1} checked={monthFilter === 1}>Mois : Janvier</option>
+                    <option value={2} checked={monthFilter === 2}>Mois : Février</option>
+                    <option value={3} checked={monthFilter === 3}>Mois : Mars</option>
+                    <option value={4} checked={monthFilter === 4}>Mois : Avril</option>
+                    <option value={5} checked={monthFilter === 5}>Mois : Mai</option>
+                    <option value={6} checked={monthFilter === 6}>Mois : Juin</option>
+                    <option value={7} checked={monthFilter === 7}>Mois : Juillet</option>
+                    <option value={8} checked={monthFilter === 8}>Mois : Aout</option>
+                    <option value={9} checked={monthFilter === 9}>Mois : Septembre</option>
+                    <option value={10} checked={monthFilter === 10}>Mois : Octobre</option>
+                    <option value={11} checked={monthFilter === 11}>Mois : Novembre</option>
+                    <option value={12} checked={monthFilter === 12}>Mois : Décembre</option>
+
+                </select>
              
             </div>
         
@@ -620,7 +807,7 @@ function Consommation({}){
     
             <CsvDownloadButton
             className="confirm-facture"
-            headers={['Bateau', 'KW/h ou m3', 'Date d\'ouverture', 'Date de fermeture', 'Prise','Borne', 'Etat', 'Source', 'Zone', 'Etat facturation', 'Activé par']} 
+            headers={['Bateau', 'KW/h ou m3', 'Date d\'ouverture', 'Date de fermeture', 'Prise','Borne', 'Source', 'Zone', 'Activé par']} 
             filename="Consommation" 
             data={consommations.filter(filterFunction)} >Télécharger CSV</CsvDownloadButton>
 
@@ -651,10 +838,8 @@ function Consommation({}){
             {label: "Prise", column: 'prise', type: 'number'},
             {label: "Source", column: 'source', type: 'string'},
             {label: "KW/h ou m3", column: 'kw', type: 'number', defaultValue: 0, calculateTotal: true, onDoubleClick: (value) => clipboardy.writeSync('value')},
-            {label: "Etat", column: 'is_open', type: 'number', processValue: (value) => value === 1? 'En cours...' : 'Fini'},
             {label: "Zone", column: 'zone', type: 'string'},
             {label: "Activé par", column: 'open_by', type: 'string', processValue: (value) => value? value : 'Système'},
-            {label: "Etat facturation", column: 'facture', type: 'number', processValue: (value) => value === 1? 'Facturé' : 'En attente...'}
 
             ]} 
             setVal={setVal}
