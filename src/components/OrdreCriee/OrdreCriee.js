@@ -189,14 +189,16 @@ function OrdreCriee(){
      */
     function remplirTab(){
         let i,j;
-
+        let nbLignesMaxATraiter = 150; // Corresponds au nombre de lignes que l'affichage va permettre
         //Vérifie si on est dans cotiere 1 ou cotiere 2
         if (!jsonData[3] || (Array.isArray(jsonData[3]) && jsonData[3].length === 0)){
             // i : On passe les éléments jusqu'a la première ligne correspondant au information du premier bateau
             // j : Sert de booléeen | 0 = cotiere 1; 1 = cotiere 2; 3 = aucune cotiere
+            console.log("Cotière 2 uniquement")
             i = 9;
             j = 1;
         } else {
+            console.log("Cotière 1 (et potentiellement cotière 2)")
             i = 3;
             j = 0;
         }
@@ -213,7 +215,7 @@ function OrdreCriee(){
         setDate(dateFormatee);
 
         //Tant qu'il reste une ligne à traiter alors on continue
-        while (i < jsonData.length && i < 40){
+        while (i < jsonData.length && i < nbLignesMaxATraiter){
 
             //Si on est à la fin de la vente cotière 1 + on vérifie si on a des données dans cotiere 1
             if (jsonData[i][0] === "TOTAL VENTE COTIERE 1 " && cotiere1.length > 0){
