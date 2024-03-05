@@ -68,12 +68,12 @@ function App() {
   }, [theme])
 
   const connectedLock = useRef(false);
- 
+// --------------------------------------------------------------------------------
   function connect(){
     //On récupere le userConnecté (Set depuis la page login.js)
     let userStorage = getConnectedUser();
-
-
+    console.log("TEST USERSTORAGE : " + JSON.stringify(userStorage))
+    console.log("ConnectedLock : " + JSON.stringify(connectedLock))
     if(getConnectedUser('token')){
       //console.log("getConnectedUser (token): " + JSON.stringify(getConnectedUser('token')))
       if(!connectedLock.current){
@@ -82,8 +82,16 @@ function App() {
         console.log('Send need-update')
         //Update du profile connecté
         postToServer('/need-upgrade',{}, (({data}) => {
-
-          //Vérification de la validité du user
+          /**
+           * Renvoi un objet de ce type :
+           * valid: true,
+                                    user: {
+                                        access_level: user.access_level,
+                                        username: user.name,
+                                        token: token,
+                                        authorized_interface: user.authorized_interface
+                                    }
+           */
           if(data.valid){
 
             console.log(data)
@@ -94,13 +102,16 @@ function App() {
   
 
               if(!connected){
-                setPopupOption({
-                  lottie: connectionAnimation,
-                  text: 'Vous avez été déconnecté du serveur.',
-                  secondaryText: 'Ceci peut ce produire lorsqu\'il y a 2 pages ouverte avec les même identifiants.',
-                  acceptText: 'Se reconnecter',
-                  onAccept: connect
-                })
+                console.log("RECONNEXION EN COURS")
+                connect;
+                //TEMPORAIRE : ON ENLEVE LE MESSAGE SE RECONNECTER CAR EMBETANT
+                // setPopupOption({
+                //   lottie: connectionAnimation,
+                //   text: 'Vous avez été déconnecté du serveur.',
+                //   secondaryText: 'Ceci peut ce produire lorsqu\'il y a 2 pages ouverte avec les même identifiants.',
+                //   acceptText: 'Se reconnecter',
+                //   onAccept: connect
+                // })
                 
               }else{
                 reconnectSavedFlag()
@@ -119,7 +130,7 @@ function App() {
           
 
         }), () => {
-
+          //Si il y a une erreur alors on déconnecte l'utilisateur
           disconnectUser();
           setConnected(false)
           setUser(null);
@@ -138,11 +149,15 @@ function App() {
     }
 
   }
-
+// --------------------------------------------------------------------------------
   useEffect(() => {
 
+    console.log("TEST AVANT CONNECT")
+
     connect()
-   
+
+    console.log("TEST APRES CONNECT")
+
     let handleClose = (event) => {
         event.preventDefault()
         disconnectSocket();

@@ -272,9 +272,9 @@ function OrdreCriee(){
    /* code modifié le 9 février 
             on affiche le message si les deux ventes sont vides
    */
-    // if ((!cotiere1 || cotiere1.length === 0) && (!cotiere2 || cotiere2.length === 0)) {
-    //     return <h1> Ordre de vente criée indisponible </h1>
-    // }
+    if ((!cotiere1 || cotiere1.length === 0) && (!cotiere2 || cotiere2.length === 0)) {
+        return <h1> Ordre de vente criée indisponible </h1>
+    }
 
     return (
         <>
@@ -351,7 +351,7 @@ function OrdreCriee(){
                                 </tbody>
                             </table>
                                 <div className='infPart1Cot'>
-                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[1]} </h2>
+                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
                                     <table className='tableTirage3'>
                                         <thead className='testTHEAD'>
                                         </thead>

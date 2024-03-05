@@ -11,6 +11,7 @@ function postToServer(uri, data, onSuccess, onError){
     Axios.post("https://service.keroman.fr/api/supervision"+uri, data).then(onSuccess)
     .catch(onError)
 }
+//https://service.keroman.fr/api/supervision
 
 function getToServer(uri, data, onSuccess, onError){
     let token = getConnectedUser('token');
