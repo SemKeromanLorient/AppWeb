@@ -74,7 +74,7 @@ function BorneMap(){
 
         </MapView>
         {
-            currentlySelected && (
+            currentlySelected !== undefined && (
                 <BorneController currentlySelected={bornes[currentlySelected]}  />
             )
         }

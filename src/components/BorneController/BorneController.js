@@ -23,7 +23,6 @@ function BorneController({currentlySelected}){
     const { prise_id } = useParams();
     const navigate = useNavigate();
 
-
     useEffect(() => {
 
         if(prise_id)setExpand(true);
