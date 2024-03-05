@@ -63,7 +63,7 @@ function BorneController({currentlySelected}){
                 <div className={"section"}>
                     <div className="title-section-prise">
                         <ElecIcon className="title-icon"/>
-                        <h3>Prises électriques</h3>
+                        <h3>Prises</h3>
                     </div>
                     <div className={"prise-list-container"}>
 
@@ -75,7 +75,7 @@ function BorneController({currentlySelected}){
                 {currentlySelected.prises.filter(({type}) => type === "EAU").length > 0 && <div className={"section"}>
                     <div className="title-section-prise">
                         <WaterIcon className="title-icon"/>
-                        <h3>Prises eaux</h3>
+                        <h3>Prises</h3>
                     </div>
                     <div className={"prise-list-container"}>
 

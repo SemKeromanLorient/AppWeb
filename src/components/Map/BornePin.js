@@ -40,15 +40,18 @@ function BornePin({borne,  currentlySelected,  index, onClick}){
         //
     }
 
-    return <div onClick={handleClick} className={"pin-container "+(currentlySelected === index? "focus " : "")+ (borne.enable === 0? "hidden " : "")}>
+    return <div className="borne-pin-map">
+        <div onClick={handleClick} className={"pin-container " + (currentlySelected === index ? "focus " : "") + (borne.enable === 0 ? "hidden " : "")}>
 
-        {borne.enable === 1 && hasError && <div className="blink-led" />}
+            {borne.enable === 1 && hasError && <div className="blink-led" />}
 
-        <h5>Borne {borne.display}</h5>
+            <h5>Borne {borne.display}</h5>
 
-        {borne.enable === 1 && <ProgressBar error={onForceStop} currentProgress={(borne.capacity - borne.available)} range={[0, borne.capacity]} />}
-
+            {borne.enable === 1 && <ProgressBar error={onForceStop} currentProgress={(borne.capacity - borne.available)} range={[0, borne.capacity]} />}
+        </div>
     </div>
+
+    
 
 
 }

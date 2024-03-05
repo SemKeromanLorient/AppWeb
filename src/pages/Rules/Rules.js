@@ -390,7 +390,7 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
         
         <div className="input-section">
             <h4>Type d'utilisateur</h4>
-            <select onChange={({nativeEvent}) => setUserType(nativeEvent.target.value)}>
+            <select className="listSelect" onChange={({nativeEvent}) => setUserType(nativeEvent.target.value)}>
                 <option selected={!rule} disabled >Selectionner un type</option>
                 {usersTypes.map((type) => <option selected={userType === type} value={type}>{type}</option>)}
                 <option value={"NEW"}>Nouveau</option>
@@ -407,7 +407,7 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
         </>}
 
         <div className="input-section">
-            <h4>Zone(s) accèssible(s)</h4>
+            <h4>Zone(s) accessible(s)</h4>
             
             <div className="zones-selected-list">
                 <div onClick={handleOpenAddZone} className="add-zone">
@@ -460,7 +460,7 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
 
        
 
-        <input type={"submit"} value={rule? "Modifier" : "Ajouter"}/>
+        <input className="valid-modif" type={"submit"} value={rule? "Modifier" : "Ajouter"}/>
 
     </form>
 

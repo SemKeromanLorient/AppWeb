@@ -251,7 +251,7 @@ function BorneBalise(){
                     </div>
 
                     <div className="control-input">
-                        <input onClick={handleValid} type={'button'}  value={'Valider les modifications'}/>
+                        <input className="valid-modif" onClick={handleValid} type={'button'}  value={'Valider les modifications'}/>
                     </div>
 
                 </div>
