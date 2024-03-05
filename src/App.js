@@ -72,8 +72,7 @@ function App() {
   function connect(){
     //On récupere le userConnecté (Set depuis la page login.js)
     let userStorage = getConnectedUser();
-    console.log("TEST USERSTORAGE : " + JSON.stringify(userStorage))
-    console.log("ConnectedLock : " + JSON.stringify(connectedLock))
+
     if(getConnectedUser('token')){
       //console.log("getConnectedUser (token): " + JSON.stringify(getConnectedUser('token')))
       if(!connectedLock.current){
@@ -152,11 +151,7 @@ function App() {
 // --------------------------------------------------------------------------------
   useEffect(() => {
 
-    console.log("TEST AVANT CONNECT")
-
     connect()
-
-    console.log("TEST APRES CONNECT")
 
     let handleClose = (event) => {
         event.preventDefault()
