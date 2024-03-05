@@ -42,13 +42,13 @@ const downloadAndProcessExcel = async () => {
 //   });
 
 // Planifier l'exécution toutes les 5 minutes
-cron.schedule('*/1 * * * *', () => {
- console.log('Exécution toutes les 5 minutes');
- downloadAndProcessExcel();
-});
-
-// cron.schedule('*/5 20-00 * * *', () => {
-//   console.log('Exécution toutes les 5 minutes entre 20h et 00h');
-//   downloadAndProcessExcel();
+// cron.schedule('*/5 * * * *', () => {
+//  console.log('Exécution toutes les 5 minutes');
+//  downloadAndProcessExcel();
 // });
+
+cron.schedule('*/5 20-00 * * *', () => {
+  console.log('Exécution toutes les 5 minutes entre 20h et 00h');
+  downloadAndProcessExcel();
+});
 

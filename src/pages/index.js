@@ -1,6 +1,4 @@
 import Bornecontrol from "./BorneControl/BorneControl";
-import RegisterDevice from "./RegisterDevice/RegisterDevice";
-import DashBoard from "./DashBoard/DashBoard";
 import ShareAccess from "./ShareAccess/ShareAccess";
 import BorneSelection from "./BorneSelection/BorneSelection";
 import BorneMap from "./BorneMap/BorneMap";
@@ -20,8 +18,6 @@ import WriteInfo from "./WriteInfo/WriteInfo";
 
 export {
     Bornecontrol,
-    RegisterDevice,
-    DashBoard,
     ShareAccess,
     BorneSelection,
     BorneMap,

@@ -5,7 +5,7 @@ function Settings(){
 
     return <div>
         <div className='settings-section'>
-            <h4>Consommation</h4>
+            <h4>Page paramètres TODO</h4>
             
         </div>
     </div>
