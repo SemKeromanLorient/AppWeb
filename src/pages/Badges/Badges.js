@@ -70,6 +70,20 @@ function Badges(){
         })
     }
 
+    function updateBadge(idBadge,name,username,authorized,date){
+        postToServer('/badges/update',{
+                id: idBadge,
+                name: name,
+                username: username,
+                authorized: authorized,
+                date: date
+        },(res) => {
+            console.log("Resultat update : " + res.data)
+        },(err) => {
+            console.error("Erreur lors de l'update de badge : ", err)
+        })
+    }
+
      /**
      * Génere un fichier excel séparé en différentes parties un worksheet avec les détails des conso d'electricité, un autre avec les conso d'eau et un dernier avec des récaps de données
      */
@@ -145,10 +159,7 @@ function Badges(){
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log("Nom client/bateau:", clientNameInput);
-        console.log("Nom utilisateur:", userNameInput);
-        console.log("Date:", dateInput);
-        console.log("Autorisation d'ouverture:", authorizationInput);
+        updateBadge(row,clientNameInput,userNameInput,authorizationInput,currentDate)
       };
 
     const handleAuthorizationClick = (value) => {
@@ -199,15 +210,15 @@ function Badges(){
                             <div className="authorization-options">
                             <button
                                 type="button"
-                                className={`authorization-option ${authorizationInput === "oui" ? "selected" : ""}`}
-                                onClick={() => handleAuthorizationClick("oui")}
+                                className={`authorization-option ${authorizationInput === "true" ? "selected" : ""}`}
+                                onClick={() => handleAuthorizationClick(true)}
                             >
                                 Oui
                             </button>
                             <button
                                 type="button"
                                 className={`authorization-option ${authorizationInput === "non" ? "selected" : ""}`}
-                                onClick={() => handleAuthorizationClick("non")}
+                                onClick={() => handleAuthorizationClick(false)}
                             >
                                 Non
                             </button>
