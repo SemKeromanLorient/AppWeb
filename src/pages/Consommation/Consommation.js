@@ -338,8 +338,12 @@ function Consommation({}){
         else return false;
     }
 
+    function filterDataArn(conso){
+        if (conso.zone != "ARN") return true;
+        else return false;
+    }
+
     /**
-     * TODO
      * Filtre les données pour n'avoir que les données d'électricité en enlevant l'arn
      * @param {*} conso 
      * @returns true si la conso est elec et pas arn
@@ -399,11 +403,13 @@ function Consommation({}){
 
         // Parcours le tableau des cumuls pour ajouter si le bateau n'est pas présent dans ce nouveau tableau
         for (const row of data){
+            //On vérifie que le bateau n'existe pas déja
             for (const rowCumul of dataCumul){
                 if (rowCumul.user === row.user){
                     hasToAdd = false;
                 }
             }
+            //Si il n'existe pas alors on le créer
             if (hasToAdd){
                 const newData = {
                     user: row.user,
@@ -430,6 +436,59 @@ function Consommation({}){
         return dataCumul
         
     }
+    
+    /**
+     * Fonction permettant de trier les conso par borne afin d'en faire un cumul
+     */
+    function cumulConsoBorne(data){
+
+        console.log("Fonction cumulConsoBorne");
+
+        let dataCumul = [
+            {
+            borne: 0,
+            prise: 0,
+            conso: 0,
+            typeConso: "",
+            
+        } ];
+
+        let hasToAdd = true;
+
+        // Parcourir les données afin de créer les lignes pour chaque borne
+        for (const row of data){
+            //On vérifie que le bateau n'existe pas déja
+            for (const rowCumul of dataCumul){
+                if ((rowCumul.borne === row.borne) && (rowCumul.prise === row.prise)){
+                    hasToAdd = false;
+                }
+            }
+            //Si il n'existe pas alors on le créer
+            if (hasToAdd){
+                const newData = {
+                    borne: row.borne,
+                    prise: row.prise,
+                    conso: 0,
+                    typeConso: row.source
+                };
+                dataCumul.push(newData)
+            }
+            hasToAdd = true;
+        }
+
+        // Parcours le tableau cumul et ajoute les conso a la ligne conso de la borne
+
+        for (let i = 0; i < data.length; i++){
+            for (let j = 0; j < dataCumul.length; j++){
+                if ((data[i].borne === dataCumul[j].borne) && (data[i].prise === dataCumul[j].prise)){
+                    dataCumul[j].conso += data[i].kw
+                }
+            }
+        }
+
+        return dataCumul
+        
+    }
 
 
     /**
@@ -440,17 +499,18 @@ function Consommation({}){
         // Données facturation pour les différentes pages
         const data1 = consommations.filter(filterDataEau);
         const data2 = consommations.filter(filterDataElectricite);
+        const data3 = consommations.filter(filterDataArn); // On enleve l'arn de ces données
 
         const dataEau = Object.values(data1);
         const dataElec = Object.values(data2);
+        const dataNoArn = Object.values(data3);
 
         // définir la largeur souhaitée de la première colonne (numéro 1)
         const columnWidth = 40;
         
-        const headerEau = ['Activé par', 'A facturer a', 'Source', 'm3', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
-        const headerElec = ['Activé par', 'A facturer a', 'Source', 'KW/h', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
-        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        // Page Conso EAU Port de Peche
         const ws1 = wb.addWorksheet('Conso EAU Port de Peche');
+        const headerEau = ['Activé par', 'A facturer a', 'Source', 'm3', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
         const headerRow = ws1.addRow(headerEau);
         headerRow.eachCell((cell) => {
         cell.fill = {
@@ -459,13 +519,7 @@ function Consommation({}){
             fgColor: { argb: 'A6A6A6' } // gris
         };
         });
-        
-        // Appliquer une largeur de colonne de 40 à toutes les colonnes
-        
-        //for (let i = 0; i < 9; i++){
-          //  ws2.getColumn(i).width = 40;
-        //}
-       
+
         ws1.getColumn('A').width = columnWidth;
         ws1.getColumn('B').width = columnWidth;
         ws1.getColumn('C').width = columnWidth;
@@ -475,36 +529,11 @@ function Consommation({}){
         ws1.getColumn('G').width = columnWidth;
         ws1.getColumn('H').width = columnWidth;
         ws1.getColumn('I').width = columnWidth;
-        /** 
-        ws1.columns = [
-            {header: 'Activé par', key: 'activation', width: 40},
-            {header: 'A facturer a', key: 'facture', width: 40},
-            {header: 'Source', key: 'source', width: 40},
-            {header: 'm3', key: 'quantite', width: 40},
-            {header: "Date d'ouverture", key: 'ouverture', width: 40},
-            {header: 'Date de fermeture', key: 'fermeture', width: 40},
-            {header: 'Zone', key: 'zone', width: 40},
-            {header: 'Borne', key: 'borne', width: 40},
-            {header: 'Prise', key: 'prise', width: 40}
 
-        ] */
         ws1.autoFilter = {
             from: 'A1',
             to: 'I1',
         }
-        /** 
-        ws2.columns = [
-            {header: 'Activé par', key: 'activation', width: 40},
-            {header: 'A facturer a', key: 'facture', width: 40},
-            {header: 'Source', key: 'source', width: 40},
-            {header: 'KW/h', key: 'quantite', width: 40},
-            {header: "Date d'ouverture", key: 'ouverture', width: 40},
-            {header: 'Date de fermeture', key: 'fermeture', width: 40},
-            {header: 'Zone', key: 'zone', width: 40},
-            {header: 'Borne', key: 'borne', width: 40},
-            {header: 'Prise', key: 'prise', width: 40}
-
-        ] */
         
         // Insérer les données de chaque ligne de dataEau
         for (const row of dataEau) {
@@ -547,8 +576,9 @@ function Consommation({}){
 
     
       
-        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        // Feuille Conso ELEC Port de Peche
         const ws2 = wb.addWorksheet('Conso ELEC Port de Peche');
+        const headerElec = ['Activé par', 'A facturer a', 'Source', 'KW/h', "Date d'ouverture", "Date de fermeture", "Zone","Borne", "Prise"]
         const headerRow2 = ws2.addRow(headerElec);
         headerRow2.eachCell((cell) => {
         cell.fill = {
@@ -610,9 +640,9 @@ function Consommation({}){
             to: 'I1',
         }
 
-        const headerRecap = ['Facturer a','Cumul','Type-Conso']
-        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        // Feuille Récap
         const ws3 = wb.addWorksheet('Récap');
+        const headerRecap = ['Facturer a','Cumul','Type-Conso']
         const headerRow3 = ws3.addRow(headerRecap);
         headerRow3.eachCell((cell) => {
         cell.fill = {
@@ -660,9 +690,8 @@ function Consommation({}){
         ws3.getColumn('C').width = columnWidth;
 
         
-        // Créer une nouvelle feuille dans le classeur et ajouter les données
+        // Feuille maitre de port
         const ws4 = wb.addWorksheet('Maitre de port');
-
         const headerMaitrePort = ['Badge/utilisation par','Type-Conso','Quantité', "Date d'ouverture", 'Date de fermeture','Zone', 'Borne', 'Prise']
         const headerRow4 = ws4.addRow(headerMaitrePort);
         headerRow4.eachCell((cell) => {
@@ -742,9 +771,61 @@ function Consommation({}){
             });
         });
 
-        console.log("Data conso JSON : " + JSON.stringify(consommations));
+        // Feuille RecapBorne
+        const ws5 = wb.addWorksheet('Récap-Borne');
+        const headerRecapBorne = ['Borne','Prise', 'Consommation','Type de prise'];
+        const headerRow5 = ws5.addRow(headerRecapBorne);
+        headerRow5.eachCell((cell) => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'A6A6A6' } // gris
+            };
+        });
 
-        console.log("Data conso : " + consommations);
+        ws5.getColumn('A').width = columnWidth;
+        ws5.getColumn('B').width = columnWidth;
+        ws5.getColumn('C').width = columnWidth;
+        ws5.getColumn('D').width = columnWidth;
+        ws5.getColumn('E').width = columnWidth;
+
+        let dataCumulParBorne = cumulConsoBorne(dataNoArn)
+
+        console.log("dataCumulParBorne : " + JSON.stringify(dataCumulParBorne));
+
+        const sortedData = dataCumulParBorne
+        .filter(row => row.conso > 0) // Filtrez les lignes avec conso > 0
+        .map(row => [
+            parseInt(row.borne, 10),
+            parseInt(row.prise, 10),
+            row.conso,
+            row.typeConso
+        ])
+        .sort((a, b) => {
+            // Comparer la colonne 'Borne'
+            if (a[0] < b[0]) return -1;
+            if (a[0] > b[0]) return 1;
+
+            // Si les valeurs de 'Borne' sont égales, comparer la colonne 'Prise'
+            if (a[1] < b[1]) return -1;
+            if (a[1] > b[1]) return 1;
+
+            return 0; // Les valeurs de 'Borne' et 'Prise' sont égales
+        });
+
+        sortedData.forEach(rowData => {
+        ws5.addRow(rowData);
+        });
+
+        ws5.columns.forEach((column) => {
+            // Centrer les données dans chaque cellule
+            column.eachCell((cell) => {
+            cell.alignment = { horizontal: 'center' };
+            });
+        });
+
+        // FIN des feuilles
+        console.log("Data conso JSON : " + JSON.stringify(consommations));
 
         //Créer le fichier Excel et télécharger
         wb.xlsx.writeBuffer().then(buffer => {
