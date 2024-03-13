@@ -1,0 +1,73 @@
+/* ExpandNotif.style.css */
+.expand-notif {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .expand-notif.active {
+    background-color: #e6ffe6; /* Couleur pour les notifications activées */
+  }
+  
+  .expand-notif.inactive {
+    background-color: #ffe6e6; /* Couleur pour les notifications désactivées */
+  }
+  
+  .expand-notif h2 {
+    margin-bottom: 5px;
+  }
+
+  .expand-notif p {
+    margin-bottom: 10px;
+  }
+
+  .expand-notif-dropdown {
+    top: 50%;
+    left: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    z-index: 1;
+    border-radius: 4px;
+  }
+  
+  .expand-notif-dropdown button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    flex: 1;
+    margin-right: 5px;
+  }
+
+  .expand-notif-dropdown button:hover {
+    background-color: #d9d9d9;
+  }
+
+  .selection-logo{
+    width: 3%;
+  }
+
+  .img-select{
+    width: 100%;
+    height: 100%;
+  }
+
+  .contenu{
+    max-width: 60%;
+  }
+
+  .title{
+    max-width: 20%;
+  }
+
+  .date{
+    max-width: 10%;
+  }

@@ -19,7 +19,7 @@ import { PopupContext, ThemeContext, UserContext } from "../../contexts";
 import { currentServerState, socketFlag } from "../../utils/serverSocketCom";
 import { useNavigate } from "react-router-dom";
 import { disconnectUser, getConnectedUser } from "../../utils/storageUtil";
-import { postToServer } from "../../utils/serverHttpCom.js";
+import { getToServer, postToServer } from "../../utils/serverHttpCom.js";
 import moment from "moment";
 import { POPUP_QUESTION } from "../Popup/Popup";
 
@@ -33,9 +33,10 @@ function Header({paths}){
     const [disconnectPromptOpen, setDisconnectPromptOpen] = useState(false);
     const navigate = useNavigate();
     const {user, setUser} = useContext(UserContext)
-    const [alertOpen, setAlertOpen] = useState(false)
+    const [notifOpen, setNotifOpen] = useState(false)
     const [alerts, setAlerts] = useState([]);
-    const [newAlert, setNewAlert] = useState(0);
+    const [notifications, setNotifications] = useState([]);
+    const [newNotif, setNewNotif] = useState(0);
     const {theme, setTheme} = useContext(ThemeContext);
     const {setPopupOption} = useContext(PopupContext);
 
@@ -68,23 +69,23 @@ function Header({paths}){
 
         let count = 0;
 
-        let lastChecked = localStorage.getItem('alert-last-checked')
+        let lastChecked = localStorage.getItem('notification-last-checked')
 
-        for(let alert of alerts){
+        for(let notification of notifications){
 
-            if(!lastChecked || alert.date_time > lastChecked){
+            if(!lastChecked || notification.date > lastChecked){
                 count++;
             }
 
         }
 
-        setNewAlert(count);
+        setNewNotif(count);
 
 
 
-    }, [alerts])
+    }, [notifications])
 
-
+    
     useEffect(() => {
 
         currentServerState(setServerState)
@@ -99,6 +100,12 @@ function Header({paths}){
 
             setAlerts(data)
 
+        })
+
+        postToServer('/notification',{}, (data) => {
+            setNotifications(data.data)
+        }, (err) => {
+            console.log("ERROR : "+ err)
         })
 
     }, [])
@@ -150,12 +157,12 @@ function Header({paths}){
 
         <div className="right-side">
             <div onClick={() => {
-                setNewAlert(0)
-                setAlertOpen(true)
+                setNewNotif(0)
+                setNotifOpen(true)
                 }} className="notification-icon-container">
-                <NotificationIcon className={"notification-icon "+(alerts.reduce((prev, curr) => prev + (curr.date_time > localStorage.getItem('alert-last-checked')? 1 : 0),0 ) > 0? 'new' : '')} />
-                {newAlert > 0 && <div className="new-alert">
-                    <h5>{newAlert > 9? '9+' : newAlert}</h5>
+                <NotificationIcon className={"notification-icon "+(notifications.reduce((prev, curr) => prev + (curr.date > localStorage.getItem('notification-last-checked')? 1 : 0),0 ) > 0? 'new' : '')} />
+                {newNotif > 0 && <div className="new-alert">
+                    <h5>{newNotif > 9? '9+' : newNotif}</h5>
                 </div>}
             </div>
 
@@ -172,7 +179,7 @@ function Header({paths}){
 
         </div>
 
-       <Notifications setOpen={setAlertOpen} isOpen={alertOpen} notifications={alerts} />
+       <Notifications setOpen={setNotifOpen} isOpen={notifOpen} notifications={notifications} />
 
 
         <div className={"user-simple-info "+(!disconnectPromptOpen? "hidden": "")}>
@@ -231,12 +238,12 @@ function Header({paths}){
 
             <div className="right-side">
                 <div onClick={() => {
-                    setNewAlert(0)
-                    setAlertOpen(true)
+                    setNewNotif(0)
+                    setNotifOpen(true)
                     }} className="notification-icon-container">
-                    <NotificationIcon className={"notification-icon "+(alerts.reduce((prev, curr) => prev + (curr.date_time > localStorage.getItem('alert-last-checked')? 1 : 0),0 ) > 0? 'new' : '')} />
-                    {newAlert > 0 && <div className="new-alert">
-                        <h5>{newAlert > 9? '9+' : newAlert}</h5>
+                    <NotificationIcon className={"notification-icon "+(notifications.reduce((prev, curr) => prev + (curr.date > localStorage.getItem('notification-last-checked')? 1 : 0),0 ) > 0? 'new' : '')} />
+                    {newNotif > 0 && <div className="new-alert">
+                        <h5>{newNotif > 9? '9+' : newNotif}</h5>
                     </div>}
                 </div>
 
@@ -253,7 +260,7 @@ function Header({paths}){
 
             </div>
 
-        <Notifications setOpen={setAlertOpen} isOpen={alertOpen} notifications={alerts} />
+            <Notifications setOpen={setNotifOpen} isOpen={notifOpen} notifications={notifications} />
 
 
             <div className={"user-simple-info "+(!disconnectPromptOpen? "hidden": "")}>
@@ -306,7 +313,7 @@ function Notifications({isOpen, setOpen,  notifications}){
     useEffect(() => {
 
         if(isOpen){
-            localStorage.setItem('alert-last-checked', moment().format('YYYY-MM-DD HH:mm:ss'))
+            localStorage.setItem('notification-last-checked', moment().format('YYYY-MM-DD HH:mm:ss'))
         }
 
     }, [isOpen])
@@ -319,30 +326,30 @@ function Notifications({isOpen, setOpen,  notifications}){
 
     return <div className={"notification-container "+(isOpen? 'open': '')}>
         <div className="notification-header">
-            <h3>Alertes</h3>
+            <h3>Notifications</h3>
             <div onClick={handleClose} className="close-notification">
                 <CloseBurgerMenuIcon className={"close-notifications "} />
             </div>
         </div>
         <div className="alert-list">
             {notifications.sort((a, b) => {
-                if(a.date_time > b.date_time )return -1;
-                if(a.date_time < b.date_time )return 1;
+                if(a.date > b.date )return -1;
+                if(a.date < b.date )return 1;
                 return 0;
                 }).map((item, index) => <NotificationItem key={index} item={item} />)}
         </div>
 
-        {notifications.length <= 0 && <h4 className="empty-alert">Aucune alerte</h4>}
+        {notifications.length <= 0 && <h4 className="empty-alert">Aucune notification</h4>}
     </div>
 
 }
 
 function NotificationItem({item}){
 
-    return <div className={"alert-item-container "+ ((!localStorage.getItem('alert-last-checked') || localStorage.getItem('alert-last-checked') < item.date_time)? 'new' : '')}>
+    return <div className={"alert-item-container "+ ((!localStorage.getItem('notification-last-checked') || localStorage.getItem('notification-last-checked') < item.date)? 'new' : '')}>
         <h4>{item.title}</h4>
-        <h4>Date: {moment(item.date_time).format('DD/MM/YYYY HH:mm')}</h4>
-        <h5>Détail: {item.body}</h5>
+        <h4>Date: {moment(item.date).format('DD/MM/YYYY HH:mm')}</h4>
+        <h5>Détail: {item.content}</h5>
     </div>
 
 

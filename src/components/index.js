@@ -15,6 +15,7 @@ import Info from "./Info/Info.js";
 import Ventes from "./Ventes/Ventes.js";
 import Maree from "./Maree/Maree.js";
 import OrdreCriee from "./OrdreCriee/OrdreCriee.js";
+import ExpandNotif from "./ExpandNotif/ExpandNotif.js";
 export {
     Header,
     Popup,
@@ -31,5 +32,6 @@ export {
     Info,
     Ventes,
     Maree,
-    OrdreCriee
+    OrdreCriee,
+    ExpandNotif
 }

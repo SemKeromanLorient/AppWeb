@@ -74,7 +74,7 @@ label {
 }
 .add-button-badge {
   padding: 30px 40px;
-  background-color: #4caf50;
+  background-color: var(--button-color);
   border: none;
   border-radius: 5px;
   font-family: Arial, sans-serif;
@@ -85,7 +85,7 @@ label {
   font-weight: bold;
 }
 .add-button-badge:hover {
-  background-color: #ccc;
+  background-color: var(--button-hover-color);
 }
 .title-new-badge{
   text-align: center;
@@ -94,9 +94,7 @@ label {
   font-weight: bold;
   margin-bottom: 30px;
 }
-.colonne-test{
-  
-}
+
 
 .autorisation{
   display: flex;

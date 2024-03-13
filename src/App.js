@@ -24,7 +24,7 @@ import {ReactComponent as PortIcon} from './assets/icons/MaitreDePort2.svg'
 
 import connectionAnimation from "./assets/lotties/wifi-connection.json";
 
-import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, Facturation, Login, Rules, Settings, ShareAccess, UserManager, Badges, SwitchPages, WriteInfo} from './pages';
+import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, Facturation, Login, Rules, Notification, ShareAccess, UserManager, Badges, SwitchPages, WriteInfo} from './pages';
 import { PopupContext, ToastContext, UserContext, ContextMenuContext, AffichageContextProvider} from "./contexts";
 import React,{ useEffect, useMemo, useRef, useState } from "react";
 import { connectAutomate, connectToServer, disconnectSocket, reconnectSavedFlag } from "./utils/serverSocketCom";
@@ -93,7 +93,7 @@ function App() {
            */
           if(data.valid){
 
-            console.log(data)
+            // console.log(data)
             //On setup le user dans le localstorage
             setConnectedUser(data.user)
 
@@ -230,7 +230,7 @@ function App() {
                                       {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
                                       {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
                                       {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
-                                      {name: "Paramètres", path: "/supervision/settings", Icon: SettingsIcon, secure: "SETTINGS"},
+                                      {name: "Notification", path: "/supervision/notifications", Icon: SettingsIcon, secure: "NOTIFICATION"},
                                       {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                                       {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
                                       {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
@@ -254,7 +254,7 @@ function App() {
                                     <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                     <Route path="supervision/map/:borne_id/prises" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
                                     <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
-                                    <Route path="supervision/settings" element={<ProtectedRoute useFor={'SETTINGS'} redirect={'/supervision/'}><Settings /></ProtectedRoute>}/>
+                                    <Route path="supervision/notifications" element={<ProtectedRoute useFor={'NOTIFICATION'} redirect={'/supervision/'}><Notification /></ProtectedRoute>}/>
                                     <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
                                     <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
                                     <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>

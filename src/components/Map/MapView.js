@@ -30,11 +30,11 @@ function MapView({bornes, setCurrentSelected, currentlySelected}){
 
     const {theme} = useContext(ThemeContext);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-      console.log(currentlySelected)
+    //   console.log(currentlySelected)
 
-    }, [currentlySelected])
+    // }, [currentlySelected])
 
 
     const layer3D = {

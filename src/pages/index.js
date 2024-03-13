@@ -7,7 +7,7 @@ import Login from "./Login/Login";
 import UserManager from "./UserManager/UserManager";
 import Rules from "./Rules/Rules";
 import Consommation from "./Consommation/Consommation";
-import Settings from "./Settings/Settings";
+import Notification from "./Notification/Notification";
 import Facturation from "./Facturation/Facturation";
 import Absences from "./Absences/Absences";
 import BorneList from "./BorneList/BorneList";
@@ -26,7 +26,7 @@ export {
     UserManager,
     Rules,
     Consommation,
-    Settings,
+    Notification,
     Facturation,
     Absences,
     BorneList,

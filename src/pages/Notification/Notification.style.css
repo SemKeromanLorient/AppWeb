@@ -1,0 +1,175 @@
+
+.col-left{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 100vh;
+    padding-left: 1%;
+}
+
+.col-right{
+  width: 50%;
+  margin-left: 10px;
+  padding-right: 1%;
+  margin-right: 0.2%;
+}
+
+  
+  .notif-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .notif-form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    height: 80%;
+    position: relative; /* Ajout de la position relative au conteneur */
+  }
+  
+  .notif-label {
+    display: block;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  
+  .notif-input {
+    width: 100%;
+    height: 5%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .notif-input-content{
+    width: 100%;
+    height: 150px; /* Ajustez selon vos besoins */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+  .notif-form-button {
+    width: 20%;
+    padding: 10px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    position:absolute;
+    bottom: 0;
+    margin-bottom: 8%;
+  }
+  
+  .notif-form-button:hover {
+    background-color: var(--button-hover-color);
+  }
+
+  .notif-form-button-2 {
+    width: 20%;
+    padding: 10px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    bottom: 0;
+    margin-bottom: 8%;
+  }
+
+  .notif-form-button:hover {
+    background-color: var(--button-hover-color);
+  }
+
+  .menu-bouton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap:5%;
+  }
+
+  .menu-bouton-2 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5%;
+    margin-left: 8%;
+  }
+
+  .bouton-list{
+    width: 25%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: var(--button-color);
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+  }
+
+  .sub-menu-bouton-2{
+    margin-left: 5%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    gap:1%;
+  }
+
+  .notif-form-title{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .notif-title{
+    color: white;
+    margin-bottom: 10%;
+  }
+
+  .sub-interface {
+    position: absolute;
+    top: 100%; /* Positionne la sous-interface juste en dessous de l'élément cliqué */
+    left: 0;
+    background-color: #f0f0f0; /* Couleur de fond de la sous-interface */
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+.select-label {
+  display: block;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.select-input {
+  width: 99%;
+  height: 5%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.select-input option {
+  background-color: white; /* Couleur d'arrière-plan des options */
+}
+
+.select-input option:hover {
+  background-color: #f0f0f0; /* Couleur d'arrière-plan lorsqu'on survole une option */
+}
