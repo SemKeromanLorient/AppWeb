@@ -34,7 +34,6 @@ function Header({paths}){
     const navigate = useNavigate();
     const {user, setUser} = useContext(UserContext)
     const [notifOpen, setNotifOpen] = useState(false)
-    const [alerts, setAlerts] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [newNotif, setNewNotif] = useState(0);
     const {theme, setTheme} = useContext(ThemeContext);
@@ -53,6 +52,10 @@ function Header({paths}){
       };
 
     useEffect(() => {
+        console.log("TEST USER : " + JSON.stringify(user))
+    },[user])
+
+    useEffect(() => {
 
         let location = window.location.pathname;
 
@@ -64,6 +67,10 @@ function Header({paths}){
 
 
     }, [burgerMenuOpen])
+
+    useEffect(() => {
+        fetchNotifAndFilter()
+    },[currentPageName])
 
     useEffect(() => {
 
@@ -81,8 +88,6 @@ function Header({paths}){
 
         setNewNotif(count);
 
-
-
     }, [notifications])
 
     
@@ -96,19 +101,28 @@ function Header({paths}){
         socketFlag('disconnection', () => setServerState(false))
 
 
-        postToServer('/alerts', {}, ({data}) => {
+        fetchNotifAndFilter()
 
-            setAlerts(data)
+    }, [])
 
-        })
-
+    function fetchNotifAndFilter(){
         postToServer('/notification',{}, (data) => {
-            setNotifications(data.data)
+        let currentData = data.data;
+        console.log("TEST FECTHDATA : " + JSON.stringify(currentData))
+        //Premier filtre
+        currentData = currentData.filter(notification => {
+            return notification.user_interface === user.access_level
+        })
+        //Deuxieme filtre
+        currentData = currentData.filter(notification => {
+            const pages = notification.page.split(',').map(page => page.trim());
+            return pages.includes(currentPageName);
+        });            
+        setNotifications(currentData)
         }, (err) => {
             console.log("ERROR : "+ err)
         })
-
-    }, [])
+    }
 
     function handleToggleMenu(){
 

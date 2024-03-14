@@ -7,6 +7,8 @@
     padding: 10px;
     border: 1px solid #ccc;
     cursor: pointer;
+    height:30%;
+    overflow: hidden;
   }
   
   .expand-notif.active {
@@ -15,14 +17,6 @@
   
   .expand-notif.inactive {
     background-color: #ffe6e6; /* Couleur pour les notifications désactivées */
-  }
-  
-  .expand-notif h2 {
-    margin-bottom: 5px;
-  }
-
-  .expand-notif p {
-    margin-bottom: 10px;
   }
 
   .expand-notif-dropdown {
@@ -52,7 +46,8 @@
   }
 
   .selection-logo{
-    width: 3%;
+    max-width: 3%;
+    min-width: 3%;
   }
 
   .img-select{
@@ -61,13 +56,31 @@
   }
 
   .contenu{
+    text-align: center;
     max-width: 60%;
+    min-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    margin-bottom: 10px;
   }
 
-  .title{
+  .titre{
+    text-align: center;
     max-width: 20%;
+    min-width: 20%;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    margin-bottom: 5px;
   }
 
   .date{
+    text-align: center;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    font-size: 14px;
     max-width: 10%;
+    min-width: 10%;
   }

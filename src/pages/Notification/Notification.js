@@ -9,7 +9,7 @@ function Notification(){
     const [formData, setFormData] = useState({
         title: '',
         content: '',
-        page: '',
+        page: [],
         user: '',
       });
 
@@ -24,7 +24,7 @@ function Notification(){
     const [currentId, setCurrentId] = useState(null);
 
     const [selectedNotif, setSelectedNotif] = useState([]);
-
+    
     useEffect(() => {
         fetchNotifications()
         fetchPage()
@@ -49,11 +49,31 @@ function Notification(){
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+        if (name === 'page') {
+            // Vérifiez si la valeur est déjà dans formData.page
+            if (formData.page.includes(value)) {
+                // Si la valeur est présente, la supprimer
+                const updatedPage = formData.page.filter((selectedValue) => selectedValue !== value);
+                setFormData({
+                    ...formData,
+                    page: updatedPage,
+                });
+            } else {
+                // Si la valeur n'est pas présente, l'ajouter
+                setFormData({
+                    ...formData,
+                    page: [...formData.page, value],
+                });
+            }
+        } else {
+            // Si ce n'est pas le champ 'page', mettez à jour normalement
             setFormData({
                 ...formData,
                 [name]: value,
             });
+        }
     };
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -67,6 +87,7 @@ function Notification(){
         if (modeFormulaire === 'insert'){
             postToServer('/notification/insert',{titre,contenu,page,interface_utilisateur,activer},({res}) => {
                 console.log("Resultat insert : " + JSON.stringify(res))
+                handleReset()
                 fetchNotifications()
             })
         } else if (modeFormulaire === 'edit') {
@@ -101,7 +122,7 @@ function Notification(){
         setFormData({
             title: '',
             content: '',
-            page: '',
+            page: [],
             user: '',
         });
         setModeFormulaire('insert')
@@ -190,6 +211,16 @@ function Notification(){
             setDataUserAccess(data.map((user) => user.user_type))
         })
     }
+
+    const isPageSelected = (pageName) => {
+        console.log("isPageSelected TEST")
+        return formData.page.includes(pageName);
+    };
+
+    function testFunction(){
+        console.log("CLIQUE SELECT")
+    }
+
     // <label className='notif-label'>
     //     Page :
     //     <input className='notif-input' type="text" name="page" value={formData.page} onChange={handleInputChange} />
@@ -228,12 +259,20 @@ function Notification(){
                                 <select 
                                 className='select-input'
                                 value={formData.page}
+                                onClick={(e) => e.stopPropagation()}                                
                                 onChange={handleInputChange}
                                 name="page"
                                 >
+                                    <option className='unselected-option' value="">
+                                        Sélectionnez une page
+                                    </option>
                                     {dataPages.map((displayName, index) => (
-                                        <option key={index} value={displayName}>
-                                            {displayName}
+                                        <option
+                                         key={index} 
+                                         value={displayName}
+                                         className={isPageSelected(displayName) ? 'selected-option' : 'unselected-option'}
+                                         >
+                                        {displayName}
                                         </option>
                                     ))}
                                 </select>
@@ -248,16 +287,17 @@ function Notification(){
                                     Sélectionnez le type d'utilisateur :
                                 </label>
                                 <select 
-                                className='select-input'
-                                value={formData.user}
-                                onChange={handleInputChange}
-                                name="user"
-                                >
+                                    className='select-input-2'
+                                    value={formData.user}
+                                    onChange={handleInputChange}
+                                    name="user"
+                                    >
+                                    <option className='unselected-option' value="">Sélectionnez le type d'utilisateur</option>
                                     {dataUserAccess.map((displayName, index) => (
                                         <option key={index} value={displayName}>
                                             {displayName}
                                         </option>
-                                ))}
+                                    ))}
                                 </select>
                             </div>
                         )

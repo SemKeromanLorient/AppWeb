@@ -166,10 +166,33 @@
   box-sizing: border-box;
 }
 
-.select-input option {
-  background-color: white; /* Couleur d'arrière-plan des options */
-}
 
 .select-input option:hover {
-  background-color: #f0f0f0; /* Couleur d'arrière-plan lorsqu'on survole une option */
+  background-color: #f0f0f0;
+}
+
+.selected-option {
+  background-color: greenyellow;
+}
+
+.unselected-option{
+  background-color: white;
+}
+
+.select-input-2 {
+  width: 99%;
+  height: 5%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.select-input-2 option{
+  background-color: white;
+}
+
+.select-input-2 option:hover {
+  background-color: #f0f0f0;
 }
