@@ -17,9 +17,11 @@ function BorneMap(){
     let reloadCount = 0;
 
     useEffect(() => {
-
         socketFlag('bornes', (bornes) => {
             //Le filter !!borne permet de vérifier que borne n'est pas null, undefined, égale à 0 ou vide
+            if(bornes.filter((borne)=> !!borne)){
+                console.error("Error, borne null/undefined/empty ou égale à 0")
+            }
             setBornes(bornes.filter((borne) => !!borne))
         })
 
@@ -57,8 +59,8 @@ function BorneMap(){
 
 
     useEffect(() => {
-
-    }, [currentlySelected])
+        console.log("Info borne : " + JSON.stringify(bornes))
+    }, [bornes])
    
     
 

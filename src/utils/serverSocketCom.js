@@ -1,9 +1,14 @@
+// import { useContext } from "react";
+// import { PopupContext } from "../../contexts";
+// import { POPUP_ERROR } from "../../components/Popup/Popup";
+
 const { io } = require("socket.io-client");
 let socket;
 let listenerState;
 let activeListeners = []
 const SERVER_LOCAL_IP = "http://192.168.130.102/";
 const DISTANT_DNS = "https://service.keroman.fr/";
+// const {setPopupOption} = useContext(PopupContext);
 
 function reconnectSavedFlag(){
 
@@ -19,12 +24,12 @@ function reconnectSavedFlag(){
 }
 
 
-//Probleme lors de l'utilisation de ceux-ci, réseau cassé (ne fonctionne que si on a été déco du réseau)
+//Probleme lors de l'utilisation de ceux-ci, si on déco-reco on perds la possibilité de se connecter car 2 comptes co
 function connectToServer(token, callback){
-
+    console.log("TEST connectToServer")
     //Avec ce if on créer une connexion unique 
     if(!socket || !socket.connected ){
-    //if(!socket || !socket.connected ){
+        console.log('TEST Connexion unique success')
         socket = io("https://service.keroman.fr/", {
             query:  {
                 token,
@@ -65,6 +70,8 @@ function connectToServer(token, callback){
             if(listenerState)listenerState(true)
         })
     
+    } else {
+        throw new Error("La connexion est déjà établie.");
     }
     
 }
@@ -75,9 +82,7 @@ function currentServerState(callback){
 }
 
 function socketFlag(name, callback){
-
     if(socket){
-
         removeSocketFlag(name)
 
         let index = activeListeners.findIndex((listener, index) => name === listener.name)

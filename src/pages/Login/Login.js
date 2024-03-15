@@ -30,21 +30,27 @@ function Login(){
         }, ({data}) => {
 
             if(data.valid){
-                //Problème ici, data valid mais impossible de faire connectToServer
-                connectToServer(data.user.token, (connected) => {
-                    console.log("TEST CONNECTOSERVER")
-                    setConnectedUser(data.user)
-    
-                    if(connected){
-                        setUser(data.user)
-                    }else{
-                        setUser(null);
-                        
-                    }
-                    console.log("TEST")
-    
-                })
-                console.log("TEST FIN IF")
+                try {
+                    connectToServer(data.user.token, (connected) => {
+                        setConnectedUser(data.user)
+                        if(connected){
+                            setUser(data.user)
+                        } else {
+                            setUser(null);
+                        }
+                        console.log("TEST")
+                    });
+                    console.log("TEST FIN IF");
+                } catch (error) {
+                    console.error("Erreur lors de la tentative de connexion :", error);
+                    setPopupOption({
+
+                        secondaryText: 'Un utilisateur est déja connecté sur ce compte',
+                        acceptText: 'Tentez de vous déconnecter',
+                        type: POPUP_ERROR,
+        
+                    })
+                }
             }
 
         }, () => {
@@ -59,9 +65,8 @@ function Login(){
 
         })
         
-
     }
-
+    
     useEffect(() => {
         document.title = 'Supervision | Connexion'
     }, [])
