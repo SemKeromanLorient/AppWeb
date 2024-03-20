@@ -402,20 +402,50 @@ function OrdreCriee(){
                             <div className='tablesDroite'>
                                 <h2 className='titleCotiere'>Cotiere 2</h2>
                                 <table className='tableTirage2'>
-                                    <thead>
-                                    <tr>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody className='adjustementTable'>
-                                        {cotiere2.map((item, index) => ( 
-                                            <tr className='ligneAffichageCot2' key={index}>
-                                                <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
-                                                <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
+                                    {
+                                        numRowsCot2 > 16 && (
+                                            <>
+                                            <thead>
+                                                <tr>
+                                                    <th className='subTitle'>Numéro</th>
+                                                    <th className='subTitle'>Nom</th>
+                                                    <th className='subTitle'>Numéro</th>
+                                                    <th className='subTitle'>Nom</th>
+                                                </tr>
+                                                </thead>
+                                            <tbody className='adjustementTable'>
+                                                {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => ( 
+                                                    <tr className='ligneAffichageCot2' key={index}>
+                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
+                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
+                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            </>
+                                        )
+                                    } 
+                                    {
+                                        numRowsCot2 <=16 && (
+                                            <>
+                                            <thead>
+                                                <tr>
+                                                    <th className='subTitle'>Numéro</th>
+                                                    <th className='subTitle'>Nom</th>
+                                                </tr>
+                                                </thead>
+                                            <tbody className='adjustementTable'>
+                                                {cotiere2.map((item, index) => ( 
+                                                    <tr className='ligneAffichageCot2' key={index}>
+                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
+                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            </>
+                                        )
+                                    }
 
                                 </table>
                             </div>
