@@ -27,12 +27,10 @@ function BorneMap(){
 
 
         postToServer('/bornes/', {}, ({data}) => {
-
             setBornes(data.filter((borne) => !!borne))
 
         }, (err) => {
-
-            console.log(err)
+            console.log("Erreur lors de la récupération des bornes : ",err)
 
         })
         
@@ -40,8 +38,7 @@ function BorneMap(){
             setBadges(data.badge)
 
         }, (err) => {
-
-            console.log(err)
+            console.log("Erreur lors de la récupération des badges : ",err)
 
         })
          

@@ -144,7 +144,7 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                 declineText: 'Non, revenir en arrière',
                 onAccept: () => {
 
-                    postToServer('/user/update', {user: {
+                    postToServer('/userWeb/update', {user: {
                         user_id: user.user_id,
                         username,
                         name,
@@ -169,7 +169,7 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
 
         }else{
 
-            postToServer('/user/create', {
+            postToServer('/userWeb/create', {
                 username,
                 name,
                 lastname,

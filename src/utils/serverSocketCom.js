@@ -6,7 +6,7 @@ const { io } = require("socket.io-client");
 let socket;
 let listenerState;
 let activeListeners = []
-const SERVER_LOCAL_IP = "http://192.168.130.102/";
+const SERVER_LOCAL_IP = "http://192.168.130.10/";// const SERVER_LOCAL_IP = "http://192.168.130.102/";
 const DISTANT_DNS = "https://service.keroman.fr/";
 // const {setPopupOption} = useContext(PopupContext);
 
@@ -26,7 +26,6 @@ function reconnectSavedFlag(){
 
 //Probleme lors de l'utilisation de ceux-ci, si on déco-reco on perds la possibilité de se connecter car 2 comptes co
 function connectToServer(token, callback){
-    console.log("TEST connectToServer")
     //Avec ce if on créer une connexion unique 
     if(!socket || !socket.connected ){
         console.log('TEST Connexion unique success')

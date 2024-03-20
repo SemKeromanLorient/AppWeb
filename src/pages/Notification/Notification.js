@@ -85,14 +85,14 @@ function Notification(){
         let activer = 1;
 
         if (modeFormulaire === 'insert'){
-            postToServer('/notification/insert',{titre,contenu,page,interface_utilisateur,activer},({res}) => {
+            postToServer('/notificationWeb/insert',{titre,contenu,page,interface_utilisateur,activer},({res}) => {
                 console.log("Resultat insert : " + JSON.stringify(res))
                 handleReset()
                 fetchNotifications()
             })
         } else if (modeFormulaire === 'edit') {
             let id = currentId;
-            postToServer('/notification/update',{id,titre,contenu,page,interface_utilisateur, activer},({res}) => {
+            postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer},({res}) => {
                 console.log("Resultat update : " + JSON.stringify(res))
                 handleReset()
                 fetchNotifications()
@@ -111,7 +111,7 @@ function Notification(){
       };
 
     const handleEdit = (id) => {
-        postToServer('/notification/fetchOne',{id},({data}) => {
+        postToServer('/notificationWeb/fetchOne',{id},({data}) => {
             setModeFormulaire('edit')
             updateFormData(data);
             setCurrentId(id);
@@ -157,7 +157,7 @@ function Notification(){
     const handleDeleteAll = () => {
         for (let i = 0; i < selectedNotif.length; i++){
             let id = selectedNotif[i].id
-            postToServer('/notification/delete',{id},({res}) => {
+            postToServer('/notificationWeb/delete',{id},({res}) => {
                 console.log("Resultat delete : " + JSON.stringify(res))
                 fetchNotifications()
             })
@@ -172,7 +172,7 @@ function Notification(){
             let page = selectedNotif[i].page;
             let interface_utilisateur = selectedNotif[i].user_interface;
             let activer = 1;
-            postToServer('/notification/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
+            postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
                 console.log("Resultat activation notification : " + JSON.stringify(res))
                 fetchNotifications()
             })
@@ -187,7 +187,7 @@ function Notification(){
             let page = selectedNotif[i].page;
             let interface_utilisateur = selectedNotif[i].user_interface;
             let activer = 0;
-            postToServer('/notification/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
+            postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
                 console.log("Resultat activation notification : " + JSON.stringify(res))
                 fetchNotifications()
             })
@@ -195,7 +195,7 @@ function Notification(){
     }
 
     function fetchNotifications(){
-        postToServer('/notification',{},({data}) => {
+        postToServer('/notificationWeb',{},({data}) => {
             setDataNotifs(data)
         })
     }

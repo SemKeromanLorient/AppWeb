@@ -37,7 +37,7 @@
         };
           
         const handleDelete = () => {
-            postToServer('/notification/delete',{id},({res}) => {
+            postToServer('/notificationWeb/delete',{id},({res}) => {
                 console.log("Resultat delete : " + JSON.stringify(res))
                 onDelete && onDelete(index);
             })
@@ -51,7 +51,7 @@
             if (activate === 0){
                 activer = 1;
             }
-            postToServer('/notification/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
+            postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
                 console.log("Resultat activation notification : " + JSON.stringify(res))
                 onUpdate && onUpdate();
             })

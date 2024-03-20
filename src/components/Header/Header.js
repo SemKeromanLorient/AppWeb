@@ -106,7 +106,7 @@ function Header({paths}){
     }, [])
 
     function fetchNotifAndFilter(){
-        postToServer('/notification',{}, (data) => {
+        postToServer('/notificationWeb',{}, (data) => {
         let currentData = data.data;
         console.log("TEST FECTHDATA : " + JSON.stringify(currentData))
         //Premier filtre

@@ -10,7 +10,7 @@ function postToServer(uri, data, onSuccess, onError){
     if(!token)console.log("AUCUN TOKEN TROUVÉ");
 
 
-    Axios.post("https://service.keroman.fr/api/supervision"+uri, data).then(onSuccess)
+    Axios.post("https://service.keroman.fr/api"+uri, data).then(onSuccess)
     .catch(onError)
 }
 //https://service.keroman.fr/api/supervision
@@ -21,9 +21,7 @@ function getToServer(uri, data, onSuccess, onError){
     if(token)data.token = token;
     if(!token)console.log("AUCUN TOKEN TROUVÉ");
 
-    let requeteAxios = "https://service.keroman.fr/api/supervision" + uri
-
-    Axios.get("https://service.keroman.fr/api/supervision"+uri, data).then(onSuccess)
+    Axios.get("https://service.keroman.fr/api"+uri, data).then(onSuccess)
     .catch(onError)
 }
 //module.exports = {postToServer, getToServer}
