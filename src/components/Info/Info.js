@@ -33,7 +33,7 @@ function Info() {
 
     
     function fetchFont(){
-        getToServer('/font2/',{},({data}) => {
+        getToServer('/font/',{},({data}) => {
             SetFontSize1((data[0]).Size1)
             SetFontSize2((data[0]).Size2)
             SetFontSize3((data[0]).Size3)

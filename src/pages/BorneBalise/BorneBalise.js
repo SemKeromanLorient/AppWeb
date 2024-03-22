@@ -77,7 +77,7 @@ function BorneBalise(){
 
             let bornes = data;
 
-            postToServer('/bornes/zones', {}, ({data}) => {
+            postToServer('/zones/', {}, ({data}) => {
 
                 let zones = data;
 

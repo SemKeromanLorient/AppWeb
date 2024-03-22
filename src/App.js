@@ -80,7 +80,7 @@ function App() {
 
         console.log('Send need-update')
         //Update du profile connecté
-        postToServer('/need-upgrade',{}, (({data}) => {
+        postToServer('/utility/need-upgrade',{}, (({data}) => {
           /**
            * Renvoi un objet de ce type :
            * valid: true,

@@ -158,6 +158,9 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
 
     }, [])
 
+    useEffect(() => {
+        console.log("TEST DONNEES ZONES : " + JSON.stringify(zones))
+    },[zones])
 
     useEffect(() => {
 
@@ -190,7 +193,7 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
     function fetchUserTypes(){
 
 
-        postToServer('/users-types', {}, ({data}) => {
+        postToServer('/rules/users-types', {}, ({data}) => {
 
             setUsersTypes(data.map((item) => item.user_type))
             
@@ -206,8 +209,7 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
 
     function fetchZones(){
      
-        postToServer('/zones', {}, ({data}) => {
-
+        postToServer('/zones', {}, ({error, data}) => {
             setZones(data.map((zone) => {
                return {name: zone.name, id: zone._id}
             }))

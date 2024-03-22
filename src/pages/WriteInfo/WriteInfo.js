@@ -167,7 +167,7 @@ const WriteInfo = () => {
   }
 
   function updateFontSize2(size,index){
-    postToServer('/font2/update', {size,index}, ({data}) => {
+    postToServer('/font/update', {size,index}, ({data}) => {
       console.log("Success, update : " + JSON.stringify(data));
     })
   }
@@ -207,7 +207,7 @@ const WriteInfo = () => {
   }
 
   function fetchFontSize(){
-    getToServer('/font2/', {} , ({data}) => {
+    getToServer('/font/', {} , ({data}) => {
       setCurrentPolicySize1(data[0].Size1);
       setCurrentPolicySize2(data[0].Size2);
       setCurrentPolicySize3(data[0].Size3);

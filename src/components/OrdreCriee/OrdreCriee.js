@@ -161,7 +161,7 @@ function OrdreCriee(){
 
     async function fetchJSON() {
         try {
-          const response = await axios.get('https://service.keroman.fr/api/get-json');
+          const response = await axios.get('https://service.keroman.fr/api/utility/get-json');
           
           if (response.status === 200) {
             const data = response.data;

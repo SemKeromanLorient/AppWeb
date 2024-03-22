@@ -29,7 +29,7 @@ function UserManager(){
     function fetchUserList(){
 
         
-        postToServer('/users', {}, ({data}) => {
+        postToServer('/userWeb', {}, ({data}) => {
 
             setUserList(data)
 
@@ -273,7 +273,7 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                 declineText: 'Non, revenir en arrière',
                 onAccept: () => {
 
-                    postToServer('/delete-user', {
+                    postToServer('/userWeb/delete', {
                         user_id: user.user_id
                     }, 
                     () => {
@@ -298,7 +298,7 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
     function fetchUserTypes(){
 
         
-        postToServer('/users-types', {}, ({data}) => {
+        postToServer('/rules/users-types', {}, ({data}) => {
 
             setUserTypes(data.map((item) => item.user_type))
             

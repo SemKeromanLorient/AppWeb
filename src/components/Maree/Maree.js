@@ -87,7 +87,7 @@ function Maree() {
 async function getScript() {
   try { 
     return new Promise((resolve, reject) => {
-      getToServer('/fetch-url', {}, ({ data }) => {
+      getToServer('/utility/fetch-url', {}, ({ data }) => {
         resolve(data);
       }, (error) => {
         reject(error);
