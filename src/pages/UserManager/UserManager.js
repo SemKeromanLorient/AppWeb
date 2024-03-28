@@ -43,6 +43,8 @@ function UserManager(){
 
     useEffect(() => {
 
+        console.log("currentUser Change : " + JSON.stringify(currentUser))
+
         setFormOpen(!!currentUser);
 
     }, [currentUser])
@@ -114,17 +116,18 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
     const [firstname, setFirstName] = useState("");
     const [lastname, setlastName] = useState("");
     const [groups, setGroups] = useState([]);
-    
     const [usage, setUsage] = useState('');
     const [value, setValue] = useState('');
-
-    const [codes, setCodes] = useState([]);
 
 
     const [password, setPassword] = useState("");
     const [accessLevel, setAccessLevel] = useState("");
     const [userTypes, setUserTypes] = useState([])
     const {setPopupOption} = useContext(PopupContext);
+
+    useEffect(() => {
+        console.log("Info user : " + JSON.stringify(user))
+    },[user])
 
     //Empeche les bugs avec sortable table
     const [val,setVal] = useState("");  
@@ -142,15 +145,16 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                 secondaryText: 'Tout utilisateur connecté avec ces identifiant sera mis à jour.',
                 acceptText: 'Oui, modifier l\'utilisateur',
                 declineText: 'Non, revenir en arrière',
+                //Ne se passe rien car coté backend, rien n'est fait
                 onAccept: () => {
 
-                    postToServer('/userWeb/update', {user: {
+                    postToServer('/userWeb/update', {
                         user_id: user.user_id,
                         username,
                         name,
                         password : password !== "xxxxxx"? password : null,
                         access_level: accessLevel
-                    }}, 
+                    }, 
                     () => {
                         if(onValid)onValid()
                         handleCancel()
@@ -168,29 +172,37 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
           
 
         }else{
-
-            postToServer('/userWeb/create', {
-                username,
-                name,
-                lastname,
-                firstname,
-                password,
-                groups,
-                codes
-            }, 
-            () => {
-                if(onValid)onValid()
-                handleCancel()
-            }, () => {
-
-                alert('Error')
-                handleCancel()
-
-            })
-
+            createUser()
         }
 
 
+    }
+
+    function createUser(){
+        const groupNames = groups.map(group => group.name);
+        const groupsNameStr = groupNames.join(', ');
+        postCreateUser(groupsNameStr)
+    }
+
+    function postCreateUser(groups){
+        postToServer('/userWeb/create', {
+            username,
+            name,
+            lastname,
+            firstname,
+            password,
+            groups
+        }, 
+        () => {
+            if(onValid){
+                handleCancel()
+            }
+        }, () => {
+
+            alert('Error')
+            handleCancel()
+
+        })
     }
 
     function addGroup(){
@@ -202,19 +214,6 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
 
     }
 
-    function addCode(){
-
-        let copy = [...codes];
-        copy.push({
-            usage,
-            value
-        })
-        setCodes(copy)
-        setUsage('');
-        setValue('');
-
-    }
-
     useEffect(() => {
 
         fetchUserTypes();
@@ -222,10 +221,10 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
     }, [])
 
     function handleCancel(){
-        if(user){
-            resetInputs()
-            setUser(null);
-        }else setFormOpen(false);
+        resetInputs()
+        onValid()
+        setUser(null)
+        setFormOpen(false)
     }
 
     useEffect(() => {
@@ -240,8 +239,9 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
         setUsername("")
         setAccessLevel("")
         setFirstName("")
-        setlastName('')
+        setlastName("")
         setName("")
+        setGroups([])
     }
 
     useEffect(() => {
@@ -340,32 +340,8 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                     </div>
 
                     <div className="form-input-section">
-                        <h3>Superieur hiérarchique</h3>
-                        <select required className="select-type">
-                            {userList.map((user) => <option>{user.name}</option>)}
-                        </select>
-                    </div>
-
-                    <div className="form-input-section">
                         <h3>Mot de passe *</h3>
                         <input placeholder="ex: P@ssw0rd..." value={password} onChange={({target}) => setPassword(target.value)} autoComplete="new-password" type={"password"} />
-                    </div>
-
-
-                    <div className="form-input-section">
-                        <h3>Code divers (Compta, badge...)</h3>
-                        <SortableTable emptyMessage={"Aucun code"} data={codes} header={[
-                            {label: "Utiliter", column: "usage"},
-                            {label: "Valeur", column: "value"}
-                        ]} 
-                        setVal={setVal}
-                        />
-                        <div className="row-input">
-                            <input onChange={({target}) => setUsage(target.value)} value={usage} placeholder="Utilité..." />
-                            <input onChange={({target}) => setValue(target.value)} value={value} placeholder="Valeur..." />
-                            <input className="confirm-button" onClick={addCode} type={"button"} value={"Ajouter"} />
-
-                        </div>
                     </div>
                   
 
@@ -384,8 +360,6 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
                             <input className="confirm-button" onClick={addGroup} type={"button"} value={"Ajouter"} />
 
                         </div>
-                    
-                        
                        
                     </div>
 
