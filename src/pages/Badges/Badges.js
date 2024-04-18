@@ -285,7 +285,7 @@ function Badges(){
                     </div>
                 </div>
                 <div className="col colonne-droite">
-                    <button type="submit" className="add-button-badge">EDIT</button>
+                    <button type="submit" className="add-button-badge">Modifier</button>
                     <button className="del-button-badge" onClick={deleteBadge} style={{marginLeft: 10}}>Supprimer</button>
                 </div>
             </div>
