@@ -5,6 +5,10 @@ import { SortableTable } from "../../components";
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { Source } from "react-map-gl";
+import { PopupContext, UserContext } from "../../contexts";
+import { POPUP_ERROR } from "../../components/Popup/Popup";
+
+// import { use } from "../../../../api/routers/mobile/userRouter.js";
 
 //import { TableContext } from "../../contexts";
 /**
@@ -19,15 +23,18 @@ function Badges(){
     const [clientNameInput, setClientNameInput] = useState("");
     const [userNameInput, setUserNameInput] = useState("");
     const [authorizationInput, setAuthorizationInput] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString());
     const [row, setRow] = useState(""); //Stock dans le localStorage l'id du badge pour save à la reco
     const [val,setVal] = useState(""); //Stock la valeur de l'id du badge quand on click sur une ligne du tableau
+    const [selectedBadge, setSelectedBadge] = useState(null); //Stock la valeur de username et de name du badge
 
     const [NameFilter,setNameFilter] = useState("");
     const [UserNameFilter, setUserNameFilter] = useState("");
     const [NumBadgeFilter, setNumBadgeFilter] = useState("");
 
+    const {setPopupOption} = useContext(PopupContext);
 
     useEffect(() => {
         fetchBadges();
@@ -43,9 +50,19 @@ function Badges(){
       }, []);    
 
     useEffect(() => {
-        console.log("row : " + row);
+        console.log("Val : " + val)
         setRow(val.replace(/"/g, ''));
+        console.log("row : " + row);
     }, [val])
+
+    useEffect(() => {
+        console.log("SelectedBadge : " + JSON.stringify(selectedBadge))
+    },[selectedBadge])
+
+    function handleGetRowData(data){
+        const { name, username } = data;
+        setSelectedBadge({ name, username });
+    }
 
     function filterFunction(badge){
 
@@ -71,18 +88,54 @@ function Badges(){
     }
 
     function updateBadge(idBadge,name,username,authorized,date){
-        postToServer('/badges/update',{
+        console.log("UpdateBadge !")
+        if (idBadge,name, username, authorized, date){
+            postToServer('/badges/update',{
                 id: idBadge,
                 name: name,
                 username: username,
                 authorized: authorized,
                 date: date
-        },(res) => {
-            console.log("Resultat update : " + res.data)
-        },(err) => {
-            console.error("Erreur lors de l'update de badge : ", err)
-        })
+            },(res) => {
+                console.log("Resultat update : " + res.data)
+                setPopupOption({
+
+                    secondaryText: 'Votre modification à bien été enregistré',
+                    acceptText: 'Ok'    
+                })
+            },(err) => {
+                console.error("Erreur lors de l'update de badge : ", err)
+            })
+        } else {
+            console.log("Erreur informations manquante")
+        }
     }
+
+    const deleteBadge = () => {
+        console.log("DeleteBadge !");
+        if (row) {
+            // Empêcher la fonction de suppression de se déclencher si le bouton "Supprimer" n'a pas été cliqué explicitement
+            if (window.confirm("Voulez-vous vraiment supprimer ce badge ?")) {
+                setIsDeleting(true);
+                postToServer('/badges/delete', {
+                    id: row,
+                }, (res) => {
+                    console.log("Resultat delete : " + res.data);
+                    setPopupOption({
+                        secondaryText: "Le badge vient d'être supprimé",
+                        acceptText: 'Ok'    
+                    })
+                    setIsDeleting(false);
+                }, (err) => {
+                    console.error("Erreur lors de la suppression du badge : ", err);
+                    setIsDeleting(false);
+                });
+            }
+        } else {
+            console.error("Erreur, aucun badge trouvé");
+        }
+    };
+    
 
      /**
      * Génere un fichier excel séparé en différentes parties un worksheet avec les détails des conso d'electricité, un autre avec les conso d'eau et un dernier avec des récaps de données
@@ -159,7 +212,10 @@ function Badges(){
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        updateBadge(row,clientNameInput,userNameInput,authorizationInput,currentDate)
+
+        if (!isDeleting) {
+            updateBadge(row, clientNameInput, userNameInput, authorizationInput, currentDate);
+        }
       };
 
     const handleAuthorizationClick = (value) => {
@@ -186,21 +242,23 @@ function Badges(){
                     </div>
                     <div className="row">
                         <div className="col">
-                            <label htmlFor="user-name-input">Nom utilisateur:</label> <br/>
+                            <label htmlFor="user-name-input">Username:</label> <br/>
                             <input
                             type="text"
                             id="user-name-input"
                             value={userNameInput}
                             onChange={(e) => setUserNameInput(e.target.value)}
+                            placeholder={selectedBadge ? selectedBadge.username : "Username"}                            
                             />
                         </div>
                         <div className="col">
-                            <label htmlFor="client-name-input">Nom client/bateau:</label> <br/>
+                            <label htmlFor="client-name-input">Name:</label> <br/>
                             <input
                             type="text"
                             id="client-name-input"
                             value={clientNameInput}
                             onChange={(e) => setClientNameInput(e.target.value)}
+                            placeholder={selectedBadge ? selectedBadge.name : "Name"}
                             />
                         </div>
                     </div>
@@ -228,6 +286,7 @@ function Badges(){
                 </div>
                 <div className="col colonne-droite">
                     <button type="submit" className="add-button-badge">EDIT</button>
+                    <button className="del-button-badge" onClick={deleteBadge} style={{marginLeft: 10}}>Supprimer</button>
                 </div>
             </div>
         </form>
@@ -249,6 +308,7 @@ function Badges(){
                 {label: "NAME", column: 'name', type:'string'},
                 {label: "USERNAME", column: 'username', type:'string'}
             ]}
+            onClickRowAllData={handleGetRowData}
             setVal={setVal}
             />
         )}
@@ -257,12 +317,3 @@ function Badges(){
 }
 
 export default Badges;
-
-/**
- * <div className="badges-container">
-        
-
-        </div>
-    }
-
- */

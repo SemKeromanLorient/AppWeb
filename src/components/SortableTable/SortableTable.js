@@ -5,7 +5,7 @@ import {ReactComponent as OrderIcon} from '../../assets/icons/arrow.svg';
 import { TableContext } from '../../contexts';
 
 
-function SortableTable({data, header, filter, emptyMessage, setVal}){
+function SortableTable({data, header, filter, emptyMessage, setVal, onClickRowAllData }){
 
     //order -> asc = Du plus petit au plus grand, desc = du plus grand au plus petit.
 
@@ -62,8 +62,13 @@ function SortableTable({data, header, filter, emptyMessage, setVal}){
 
     }
 
-    function handleRowClick(rowTable){
-        setRow(rowTable.number);
+    function handleRowClick(rowData){
+        if (onClickRowAllData) {
+            onClickRowAllData(rowData);
+            setRow(rowData.number);
+        } else {
+            setRow(rowData.number);
+        }
         //console.log("idBadge : " + idBadge);
     }   
 

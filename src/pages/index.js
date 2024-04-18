@@ -15,6 +15,7 @@ import BorneList from "./BorneList/BorneList";
 import Badges from "./Badges/Badges";
 import SwitchPages from "./SwitchPages/SwitchPages";
 import WriteInfo from "./WriteInfo/WriteInfo";
+import SwitchPagesARN from "./SwitchPages/SwitchPagesARN";
 
 export {
     Bornecontrol,
@@ -33,5 +34,6 @@ export {
     // Tickets,
     Badges,
     SwitchPages,
-    WriteInfo
+    WriteInfo,
+    SwitchPagesARN
 }

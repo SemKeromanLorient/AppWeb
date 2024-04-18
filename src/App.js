@@ -20,11 +20,12 @@ import {ReactComponent as BorneListIcon} from './assets/icons/table-grid.svg';
 import {ReactComponent as TicketIcon} from './assets/icons/ticket.svg';
 import {ReactComponent as BadgeIcon} from './assets/icons/badge.svg'
 import {ReactComponent as MeteoIcon} from './assets/icons/meteo.svg'
+import {ReactComponent as MeteoIcon2} from './assets/icons/meteo.svg'
 import {ReactComponent as PortIcon} from './assets/icons/MaitreDePort2.svg'
 
 import connectionAnimation from "./assets/lotties/wifi-connection.json";
 
-import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, Facturation, Login, Rules, Notification, ShareAccess, UserManager, Badges, SwitchPages, WriteInfo} from './pages';
+import { Absences, BorneBalise, Bornecontrol, BorneList, BorneMap, BorneSelection, Consommation, Facturation, Login, Rules, Notification, ShareAccess, UserManager, Badges, SwitchPages, WriteInfo, SwitchPagesARN} from './pages';
 import { PopupContext, ToastContext, UserContext, ContextMenuContext, AffichageContextProvider} from "./contexts";
 import React,{ useEffect, useMemo, useRef, useState } from "react";
 import { connectAutomate, connectToServer, disconnectSocket, reconnectSavedFlag } from "./utils/serverSocketCom";
@@ -234,6 +235,7 @@ function App() {
                                       {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                                       {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
                                       {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
+                                      {name: "SwitchPagesARN", path: "/supervision/SwitchPagesARN", Icon: MeteoIcon2, secure: "ARN"},
                                       {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
                                     ]}/>
 
@@ -261,6 +263,7 @@ function App() {
                                     <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                     <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
                                     <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
+                                    <Route path="supervision/SwitchPagesARN" element={<ProtectedRoute useFor={'ARN'} redirect={'/supervision/'}><SwitchPagesARN /></ProtectedRoute>}/>
                                     <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
 
 
