@@ -21,7 +21,7 @@ function getToServer(uri, data, onSuccess, onError){
     if(token)data.token = token;
     if(!token)console.log("AUCUN TOKEN TROUVÉ");
 
-    Axios.get("https://service.keroman.fr/api"+uri, data).then(onSuccess)
+    Axios.get("https://service.keroman.fr/api" + uri , data).then(onSuccess)
     .catch(onError)
 }
 //module.exports = {postToServer, getToServer}

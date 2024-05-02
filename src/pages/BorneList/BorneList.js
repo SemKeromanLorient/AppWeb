@@ -39,6 +39,7 @@ function BorneList(){
     useEffect(() => {
         console.log("Borne id : " + borne_id);
         console.log("Bornes.length : " + bornes.length);
+        console.log("Bornes : " + JSON.stringify(bornes));
         if(borne_id && bornes.length > 0){
 
             let selected = bornes.find((value) => value.borne === Number(borne_id) && value.enable == 1);
@@ -342,7 +343,6 @@ function BorneControl({borne}){
 
     }, [currentPriseOpen])
 
-
     function sortPrise(prise_a, prise_b){
 
         if(prise_a.prise > prise_b.prise)return 1;
@@ -550,7 +550,22 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
     const [optionalText, setOptionalText] = useState('');
 
     let connectionIssueTimer = useRef(null);
-    
+
+    useEffect(() => {
+
+        let borneData = prise.name.slice(0, 2);
+        let priseData = prise.name.slice(-2);
+
+        getToServer('/prises/' + borneData + '/' + priseData , {}, ({data}) => {
+            if (data[0].OptionText !== null && data[0].OptionText !== "[object Object]" && data[0].OptionText.length > 0){
+                setOptionalText(data[0].OptionText)
+            }
+        }, (err) => {
+            console.log("Erreur lors de la récupération des badges : ",err)
+
+        })
+    },[])
+
     useEffect(() => {
         if(prise.state !== 3)setOnLoad(false);
         console.log(connectionIssueTimer)
@@ -613,7 +628,7 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
 
             <PriseState Icon={NoElecIcon} currentState={prise.state} targetState={1} info={'Prise libre'} />
             <PriseState lottie={loadingAnimation} currentState={prise.state} targetState={3} info={'Lecture de consommation...'} />
-            <PriseState Icon={ElecticIcon} currentState={prise.state} targetState={4} info={prise.use_by? 'Prise alimentée pour '+prise.use_by : 'Prise alimentée'} />
+            <PriseState Icon={ElecticIcon} currentState={prise.state} targetState={4} info={optionalText !== '' ? 'Prise alimentée pour ' + optionalText : (prise.use_by ? 'Prise alimentée pour ' + prise.use_by : 'Prise alimentée')} />
             <PriseState Icon={StopIcon} currentState={prise.state} targetState={5} info={'Arret d\'urgence'} />
             <PriseState Icon={IssueIcon} currentState={prise.state} targetState={8} info={'Problème sur la prise'} />
 

@@ -10,7 +10,7 @@ import { json } from "react-router-dom";
 
 function BorneMap(){
    
-    const [currentlySelected, setCurrentlySelected] = useState(-1);
+    const [currentlySelected, setCurrentlySelected] = useState(null);    
     const [bornes, setBornes] = useState([]);
     const [badges, setBadges] = useState([]);
 
@@ -35,7 +35,9 @@ function BorneMap(){
         })
         
         getToServer('/badges/', {}, ({data}) => {
-            setBadges(data.badge)
+            console.log("Badges (1) : " + JSON.stringify(data.badge))
+            const sortedBadges = data.badge.sort((a, b) => a.name.localeCompare(b.name));
+            setBadges(sortedBadges)
 
         }, (err) => {
             console.log("Erreur lors de la récupération des badges : ",err)
@@ -65,21 +67,17 @@ function BorneMap(){
         <MapView setCurrentSelected={setCurrentlySelected} bornes={bornes}>
 
         </MapView>
-        {
-            currentlySelected !== undefined && (
-                <BorneController currentlySelected={bornes[currentlySelected]}  />
-            )
-        }
+        {currentlySelected !== null && currentlySelected !== undefined && (
+            <BorneControllerNew currentlySelected={bornes[currentlySelected]} badges = {badges} setBornes={setBornes}/>
+        )}
         
     </div>
 
 }
 
-
-// {currentlySelected < 9 ?(
-//     <BorneController currentlySelected={bornes[currentlySelected]}  />
-// ) : (
-//     <BorneControllerNew currentlySelected={bornes[currentlySelected]} badges = {badges}/>
-// )}
-
+// {
+//     currentlySelected !== undefined && (
+//         <BorneController currentlySelected={bornes[currentlySelected]}  />
+//     )
+// }
 export default BorneMap;

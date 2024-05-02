@@ -14,7 +14,8 @@ import { POPUP_QUESTION } from "../Popup/Popup";
 import Lottie from 'lottie-react'
 import loadingAnimation from "../../assets/lotties/loading-animation.json";
 import { useNavigate, useParams } from "react-router-dom";
-// !!! DOUBLE COMPTE CONNECTER PEUT FAIRE DISFONCTIONNER L AFFICHAGE
+import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
+
 
 /**
  * 
@@ -22,7 +23,7 @@ import { useNavigate, useParams } from "react-router-dom";
  * @param {badges} badges List de toutes les badges
  * @returns Un composant BorneControllerNew permettant l'affichage des infos et l'activation des prises des bornes avec un ID > 9
  */
-function BorneControllerNew({currentlySelected,badges}){
+function BorneControllerNew({currentlySelected,badges,setBornes}){
 
     //Variable regardant si le menu déroulant est on ou off
     const [isExpand, setExpand] = useState(false);
@@ -32,7 +33,7 @@ function BorneControllerNew({currentlySelected,badges}){
     const { prise_id } = useParams();
     //Variable stockant le badge selectionné
     const [currentBadge, setBadge] = useState(null);
-    //Variable booleen indiquant si où on doit se situer
+    //Variable booleen indiquant où on doit se situer
     const [pagePrise, setPagePrise] = useState(false);
     const [pageHub, setPageHub] = useState(true);
     const [pageActivate, setPageActivate] = useState(false);
@@ -46,6 +47,8 @@ function BorneControllerNew({currentlySelected,badges}){
         setPageHub(true)
         setPagePrise(false)
         setPageActivate(false)
+        console.log("Badges : " + JSON.stringify(badges))
+        console.log("CurrentlySelected : " + JSON.stringify(currentlySelected))
     },[])
 
     //Debug
@@ -59,6 +62,11 @@ function BorneControllerNew({currentlySelected,badges}){
         console.log("PageActivate : " + pageActivate);
     },[pageActivate])
 
+    // Effet pour réinitialiser les états lors du changement de borne
+    useEffect(() => {
+        resetComponentState();
+    }, [currentlySelected]);
+
     const navigate = useNavigate();
     const selectBadge = React.useRef();
 
@@ -70,14 +78,25 @@ function BorneControllerNew({currentlySelected,badges}){
         setPageActivate(false)
     }, [currentlySelected])*/
 
+    // Fonction pour réinitialiser les états du composant
+    const resetComponentState = () => {
+        setExpand(false);
+        setCurrentPriseSelected(null);
+        setBadge(null);
+        setPagePrise(false);
+        setPageHub(true);
+        setPageActivate(false);
+        setSelectBadgeFilter("");
+        setOptionalText("");
+    };
+
     //Quand on clique sur la fleche dans le menu
     function handleExpand(){
 
         if(isExpand){
             navigate('/supervision/map/'+currentlySelected.display)
         }
-        setExpand(!isExpand); // passe isExpand a l'inverse de ce qu'il est (true ou false)
-        // console.log("TEST")
+        setExpand(!isExpand);
         setPagePrise(false)
         setPageActivate(false)
         setPageHub(true)
@@ -104,10 +123,9 @@ function BorneControllerNew({currentlySelected,badges}){
     function useBadge(){
         navigate('/supervision/map/'+currentlySelected.display+"/prises/")
         
-
-        const selectedUsername = selectBadge.current.value;
-        setBadge(selectedUsername)
-
+        const selectedBadge = JSON.parse(selectBadge.current.value);
+        console.log("SelectedBadge : ", selectedBadge);
+        setBadge(selectedBadge);
 
         setPagePrise(true);
         setPageHub(false);
@@ -119,10 +137,11 @@ function BorneControllerNew({currentlySelected,badges}){
      * Fonction permettant de trier une liste de badges afin de retourner la liste des badges inclues dans le filtre
      * @param {badge} badge Badges à filtrer pour savoir si oui ou non ils sont dans le filtre
      * @returns true si le badge est valide / false si le badge n'est pas valide
+     * name/username : Filtrer selon deux champs possible
      */
     function filterFunction(badge){
 
-        if(selectBadgeFilter !== '' && !badge.username.toUpperCase().includes(selectBadgeFilter.toUpperCase())) return false;
+        if(selectBadgeFilter !== '' && !badge.name.toUpperCase().includes(selectBadgeFilter.toUpperCase())) return false;
 
         return true;
 
@@ -165,7 +184,7 @@ function BorneControllerNew({currentlySelected,badges}){
                     <div className="title-section-badge"  style={{ display: "flex", justifyContent: "center",marginTop: "15px"}}> 
                         <select className="list-section-badges" ref={selectBadge}>
                             {badges.filter(filterFunction).map((badge, index) => (
-                                <option key={index} value={badge.username}>
+                                <option key={index} value={JSON.stringify(badge)}>
                                 {badge.name} - {badge.username}
                                 </option>
                             ))}
@@ -225,7 +244,7 @@ function BorneControllerNew({currentlySelected,badges}){
 
                             </div>
                         </div>}
-                        <PriseControl prises={currentlySelected.prises} borne={currentlySelected} priseData={currentPriseSelected} setPriseData={setCurrentPriseSelected} />
+                        <PriseControl prises={currentlySelected.prises} borne={currentlySelected} priseData={currentPriseSelected} setPriseData={setCurrentPriseSelected} badge={currentBadge} setBornes={setBornes}/>
                     </div>
                     
                     
@@ -247,9 +266,10 @@ function BorneControllerNew({currentlySelected,badges}){
 }
 
 
-function PriseControl({prises, borne, priseData, setPriseData}){
+function PriseControl({prises, borne, setPriseData, badge, setBornes}){
 
     const [optionalUser, setOptionalUser] = useState('');
+    const [saveTextPrise, setSaveTextPrise] = useState('');
     const [onWait, setOnWait] = useState(false);
     const [inputError, setInputError] = useState(false);
     //Etat de la prise actuellement utilisé
@@ -260,9 +280,25 @@ function PriseControl({prises, borne, priseData, setPriseData}){
     const [currentprise, setCurrentPrise] = useState(null);
 
 
+
+    useEffect(() => {
+        console.log("TEST PRISECONTROL (prises) : " + JSON.stringify(prises))
+        console.log("TEST PRISECONTROL (borne) : " + JSON.stringify(borne))
+        console.log("TEST PRISECONTROL (badge) : " + JSON.stringify(badge))
+        // getToServer('/prises/${borne}/${prise_id}')
+    },[])
+
+    useEffect(() => {
+        if (badge) { // Assurez-vous que badge n'est pas null ou undefined
+            console.log("Badge (priseControl) : " + badge);
+            console.log("Badge (priseControl) - Username : " + badge.username);
+            console.log("Badge (priseControl) - Number : " + badge.number);
+        }
+    },[badge])
+
     //Dès que la prise sélectionner change ou que la liste des prises change alors setup la nouvelle currentPrise
     useEffect(() => {
-
+        console.log("TEST CHANGEMENT PRISE")
 
         let prise = prises.find((value) => value.name == prise_id)
 
@@ -273,6 +309,23 @@ function PriseControl({prises, borne, priseData, setPriseData}){
     }, [prise_id, prises])
 
     useEffect(() => {
+        if (prise_id){
+            console.log("Prise_ID : " + prise_id)
+            let borne = prise_id.slice(0, 2);
+            let prise = prise_id.slice(-2);
+            console.log("Borne : " + borne)
+            console.log("Prise : " + prise)
+            getToServer('/prises/' + borne + '/' + prise , {}, ({data}) => {
+                console.log("Data prises : " + JSON.stringify(data))
+                setSaveTextPrise(data[0].OptionText)
+            }, (err) => {
+                console.log("Erreur lors de la récupération des badges : ",err)
+
+            })
+        }
+    },[prise_id])
+
+    useEffect(() => {
 
         console.log("optionalUser : " + optionalUser);
 
@@ -280,6 +333,17 @@ function PriseControl({prises, borne, priseData, setPriseData}){
 
     const {setPopupOption} = useContext(PopupContext);
 
+    function refresh(){
+        //Get les infos des bornes et set ces infos avec setBornes
+        console.log("Refresh info borne")
+        postToServer('/bornes/', {}, ({data}) => {
+            setBornes(data.filter((borne) => !!borne))
+
+        }, (err) => {
+            console.log("Erreur lors de la récupération des bornes : ",err)
+
+        })
+    }
 
     function handleInteract(e){
         console.log("IN handleInteract")
@@ -308,25 +372,30 @@ function PriseControl({prises, borne, priseData, setPriseData}){
 
                     text: 'Ouvrir la prise '+currentprise.prise+' ?',
                     //Regarder a qui sera la conso et l'afficher dans un texte
-                    secondaryText: 'La facture sera au nom de '+(getAuthorizationFor('MAP', 'update')? optionalUser : getConnectedUser('username')),
+                    secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : currentprise.use_by}`,                    
                     type: POPUP_QUESTION,
-                    acceptText: 'Oui, ouvrir la prise',
+                    acceptText: 'Oui, ouvrir la prise', 
                     declineText: 'Non, annuler',
-                    //Si on click sur accepter dans la popup  /////// ICI QU'IL FAUDRA MODIFIER POUR ECRIRE DANS LES ADRESSES DES AUTOMATES
-                    onAccept: () => {
+                    onAccept: () => { 
+
                         //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
                         setStateGoal(4)
                         setOnWait(true);
-                        setOptionalUser('');
                         //Envoie du socket commande 'prise_update' avec comme params :
                         socketSend('prise_update', {
                             zone: borne.zone,
-                            user: (getAuthorizationFor('MAP', 'update')? optionalUser : getConnectedUser('username')),
+                            user: badge.username,
                             borne: borne.borne,
                             prise: currentprise.prise,
-                            state: "ON"
+                            state: "ON",
+                            badge: badge.number,
+                            optionalUser: optionalUser
                         })
-                
+                        //Délai
+                        setTimeout(() => {
+                            refresh();
+                            setOptionalUser('');
+                        }, 1500);           
                     },
         
                 })
@@ -345,14 +414,20 @@ function PriseControl({prises, borne, priseData, setPriseData}){
 
                         setStateGoal(1) 
                         setOnWait(true);
-                        setOptionalUser('');
                         socketSend('prise_update', {
                             zone: borne.zone,
                             borne: borne.borne,
                             prise: currentprise.prise,
-                            state: "OFF"
+                            state: "OFF",
+                            badge: badge.number,
+                            optionalUser: optionalUser
                         })
-                
+                        //Délai
+                        setTimeout(() => {
+                            refresh();
+                            setOptionalUser('');
+                        }, 1500);    
+
                     },
         
                 })
@@ -375,9 +450,16 @@ function PriseControl({prises, borne, priseData, setPriseData}){
                             zone: borne.zone,
                             borne: borne.borne,
                             prise: currentprise.prise,
-                            state: "OFF"
+                            state: "OFF",
+                            badge: badge.number,
+                            optionalUser: optionalUser
                         })
-                
+                        //Délai
+                        setTimeout(() => {
+                            refresh();
+                            setOptionalUser('');
+                        }, 1500);    
+
                     },
         
                 })
@@ -406,7 +488,10 @@ function PriseControl({prises, borne, priseData, setPriseData}){
 
                     {
                         currentprise.use_by? <>
-                          <h2>Prise en cours d'utilisation par <br/> {currentprise.use_by}</h2>
+                          <h2>
+                            Prise en cours d'utilisation par <br/> 
+                            {saveTextPrise !== '[object Object]' && saveTextPrise ? saveTextPrise : currentprise.use_by}
+                            </h2>
                             <h3 className="third-title">La fermeture de la prise terminera <br/> la consommation.</h3>
                         </> : 
                         <>

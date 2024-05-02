@@ -33,6 +33,7 @@ function Consommation({}){
 
     useEffect(() => {
         document.title = 'Supervision | Consommations'
+        console.log("Consommation : " + consommations)
     }, [])
 
     useEffect(() => {
@@ -490,6 +491,13 @@ function Consommation({}){
         
     }
 
+    function handleCellClick(newValue, row, headerValue) {
+        // row[headerValue.column] = newValue;
+        console.log("TEST handleCellClick 1 : " + newValue)
+        console.log("TEST handleCellClick 2 : " + JSON.stringify(row))
+        console.log("TEST handleCellClick 3 : " + JSON.stringify(headerValue))
+
+    }
 
     /**
      * Génere un fichier excel séparé en différentes parties un worksheet avec les détails des conso d'electricité, un autre avec les conso d'eau et un dernier avec des récaps de données
@@ -912,7 +920,7 @@ function Consommation({}){
         emptyMessage={'Aucune consommation sur cette période'}
         data={consommations.filter(filterFunction)} header={[
             {label: "Numéro", column: 'numero', type:'number'},
-            {label: "Bateau/entreprise", column: 'user', type: 'string', onDoubleClick: (boatname) => setCompareValue(boatname)},
+            {label: "Bateau/entreprise", column: 'user', type: 'string', onClick: handleCellClick ,onDoubleClick: (boatname) => setCompareValue(boatname)},
             {label: "Date d'ouverture", column: 'start_date', type: 'date', processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},
             {label: "Date de fermeture", column: 'end_date', type: 'date',defaultValue: '-',  processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},
             {label: "Borne", column: 'borne', type: 'number'},

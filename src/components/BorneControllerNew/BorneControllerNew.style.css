@@ -577,7 +577,7 @@
 .list-section-badges option {
     background-color: var(--input-background-color);
     padding: 10px 20px;
-    color: red;
+    color: black;
   }
   
 .list-section-badges option:hover {

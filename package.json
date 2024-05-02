@@ -20,7 +20,7 @@
     "file-saver": "^2.0.5",
     "html-webpack-plugin": "^5.5.0",
     "image-compressor": "^2.0.3",
-    "jsmodbus": "^4.0.6",
+    "jsmodbus": "^4.0.10",
     "lottie-react": "^2.3.1",
     "mapbox-gl": "^2.10.0",
     "moment": "^2.29.4",
