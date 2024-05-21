@@ -567,6 +567,7 @@ function PriseRow({send, prise, setCurrentPriseOpen}){
     },[])
 
     useEffect(() => {
+        console.log("JSON.stringifiy :" + JSON.stringify(prise))
         if(prise.state !== 3)setOnLoad(false);
         console.log(connectionIssueTimer)
         if(connectionIssueTimer.current)clearTimeout(connectionIssueTimer.current)

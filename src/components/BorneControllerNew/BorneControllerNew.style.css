@@ -198,7 +198,24 @@
     height: 20px;
     filter: var(--icon-color);
 }
-
+.defile-select{
+    width: 2%;
+    height: 2%;
+    position: absolute;
+    right: 8%;
+    margin-top: 1%;
+    filter: var(--icon-color);
+    transform: rotate(90deg);
+}
+.defile-select-expand{
+    width: 2%;
+    height: 2%;
+    position: absolute;
+    right: 8%;
+    margin-top: 1%;
+    filter: var(--icon-color);
+    transform: rotate(270deg);
+}
 .prise-control-container{
 
     position: absolute;
@@ -297,7 +314,6 @@
 }
 
 .go-back{
-
     position: absolute;
     left: 10px;
     top: 10px;
@@ -333,7 +349,7 @@
     margin-left: 5px;
 }
 
-.section{
+.section-badge{
 
     width: 100%;
     margin-top: 20px;
@@ -345,13 +361,12 @@
 
 }
 
-
-.section:first-child{
+.section-badge:first-child{
     margin-top: 0;
 }
 
 
-.section:last-child{
+.section-badge:last-child{
     margin-bottom: 10px;
 }
 
@@ -363,6 +378,7 @@
     text-align: center;
     margin-bottom: 10px;
 }
+
 .title-id-badge{
     background-color: #363736;
     width: calc(100% - 80px);
@@ -381,11 +397,23 @@
     color: white;
     margin-bottom: 10px;
 }
-.title-icon{
 
-    width: 20px;
-    height: 20px;
-    margin-left: 20px;
+.search-icon {
+    width: 8%;
+    height: 8%;
+    position: absolute;
+    left: 10%;
+    margin-top: 1%;
+    fill:grey;
+    filter: var(--icon-color);
+}
+.badge-icon {
+    width: 8%;
+    height: 8%;
+    position: absolute;
+    left: 4%;
+    margin-bottom: 2%;
+    fill:grey;
     filter: var(--icon-color);
 }
 .lock-icon{
@@ -410,7 +438,6 @@
     color: #ffffff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
 }
 .button-badge:hover {
     background-color: #408c53;
@@ -434,7 +461,6 @@
     color: #ffffff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     width: 100%;
 }
 .button-vers-prise:hover{
@@ -570,10 +596,17 @@
     border: 3px solid var(--border-color);
     border-radius: 4px;
     background-color: var(--input-background-color);
-    color: white;
+    color: var(--primary-text-color);
     appearance: none;
-    
+    padding-right: 12%;
+    width: 100%;
 }
+
+
+.list-section-badges:hover{
+    cursor: pointer ;
+}
+
 .list-section-badges option {
     background-color: var(--input-background-color);
     padding: 10px 20px;
@@ -581,23 +614,19 @@
   }
   
 .list-section-badges option:hover {
-    background-color: var(--input-background-color);
+    cursor: pointer;
 }
 
 .add-info-conso{
     text-align: center;
+    padding: 10px;
     background-color: var(--input-background-color);
     border: 3px solid var(--border-color);
-    outline-style: none;
-    border-radius: 5px;
-    height: 35px;
-    max-width: 200px;
-    width: 100%;
+    border-radius: 4px;
     color: white;
-    padding-left: 10px;
-    transition-duration: 200ms;
-    padding: 8px 25px;
-    font-size: 15px;
+    font-size: 16px;
+    max-width: 15%;
+    width: 50%;
 
 }
 
@@ -618,47 +647,49 @@
     
 }
 
-@media screen and (max-height: 819px) {
-    .add-info-conso{
-        text-align: center;
-        background-color: var(--input-background-color);
-        border: 3px solid var(--border-color);
-        outline-style: none;
-        border-radius: 5px;
-        height: 35px;
-        max-width: 200px;
-        width: 100%;
-        color: white;
-        padding-left: 10px;
-        transition-duration: 200ms;
-        padding: 4px 17px;
-        font-size: 15px;
-    
-    }
+.short-title{
+    width: 100%;
+    max-width: 90%;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 14px;
+}
 
-    .title-borne{
-        font-size: 18px;
-    }
+.title-prise{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-right: 5%;
+    max-width: 90%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: wrap;
+}
 
-    .text-explication-badge{
-        font-size: 15px;
-        margin-bottom: 5px;
-    }
-    .title-available-borne{
-        font-size: 20px;
-        margin-bottom: 7px;
-    }
-    .title-section-badge{
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
-    .third-title{
-        font-size: 20px;
-    }
-    .search-section-bis{
-        margin-bottom: -25px;
-    }
-    .text-user{
-        margin-bottom: -10px;
-    }
+.icon-elec-1{
+    filter: invert(81%) sepia(96%) saturate(1455%) hue-rotate(7deg) brightness(103%) contrast(108%);
+    max-height: 23px;
+    max-width: 23px;
+}
+
+.icon-elec-2{
+    max-height: 23px;
+    max-width: 23px;
+    margin-right: 2px;
+}
+
+.icon-elec-3{
+    max-height: 23px;
+    max-width: 23px;
+    margin-left: 20px;
+    filter: var(--icon-color);
+}
+
+.prise-access h2, .prise-access h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90%;
 }

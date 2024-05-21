@@ -5,8 +5,8 @@
     --menu-height: 60px;
     --primary-color: #519e62 ;
    
-    --primary-filter-color:  invert(55%) sepia(29%) saturate(646%) hue-rotate(81deg) brightness(94%) contrast(92%);
-    --red-filter-color: invert(76%) sepia(32%) saturate(1272%) hue-rotate(306deg) brightness(93%) contrast(116%);
+    --primary-filter-color:  invert(55%) sepia(29%) saturate(1200%) hue-rotate(81deg) brightness(94%) contrast(92%);
+    --red-filter-color: invert(76%) sepia(32%) saturate(3500%) hue-rotate(306deg) brightness(96%) contrast(116%);
 
     --fourth-color: #00508D;
 

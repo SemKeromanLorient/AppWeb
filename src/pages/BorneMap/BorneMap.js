@@ -27,6 +27,7 @@ function BorneMap(){
 
 
         postToServer('/bornes/', {}, ({data}) => {
+            console.log("GET BORNES DONE")
             setBornes(data.filter((borne) => !!borne))
 
         }, (err) => {

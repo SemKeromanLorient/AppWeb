@@ -53,6 +53,7 @@ function App() {
   const [unlockProtectedPath, setUnlockProtectedPath] = useState(false);
   const [connected, setConnected] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme')? localStorage.getItem('theme') : DARK_THEME);
+  const [typeUser, setTypeUser] = useState() // Type user PDP/ARN
 
   const userContextValue = useMemo(() => ({user, setUser}), [user])
   const notificationContextValue = useMemo(() => ({user, setUser}), [user])
@@ -67,6 +68,10 @@ function App() {
     localStorage.setItem('theme', theme)
 
   }, [theme])
+
+ useEffect(() => {
+  console.log("TYPE USER : " + typeUser)
+ },[typeUser])
 
   const connectedLock = useRef(false);
 // --------------------------------------------------------------------------------
@@ -97,6 +102,25 @@ function App() {
             // console.log(data)
             //On setup le user dans le localstorage
             setConnectedUser(data.user)
+            console.log("TEST CONNECTEDUSER : " + JSON.stringify(data.user.access_level))
+
+            //Attribue différents droits en fonction de l'utilisateur
+            switch(data.user.access_level){
+              case "Administrateur":
+                case 'Dev':
+                case 'Opérateur (port)':
+                case 'Facture':
+                  setTypeUser(1);
+                  break;
+                case 'Opérateur (ARN)':
+                case 'ARN':
+                  setTypeUser(2);
+                  break;
+                default:
+                  setTypeUser(1);
+                  console.log("Type d'utilisateur non reconnu : " + data.user.access_level);
+                  break;
+            }
 
             connectToServer(getConnectedUser('token'), (connected) => {
   
@@ -184,6 +208,8 @@ function App() {
 
   function defaultRedirection(){
 
+    console.log("Interface TEST(1) : " + getConnectedUser('authorized_interface'))
+
     let interfaces = JSON.parse(getConnectedUser('authorized_interface'))
 
     switch(Object.keys(interfaces)[0]){
@@ -221,7 +247,8 @@ function App() {
                     {
                       connected ? (<> 
 
-                            { user ? (<>
+                            { user && typeUser === 1 ? (
+                            <>
                               
                                 <Router>
                                     <Header paths={[
@@ -235,7 +262,6 @@ function App() {
                                       {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                                       {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
                                       {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
-                                      {name: "SwitchPagesARN", path: "/supervision/SwitchPagesARN", Icon: MeteoIcon2, secure: "ARN"},
                                       {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
                                     ]}/>
 
@@ -263,6 +289,57 @@ function App() {
                                     <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                     <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
                                     <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
+                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
+
+
+                                </Routes>
+
+                              </div>
+
+                            </Router>
+                          
+                          
+                          </> ): user && typeUser === 2 ? (
+                                <>
+        
+                                <Router>
+                                    <Header paths={[
+                                      {name: "Carte des bornes", path: "/supervision/map",Icon: MapIcon, secure: "MAP"},
+                                      {name: "Liste des bornes", path: "/supervision/list",Icon: BorneListIcon, secure: "LIST"},
+                                      {name: "Balisage", path: "/supervision/balise", Icon: PinIcon, secure: "BALISE"},
+                                      {name: "Utilisateurs", path: "/supervision/user-manager", Icon: UsersIcon, secure: "USERS"},
+                                      {name: "Règles", path: "/supervision/rules", Icon: RulesIcon, secure: "RULES"},
+                                      {name: "Consommation", path: "/supervision/conso", Icon: ConsoIcon, secure: "CONSO"},
+                                      {name: "Notification", path: "/supervision/notifications", Icon: SettingsIcon, secure: "NOTIFICATION"},
+                                      {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
+                                      {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
+                                      {name: "SwitchPagesARN", path: "/supervision/SwitchPagesARN", Icon: MeteoIcon2, secure: "ARN"},
+                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
+                                    ]}/>
+
+                              
+                          
+                              
+
+                              <div className="pages-container">
+
+                                <Routes>
+
+                                    <Route path="/supervision/" element={<Navigate replace to={defaultRedirection()} />} />
+                                    <Route path="supervision/conso" element={<ProtectedRoute useFor={'CONSO'} redirect={'/supervision/'} ><Consommation /></ProtectedRoute>} />
+                                    <Route path="supervision/balise" element={<ProtectedRoute useFor={'BALISE'} redirect={'/supervision/'} ><BorneBalise /></ProtectedRoute>} />
+                                    <Route path="supervision/user-manager" element={<ProtectedRoute useFor={'USERS'} redirect={'/supervision/'} ><UserManager /></ProtectedRoute>} />
+                                    <Route path="supervision/map" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id/:prise_id" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/map/:borne_id/prises" element={<ProtectedRoute useFor={'MAP'} redirect={'/supervision/'}><BorneMap /></ProtectedRoute>} />
+                                    <Route path="supervision/rules" element={<ProtectedRoute useFor={'RULES'} redirect={'/supervision/'}><Rules /></ProtectedRoute>}/>
+                                    <Route path="supervision/notifications" element={<ProtectedRoute useFor={'NOTIFICATION'} redirect={'/supervision/'}><Notification /></ProtectedRoute>}/>
+                                    <Route path="supervision/absences" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/>
+                                    <Route path="supervision/absences/page_id" element={<ProtectedRoute useFor={'ABSENCE'} redirect={'/supervision/'}><Absences /></ProtectedRoute>}/> 
+                                    <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
+                                    <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
+                                    <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
                                     <Route path="supervision/SwitchPagesARN" element={<ProtectedRoute useFor={'ARN'} redirect={'/supervision/'}><SwitchPagesARN /></ProtectedRoute>}/>
                                     <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
 
@@ -274,7 +351,9 @@ function App() {
                             </Router>
                           
                           
-                          </> ): <Login />}
+                          </>
+
+                        ):<Login />}
 
 
                           <Toast option={toastOption} setOption={setToastOption} />
