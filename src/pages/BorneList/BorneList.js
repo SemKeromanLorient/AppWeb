@@ -99,8 +99,12 @@ function BorneList(){
 
         })
 
-        return () => {
+        const interval = setInterval(() => {
+            fetchBornes();
+          }, 15000); // Récupération des données toutes les 15 secondes
 
+        return () => {
+            clearInterval(interval); // Nettoyage de l'intervalle lors du démontage du composant
             removeSocketFlag('bornes')
 
         }
@@ -138,9 +142,9 @@ function BorneList(){
     /**
      * Timer de refresh des infos bornes
      */
-    setTimeout(() => {
-        fetchBornes();
-    }, 15000);
+    // setTimeout(() => {
+    //     fetchBornes();
+    // }, 15000);
 
     return <div className="borne-list-container">
 
@@ -596,6 +600,23 @@ function ActiveUserRow({send, borne, prise, fetchBornes}){
 
     const {setPopupOption} = useContext(PopupContext);
     const [onLoad, setOnLoad] = useState(false);
+    const [optionText, setOptionText] = useState();
+
+    useEffect(() => {
+
+        getToServer('/prises/' + prise.name.slice(0,2) + '/' + prise.prise , {}, ({data}) => {
+            if (data[0].OptionText !== null && data[0].OptionText !== "[object Object]" && data[0].OptionText.length > 0){
+                setOptionText(data[0].OptionText)
+            }
+        }, (err) => {
+            console.log("Erreur lors de la récupération des badges : ",err)
+
+        })
+    },[])
+
+    useEffect(() => {
+        console.log("INFO OPTION TEXT : " + optionText)
+    },[optionText])
 
     function handleClose(){
 
@@ -635,7 +656,7 @@ function ActiveUserRow({send, borne, prise, fetchBornes}){
     return <div className="active-user-container">
 
         <div className="active-user-title">
-            <h4>{truncateText(prise.OptionText ? prise.OptionText: prise.use_by, 19)} </h4>
+            <h4>{truncateText(optionText ? optionText: prise.use_by, 19)} </h4>
             <h4 className="dim">{prise.name}</h4>
         </div>
 
