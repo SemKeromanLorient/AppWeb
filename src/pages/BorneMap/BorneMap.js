@@ -26,24 +26,9 @@ function BorneMap(){
         })
 
 
-        postToServer('/bornes/', {}, ({data}) => {
-            console.log("GET BORNES DONE")
-            setBornes(data.filter((borne) => !!borne))
-
-        }, (err) => {
-            console.log("Erreur lors de la récupération des bornes : ",err)
-
-        })
-        
-        getToServer('/badges/', {}, ({data}) => {
-            console.log("Badges (1) : " + JSON.stringify(data.badge))
-            const sortedBadges = data.badge.sort((a, b) => a.name.localeCompare(b.name));
-            setBadges(sortedBadges)
-
-        }, (err) => {
-            console.log("Erreur lors de la récupération des badges : ",err)
-
-        })
+        fetchBornes()
+        fetchBadges()
+       
          
         document.title = 'Supervision | Carte des bornes'
         
@@ -57,11 +42,35 @@ function BorneMap(){
 
     }, [])
 
+    
+    function fetchBornes(){
+        postToServer('/bornes/', {}, ({data}) => {
+            setBornes(data.filter((borne) => !!borne))
 
-    useEffect(() => {
-        console.log("Info borne : " + JSON.stringify(bornes))
-    }, [bornes])
-   
+        }, (err) => {
+            console.log("Erreur lors de la récupération des bornes : ",err)
+
+        })
+    }
+
+    function fetchBadges(){
+        getToServer('/badges/', {}, ({data}) => {
+            const sortedBadges = data.badge.sort((a, b) => a.name.localeCompare(b.name));
+            setBadges(sortedBadges)
+
+        }, (err) => {
+            console.log("Erreur lors de la récupération des badges : ",err)
+
+        })
+    }
+    
+    /**
+     * Timer de refresh des infos bornes
+    */
+    // setTimeout(() => {
+    //     console.log("TEST REFRESH PAGE BORNEMAP")
+    //     fetchBornes();
+    // }, 15000);
     
 
     return <div className="map-container">

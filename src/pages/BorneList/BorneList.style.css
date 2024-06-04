@@ -41,6 +41,11 @@
 
 }
 
+.borne-item-container.disconnected{
+
+    background-color: var(--not-found-color);
+}
+
 .open-btn{
 
     background-color: var(--primary-color);
@@ -53,8 +58,21 @@
     justify-content: center;
     cursor: pointer;
     transition-duration: 200ms;
+}
 
 
+.open-btn.disconnected{
+
+    background-color: #c04141;
+    color: white;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 200ms;
 }
 
 .open-btn:hover{
@@ -153,8 +171,8 @@
     background-color: var(--primary-color);
     color: white;
     padding: 0 10px;
-    height: 50px;
-    width: 150px;
+    max-height: 50px;
+    max-width: 150px;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -163,7 +181,13 @@
     transition-duration: 200ms;
     overflow: hidden;
     white-space: nowrap;
+    width: 18vw;
+    height: 7vh;
 
+}
+
+.close-btn h3{
+    font-size: clamp(0.75rem, 0.90vw, 1.5rem);
 }
 
 .close-btn:hover{
@@ -182,6 +206,9 @@
     overflow: hidden;
     white-space: nowrap;
 
+}
+.prise-state-container h2{
+    font-size: clamp(0.75rem, 1vw, 1.2rem);
 }
 
 .state-container{
@@ -303,16 +330,18 @@
 
 
 .prise-container h2{
-    width: 220px;
+    max-width: 220px;
+    width: clamp(0.75rem, 15vw, 15rem);
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
 }
 
 .interact-btn{
-
-    width: 170px;
-    height: 50px;
+    width: 15vw;
+    height: 7vh;
+    max-width: 170px;
+    max-height: 50px;
     border-radius: 5px;
     background-color: var(--primary-color);
     color: white;
@@ -322,6 +351,26 @@
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.interact-btn.default{
+    width: 15vw;
+    height: 7vh;
+    max-width: 170px;
+    max-height: 50px;
+    border-radius: 5px;
+    background-color: #c04141;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.interact-btn h4{
+    font-size: clamp(0.75rem, 0.80vw, 1.5rem);
 }
 
 .interact-btn:hover{
@@ -355,11 +404,6 @@
     text-align: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
     animation: user-prompt 300ms;
-}
-
-.user-prompt-container svg{
-    width: 100px;
-    height: 100px;
 }
 
 .user-input{
@@ -571,10 +615,8 @@
     width: 172px;
     height: 172px;
     background-color: var(--background-color);
-    border-radius: 10px;
     display: flex;
     align-items: center;
-    border: 1px solid var(--border-color);
     justify-content: center;
 }
 
@@ -631,3 +673,70 @@
     opacity: 0.7;
 
 }
+
+.section-badges{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10%;
+    fill:grey;
+    filter: var(--icon-color);
+}
+
+.prise-icon{
+    width: 100px;
+    height: 100px;
+}
+
+.defile-select{
+    width: 2%;
+    height: 2%;
+    position: absolute;
+    right: 8%;
+    margin-top: 1%;
+    filter: var(--icon-color);
+    transform: rotate(90deg);
+}
+.defile-select-expand{
+    width: 2%;
+    height: 2%;
+    position: absolute;
+    right: 8%;
+    margin-top: 1%;
+    filter: var(--icon-color);
+    transform: rotate(270deg);
+}
+
+.borne-control-container h2 {
+    font-size: clamp(0.75rem, 1vw, 1.5rem);
+}
+
+
+/* @media screen and (max-width: 950px){
+    .borne-control-container{
+
+        background-color: var(--menu-color);
+        border-radius: 10px;
+        position: absolute;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+        padding: 40px;
+        transition-duration: 200ms;
+        color: var(--primary-text-color);
+        gap: 20px;
+        overflow: hidden;
+        animation: control-open 200ms;
+    }
+
+    .borne-control-container h2{
+
+        font-size: 2vw;
+    }
+} */

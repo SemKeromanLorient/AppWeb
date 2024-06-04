@@ -69,13 +69,10 @@ function App() {
 
   }, [theme])
 
- useEffect(() => {
-  console.log("TYPE USER : " + typeUser)
- },[typeUser])
-
   const connectedLock = useRef(false);
 // --------------------------------------------------------------------------------
   function connect(){
+    console.log("Entry CONNECT (APP.JS)")
     //On récupere le userConnecté (Set depuis la page login.js)
     let userStorage = getConnectedUser();
 
@@ -90,12 +87,12 @@ function App() {
           /**
            * Renvoi un objet de ce type :
            * valid: true,
-                                    user: {
-                                        access_level: user.access_level,
-                                        username: user.name,
-                                        token: token,
-                                        authorized_interface: user.authorized_interface
-                                    }
+              user: {
+                  access_level: user.access_level,
+                  username: user.name,
+                  token: token,
+                  authorized_interface: user.authorized_interface
+              }
            */
           if(data.valid){
 
@@ -197,10 +194,12 @@ function App() {
 
 
   useEffect(() => {
-
+    // console.log("TEST CONNECTION IN APP.JS")
     if(user)connectedLock.current = false;
-
+    // if(!connected)connect();
   }, [user])
+
+
 
   function handleCloseContextMenu(event){
     setContextMenuOption(null);
@@ -219,20 +218,11 @@ function App() {
         return '/supervision/factures'
       case 'USERS':
         return '/supervision/user-manager'
-      case 'TICKET':
-        return '/supervision/ticket'
 
     }
 
     return '/supervision/map'
   }
-// <Route path="supervision/factures" element={<ProtectedRoute useFor={'FACTURE'} redirect={'/supervision/'}><Facturation /></ProtectedRoute>}/>
-// Header paths = [ {name: "Facturation", path: "/supervision/factures", Icon: FacturesIcon, secure: "FACTURE"},
-
-//TICKETS SUPPRIMER A VOIR SI DEFINITIF 
-
-// {name: "Tickets", path: "/supervision/tickets", Icon: TicketIcon, secure: "TICKET"},
-// <Route path="supervision/tickets" element={<ProtectedRoute useFor={'TICKET'} redirect={'/supervision/'}><Tickets /></ProtectedRoute>}/> 
 
 
   return  <div onClick={handleCloseContextMenu} className={"main-container no-select "+(theme)}>
@@ -290,7 +280,6 @@ function App() {
                                     <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
                                     <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
                                     <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
-
 
                                 </Routes>
 
@@ -353,7 +342,7 @@ function App() {
                           
                           </>
 
-                        ):<Login />}
+                        ):<Login/>}
 
 
                           <Toast option={toastOption} setOption={setToastOption} />

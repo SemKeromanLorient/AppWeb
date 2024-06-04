@@ -31,6 +31,7 @@
   --border-color: rgba(255, 255, 255, 0.1);
   --soft-hover-color: rgba(255, 255, 255, .05);
   --background-color:#2f3532;
+  --not-found-color: purple;
 }
 
 .light-theme{
@@ -47,6 +48,7 @@
   --background-color:#9baca3;
   --soft-hover-color: rgba(0,0,0, .05);
   --button-color: #4caf50;
+  --not-found-color: #fa5aff;
 }
 
 .mapboxgl-ctrl-logo{

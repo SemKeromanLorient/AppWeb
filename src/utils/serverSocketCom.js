@@ -40,23 +40,25 @@ function connectToServer(token, callback){
         //console.log("socket : " + JSON.stringify(socket))
 
         socket.on('ping', () => {
+            console.log("PING (SOCKET)")
             socket.emit('ping', {alive: true})
         })
     
         socket.on('connect', () => {
-            
-    
+            console.log("CONNECT (SOCKET)")
             callback(true)
             if(listenerState)listenerState(true)
         })
 
     
         socket.on('error', (error) => {
+            console.log("ERROR (SOCKET)")
             callback(false)
             if(listenerState)listenerState(false)
         })
     
         socket.on('disconnect', (error) => {
+            console.log("DISCONNECT (SOCKET)")
             //On arrive ici pour le problème de l'onglet maitre de port
             console.log(error)
             callback(false)
@@ -64,6 +66,7 @@ function connectToServer(token, callback){
         })
     
         socket.on('reconnect', (error) => {
+            console.log("RECONNECT (SOCKET)")
             //console.log("TEST RECONNECT")
             callback(true)
             if(listenerState)listenerState(true)

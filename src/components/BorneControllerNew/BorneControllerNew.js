@@ -263,6 +263,41 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
 
                     text: 'Ouvrir la prise '+currentprise.prise+' ?',
                     //Regarder a qui sera la conso et l'afficher dans un texte
+                    secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : (badge.name + " - " + badge.username)}`,                    
+                    type: POPUP_QUESTION,
+                    acceptText: 'Oui, ouvrir la prise', 
+                    declineText: 'Non, annuler',
+                    onAccept: () => { 
+
+                        //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
+                        setStateGoal(4)
+                        setOnWait(true);
+                        //Envoie du socket commande 'prise_update' avec comme params :
+                        socketSend('prise_update', {
+                            zone: borne.zone,
+                            user: badge.username,
+                            borne: borne.borne,
+                            prise: currentprise.prise,
+                            state: "ON",
+                            badge: badge.number,
+                            optionalUser: optionalUser ? optionalUser : `${badge.name} - ${badge.username}`
+                        })
+                        //Délai
+                        setTimeout(() => {
+                            refresh();
+                            setOptionalUser('');
+                        }, 3000);           
+                    },
+        
+                })
+            }
+
+            if(currentprise.state === 2){
+
+                setPopupOption({
+
+                    text: 'Ouvrir la prise '+currentprise.prise+' ?',
+                    //Regarder a qui sera la conso et l'afficher dans un texte
                     secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : badge.username}`,                    
                     type: POPUP_QUESTION,
                     acceptText: 'Oui, ouvrir la prise', 
@@ -291,6 +326,7 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
         
                 })
             }
+
 
 
             if(currentprise.state === 4){
@@ -402,30 +438,19 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
             }
 
             {
-                currentprise .state === 3 && <>
-
-                    <h2 className="title-prise">Fin de consommation...</h2>
-                    <h3 className="third-title">Enregistrement de la consommation</h3>
-                    <h3 className="third-title">La prise devrait etre de <br/> nouveau disponible <br/> dans quelque instant...</h3>
-
-                </>
-            }
-
-            {
-                currentprise .state === 5 && <>
-
-                    <h2>Arrêt forcé de la prise</h2>
-                    <h3 className="third-title">Impossible de fermer ou d'ouvrir <br/> la prise</h3>
-
-                </>
-            }
-
-
-            {
-                currentprise .state === 8 && <>
+                currentprise.state === 8 && <>
 
                     <h2 className="title-prise"><IssueIcon className="icon-elec-2"/> Prise {currentprise.prise} : en défaut</h2>
                     <h3 className="third-title">Impossible de fermer ou d'ouvrir <br/> la prise</h3>
+
+                </>
+            }
+
+            {
+                currentprise.state === 2 && <>
+    
+                    <h2 className="title-prise"><IssueIcon className="icon-elec-2"/> Prise {currentprise.prise} : hors connexion</h2>
+                    <h3 className="third-title">La prise est hors connexion</h3>
 
                 </>
             }
@@ -535,6 +560,9 @@ function PriseItem({priseData, onClick}){
 
     const [textPrise, setTextePrise] = useState();
 
+    useEffect(() => {
+        console.log("JSON.stringify priseItem : " + JSON.stringify(priseData))
+    },[])
 
     useEffect(() => {
         if (priseData){
@@ -562,7 +590,7 @@ function PriseItem({priseData, onClick}){
 
     return <div onClick={handleClick} className={"prise-access "+("state-"+priseData.state)}>
         <h2>Prise : {priseData.prise} {priseData.state_label === "Ouvert" && textPrise && textPrise !== '[object Object]' ? "| " + textPrise : ""} {priseData.state_label === "Ouvert" && (!textPrise || textPrise === '[object Object]') ? "| " +  priseData.use_by : ""} </h2>
-        <h4>{priseData.type} | {priseData.state_label} {priseData.state_label === "Ouvert" && priseData.use_by && textPrise && textPrise !== '[object Object]'  ? "| " +  priseData.use_by : ""}</h4>
+        <h4>{priseData.type} | {priseData.state !== 2 ? priseData.state_label : 'Prise hors connexion'} {priseData.state_label === "Ouvert" && priseData.use_by && textPrise && textPrise !== '[object Object]'  ? "| " +  priseData.use_by : ""}</h4>
 
        <ExpandIcon className="go-to-icon" />
 

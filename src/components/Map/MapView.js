@@ -30,13 +30,6 @@ function MapView({bornes, setCurrentSelected, currentlySelected}){
 
     const {theme} = useContext(ThemeContext);
 
-    // useEffect(() => {
-
-    //   console.log(currentlySelected)
-
-    // }, [currentlySelected])
-
-
     const layer3D = {
       'id': 'add-3d-buildings',
       'source': 'composite',
@@ -68,7 +61,7 @@ function MapView({bornes, setCurrentSelected, currentlySelected}){
     return <>
           <Map
           initialViewState={{
-            latitude: 47.728915,//port de peche
+            latitude: 47.728915, //port de peche
             longitude: -3.366080,
             zoom: 16,
             bearing: 0,

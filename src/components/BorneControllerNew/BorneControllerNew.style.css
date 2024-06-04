@@ -144,6 +144,10 @@
     opacity: .2;
 }
 
+.prise-access.state-2 {
+    background-color: #c04141;
+}
+
 .prise-access.state-3{
     background-color: #a7733046;
 }
@@ -400,14 +404,10 @@
 }
 
 .search-icon {
-    width: 8%;
-    height: 8%;
     position: absolute;
     left: 10%;
-    margin-top: 1%;
     fill:grey;
     filter: var(--icon-color);
-    padding-top: 6%;
 }
 .badge-icon {
     width: 8%;

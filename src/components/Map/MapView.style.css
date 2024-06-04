@@ -19,6 +19,9 @@
     z-index: 1;
 }
 
+.pin-container.disconnected{
+    background-color: var(--not-found-color);
+}
 
 .pin-container.hidden{
     opacity: 0.4;
@@ -34,6 +37,21 @@
 
     content: "";
     background-color: var(--menu-color);
+    position: absolute;
+    bottom: calc(-21% + 0px);
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 15px;
+    height: 15px;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+
+}
+
+.pin-container.disconnected::before{
+
+    content: "";
+    background-color: var(--not-found-color);
     position: absolute;
     bottom: calc(-21% + 0px);
     left: 50%;

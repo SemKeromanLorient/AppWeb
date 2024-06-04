@@ -6,8 +6,6 @@ function postToServer(uri, data, onSuccess, onError){
     
     let token = getConnectedUser('token');
 
-    console.log("TOKEN POSTTOSERVER (2) : " + token)
-
     if(token)data.token = token;
     if(!token)console.log("AUCUN TOKEN TROUVÉ");
 
