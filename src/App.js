@@ -251,8 +251,8 @@ function App() {
                                       {name: "Notification", path: "/supervision/notifications", Icon: SettingsIcon, secure: "NOTIFICATION"},
                                       {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                                       {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
-                                      {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "BADGE"},
-                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
+                                      {name: "SwitchPages", path: "/supervision/SwitchPages", Icon: MeteoIcon, secure: "INFO"},
+                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "INFO"}
                                     ]}/>
 
                               
@@ -278,8 +278,8 @@ function App() {
                                     <Route path="supervision/list" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                     <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                     <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
-                                    <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
-                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
+                                    <Route path="supervision/SwitchPages" element={<ProtectedRoute useFor={'INFO'} redirect={'/supervision/'}><SwitchPages /></ProtectedRoute>}/>
+                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'INFO'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
 
                                 </Routes>
 
@@ -303,7 +303,7 @@ function App() {
                                       {name: "Absences", path: "/supervision/absences", Icon: AbsentsIcon, secure: "ABSENCE"},
                                       {name: "Badges", path: "/supervision/badges", Icon: BadgeIcon, secure: "BADGE"},
                                       {name: "SwitchPagesARN", path: "/supervision/SwitchPagesARN", Icon: MeteoIcon2, secure: "ARN"},
-                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "BADGE"}
+                                      {name: "Maitre de port", path: "/supervision/WriteInfo", Icon: PortIcon, secure: "INFO"}
                                     ]}/>
 
                               
@@ -330,7 +330,7 @@ function App() {
                                     <Route path="supervision/list/:borne_id" element={<ProtectedRoute useFor={'LIST'} redirect={'/supervision/'}><BorneList /></ProtectedRoute>}/>
                                     <Route path="supervision/badges" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><Badges /></ProtectedRoute>}/> 
                                     <Route path="supervision/SwitchPagesARN" element={<ProtectedRoute useFor={'ARN'} redirect={'/supervision/'}><SwitchPagesARN /></ProtectedRoute>}/>
-                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'BADGE'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
+                                    <Route path="supervision/WriteInfo" element={<ProtectedRoute useFor={'INFO'} redirect={'/supervision/'}><WriteInfo /></ProtectedRoute>}/> 
 
 
                                 </Routes>
