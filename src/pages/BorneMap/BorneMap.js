@@ -32,10 +32,12 @@ function BorneMap(){
          
         document.title = 'Supervision | Carte des bornes'
         
-
+        const interval = setInterval(() => {
+            fetchBornes();
+          }, 45000); // Récupération des données toutes les 45 secondes
 
         return () => {//quand on quitte la page on retire le flag
-
+            clearInterval(interval); // Nettoyage de l'intervalle lors du démontage du composant
             removeSocketFlag('bornes');
 
         }
@@ -44,6 +46,7 @@ function BorneMap(){
 
     
     function fetchBornes(){
+        console.log("FETCHBORNES")
         postToServer('/bornes/', {}, ({data}) => {
             setBornes(data.filter((borne) => !!borne))
 

@@ -13,6 +13,7 @@ import {ReactComponent as LockIcon} from '../../assets/icons/lock-icon.svg';
 import {ReactComponent as BackIcon} from '../../assets/icons/retour-fleche.svg';
 import {ReactComponent as SearchIcon} from '../../assets/icons/search_icon.svg';
 import {ReactComponent as ExpandIcon} from '../../assets/icons/arrow.svg';
+import {ReactComponent as EditIcon} from '../../assets/icons/edit.svg';
 
 
 import loadingAnimation from "../../assets/lotties/end-conso.json";
@@ -116,7 +117,6 @@ function BorneList(){
     }, [quickSearch])
 
     function fetchBornes(){
-        console.log("FetchBorne")
         postToServer('/bornes/', {}, ({data}) => {
 
             setBornes(data.filter((borne) => !!borne))
@@ -138,13 +138,6 @@ function BorneList(){
 
         socketSend('prise_update', data)
     }
-
-    /**
-     * Timer de refresh des infos bornes
-     */
-    // setTimeout(() => {
-    //     fetchBornes();
-    // }, 15000);
 
     return <div className="borne-list-container">
 
@@ -211,13 +204,16 @@ function BorneControl({borne,badges,fetchBornes,send}){
     const navigate = useNavigate();
     const [priseOpen, setPriseOpen] = useState(false);
     const [currentPriseOpen, setCurrentPriseOpen] = useState(null);
+    const [currentBadgeOpen, setCurrentBadgeOpen] = useState()
+    const [selectNameOpen, setSelectNameOpen] = useState();
+    const [connected, setConnected] = useState(true)
     const {prise_id} = useParams();
+    const [prise, setPrise] = useState()
 
     function handleClose(){
 
         navigate('/supervision/list')
         setCurrentPriseOpen(null);
-
     }
 
     useEffect(() => {
@@ -239,6 +235,21 @@ function BorneControl({borne,badges,fetchBornes,send}){
 
     }, [currentPriseOpen])
 
+    useEffect(() => {
+        checkConnected()
+    },[borne])
+
+    function checkConnected(){
+        let i = 0;
+        while (connected && i < borne.prises.length){
+            if (borne.prises[i].state === 2){
+                setConnected(false)
+            }
+            i++
+        }
+
+    }
+
     function sortPrise(prise_a, prise_b){
 
         if(prise_a.prise > prise_b.prise)return 1;
@@ -255,9 +266,9 @@ function BorneControl({borne,badges,fetchBornes,send}){
      
         {borne && <>
             
-            <h2>Borne {borne.borne}</h2>
+            <h2>Borne {borne.borne}{!connected && ' : Hors connexion'}</h2>
 
-            {borne.prises && borne.prises.sort(sortPrise).map((prise, index) => <PriseRow send={send} setCurrentPriseOpen={setCurrentPriseOpen} prise={prise} key={index} fetchBornes={fetchBornes} />)}
+            {borne.prises && borne.prises.sort(sortPrise).map((prise, index) => <PriseRow send={send} setCurrentPriseOpen={setCurrentPriseOpen} setCurrentBadgeOpen={setCurrentBadgeOpen} setSelectNameOpen={setSelectNameOpen} prise={prise} key={index} fetchBornes={fetchBornes} setPrise={setPrise}/>)}
         </>}
         
         <div onClick={handleClose} className="close-btn">
@@ -270,14 +281,24 @@ function BorneControl({borne,badges,fetchBornes,send}){
     
     {currentPriseOpen && <div className="background-dim"/>}
     
-    {currentPriseOpen && <UserSelectionPrise badges={badges} send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen} fetchBornes={fetchBornes} borne={borne}/>}
+    {(currentPriseOpen && currentBadgeOpen) && <UserSelectionPrise badges={badges} send={send} setOpen={setCurrentBadgeOpen} setCurrentPriseOpen={setCurrentPriseOpen} prise={currentPriseOpen} fetchBornes={fetchBornes} borne={borne}/>}
+    {/* {selectBadgeOpen && <UserSelectionPrise badges={badges} send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen} fetchBornes={fetchBornes} borne={borne}/>} */}
+
+    {(currentPriseOpen && selectNameOpen) && <UserSelectionText 
+        borne={borne}
+        prise={currentPriseOpen}
+        send={send}
+        setOpen={setSelectNameOpen}
+        setCurrentPriseOpen={setCurrentPriseOpen}
+        fetchBornes={fetchBornes} 
+    />}
 
     </>
 
 }
 
 
-function UserSelectionPrise({badges, send, prise, setOpen, fetchBornes, borne}){
+function UserSelectionPrise({badges, send, prise, setOpen, setCurrentPriseOpen, fetchBornes, borne}){
     const [currentBadge, setCurrentBadge] = useState('');
     const [defile, setDefile] = useState('');
     const [badgeFilter, setBadgeFilter] = useState('');
@@ -286,11 +307,15 @@ function UserSelectionPrise({badges, send, prise, setOpen, fetchBornes, borne}){
     const {setPopupOption} = useContext(PopupContext);
     const [borneID, setBorneID] = useState('')
 
+
     useEffect(() => {
-        setBorneID(prise.prise.name.slice(0, 2));
+        if(prise){
+            setBorneID(prise.prise.name.slice(0, 2));
+        }
     },[prise])
 
     function handleCancel(){
+        setCurrentPriseOpen(null)
         setOpen(null);
     }
 
@@ -346,6 +371,7 @@ function UserSelectionPrise({badges, send, prise, setOpen, fetchBornes, borne}){
                         optionalUser: username ? username : `${currentBadge.name} - ${currentBadge.username}`
                     });
                     setOpen(null);
+                    setCurrentPriseOpen(null);
                     setTimeout(() => {
                         fetchBornes();
                         setUsername('');
@@ -366,62 +392,126 @@ function UserSelectionPrise({badges, send, prise, setOpen, fetchBornes, borne}){
 
     return <div className="user-prompt-container">
 
-                    <ActivateIcon className='prise-icon' />
+                <ActivateIcon className='prise-icon' />
 
-                    <h2>Activation de la prise {prise.name}</h2>
-    
-                    <div className="section-badges">
-                        {badgeFilter.length <= 0 &&
-                            <SearchIcon className="search-icon" style={{ pointerEvents: 'none' }}/>
-                        }
-                        <input value={badgeFilter} onChange={({target}) => setBadgeFilter(target.value)} className="add-info-conso"/>  
-                            <select className="list-section-badges" onClick={handleSelectClick} onChange={handleSelectBadge}>
-                                <option value="">Selectionner le badge</option>
-                                    {badges.filter(filterFunction).map((badge, index) => (
-                                        <option key={index} value={JSON.stringify(badge)}>
-                                                {`${badge.name} - ${badge.username}`.length > 30 
-                                                ? `${`${badge.name} - ${badge.username}`.slice(0, 30)}...`
-                                                : `${badge.name} - ${badge.username}`}                                              
-                                                </option>
-                                    ))}
-                            </select>
-                            <ExpandIcon className={"defile-select " + (defile ? "defile-select-expand" : "")} style={{ pointerEvents: 'none' }}/>
+                <h2>Activation de la prise</h2>
 
-                    </div>
+                <div className="section-badges">
+                    {badgeFilter.length <= 0 &&
+                        <SearchIcon className="search-icon" style={{ pointerEvents: 'none' }}/>
+                    }
+                    <input value={badgeFilter} onChange={({target}) => setBadgeFilter(target.value)} className="add-info-conso"/>  
+                        <select className="list-section-badges" onClick={handleSelectClick} onChange={handleSelectBadge}>
+                            <option value="">Selectionner le badge</option>
+                                {badges.filter(filterFunction).map((badge, index) => (
+                                    <option key={index} value={JSON.stringify(badge)}>
+                                            {`${badge.name} - ${badge.username}`.length > 30 
+                                            ? `${`${badge.name} - ${badge.username}`.slice(0, 30)}...`
+                                            : `${badge.name} - ${badge.username}`}                                              
+                                            </option>
+                                ))}
+                        </select>
+                        <ExpandIcon className={"defile-select " + (defile ? "defile-select-expand" : "")} style={{ pointerEvents: 'none' }}/>
+
+                </div>
+                {
+                    currentBadge && (
+                        <>
+                            <h3>Vous pouvez renseigner une information de plus à la consommation.</h3>
+                            <div className="input-section">
+                                <input value={username} onChange={({target}) => setUsername(target.value)} className={"user-input "+(inputErr? 'err' : '')} placeholder="Ex: BATEAU X..." />
+                            </div>
+                        </>
+                    )
+                }
+
+                <div className="button-section">
                     {
                         currentBadge && (
-                            <>
-                                <h3>Vous pouvez renseigner une information de plus à la consommation.</h3>
-                                <div className="input-section">
-                                    <input value={username} onChange={({target}) => setUsername(target.value)} className={"user-input "+(inputErr? 'err' : '')} placeholder="Ex: BATEAU X..." />
-                                </div>
-                            </>
+                            <div onClick={handleValid} className="action-btn valid">
+                                <h3>Activer</h3>
+                            </div>
                         )
                     }
-
-                    <div className="button-section">
-                        {
-                            currentBadge && (
-                                <div onClick={handleValid} className="action-btn valid">
-                                    <h3>Activer</h3>
-                                </div>
-                            )
-                        }
-                        <div onClick={handleCancel} className="action-btn cancel">
-                            <h3>Annuler</h3>
-                        </div>
-
-                        
+                    <div onClick={handleCancel} className="action-btn cancel">
+                        <h3>Annuler</h3>
                     </div>
 
-    </div>
+                    
+                </div>
+
+            </div>
 
 
 
 }
 
+function UserSelectionText({borne, prise, send, setOpen, fetchBornes, setCurrentPriseOpen}){
 
-function PriseRow({send, prise, setCurrentPriseOpen, fetchBornes}){
+    const [username, setUsername] = useState()
+    const {setPopupOption} = useContext(PopupContext);
+
+    function handleConfirm(){
+
+        setPopupOption({
+            text: 'Etes-vous sur de vouloir changer le consommateur en '+username+ ' ?' ,
+            secondaryText: `L'utilisateur de la prise va changer `,
+            type: POPUP_QUESTION,
+            acceptText: 'Oui, modifier',
+            declineText: 'Non, annuler',
+            onAccept: () => {
+
+                socketSend('current_prise_update', {
+                    borne: borne.borne,
+                    prise: prise.prise.prise,
+                    optionalUser: username
+                })
+
+                fetchBornes();
+                setUsername('');
+
+                setOpen(null)
+                setCurrentPriseOpen(null)
+            }
+        })
+
+    }
+
+    function handleCancel(){
+        setCurrentPriseOpen(null)
+        setOpen(false)
+    }
+
+    return <div className="user-prompt-container">
+
+            <ActivateIcon className='prise-icon' />
+
+            <h2>Modification de l'utilisateur</h2>
+
+            <h3>Renseigner le nom du consommateur.</h3>
+            <div className="input-section">
+                <input value={username} onChange={({target}) => setUsername(target.value)} className={"user-input "} placeholder="Ex: BATEAU X..." />
+            </div>
+            
+
+            <div className="button-section">
+
+                <div onClick={handleConfirm} className="action-btn valid">
+                    <h3>Valider</h3>
+                </div>
+
+                <div onClick={handleCancel} className="action-btn cancel">
+                    <h3>Fermer</h3>
+                </div>
+
+                
+            </div>
+
+        </div>
+
+}
+
+function PriseRow({send, prise, setCurrentPriseOpen, setCurrentBadgeOpen, setSelectNameOpen, fetchBornes, setPrise}){
 
     const {setPopupOption} = useContext(PopupContext);
     const [onLoad, setOnLoad] = useState(false);
@@ -471,6 +561,7 @@ function PriseRow({send, prise, setCurrentPriseOpen, fetchBornes}){
                 connectionIssueTimer.current = setTimeout(onTimerOut, 10 * 1000)
                 setOnLoad(true);
             }})
+            setCurrentBadgeOpen(true)
         }
 
         if(prise.state === 4){
@@ -517,10 +608,20 @@ function PriseRow({send, prise, setCurrentPriseOpen, fetchBornes}){
         })
     }
 
+    function updateLayout(){
+        setCurrentPriseOpen({prise: prise, callback: () => {
+            connectionIssueTimer.current = setTimeout(onTimerOut, 10 * 1000)
+            setOnLoad(true);
+        }})        
+        setSelectNameOpen(true)
+    }
 
     return <div className="prise-container">
 
-        
+        {prise.state === 4 && (
+            <EditIcon onClick={updateLayout} className="edit-icon-list"/>
+        )}
+
         <h2>{prise.prise}</h2>
 
         <div className="prise-state-container">
@@ -528,7 +629,7 @@ function PriseRow({send, prise, setCurrentPriseOpen, fetchBornes}){
             <PriseState Icon={NoElecIcon} currentState={prise.state} targetState={1} info={'Prise libre'} />
             <PriseState Icon={ElecticIcon} currentState={prise.state} targetState={4} info={optionalText !== '' ? 'Prise alimentée pour ' + optionalText : (prise.use_by ? 'Prise alimentée pour ' + prise.use_by : 'Prise alimentée')} />
             <PriseState Icon={StopIcon} currentState={prise.state} targetState={8} info={'Prise en défaut'} />
-            <PriseState Icon={IssueIcon} currentState={prise.state} targetState={2} info={'Problème sur la prise'} />
+            {/* <PriseState Icon={IssueIcon} currentState={prise.state} targetState={2} info={'Problème sur la prise'} /> */}
 
         </div>
 
@@ -549,7 +650,6 @@ function PriseRow({send, prise, setCurrentPriseOpen, fetchBornes}){
         }
         
     </div>
-
 }
 
 function PriseState({targetState, currentState, info, Icon, lottie}){
@@ -612,18 +712,15 @@ function ActiveUserRow({send, borne, prise, fetchBornes}){
             console.log("Erreur lors de la récupération des badges : ",err)
 
         })
-    },[])
 
-    useEffect(() => {
-        console.log("INFO OPTION TEXT : " + optionText)
-    },[optionText])
+    },[borne])
 
     function handleClose(){
 
         setPopupOption({
             type: POPUP_QUESTION,
             text: 'Etes-vous sur de vouloir désactiver la prise '+prise.prise + ', de la borne ' + prise.name.slice(0,2),
-            secondaryText: 'Ceci ajoutera la consommation dans la liste',
+            secondaryText: 'Ceci ajoutera une nouvelle consommation',
             acceptText: 'Oui, je désactive la prise',
             declineText: 'Non, annuler',
             onAccept: () => {

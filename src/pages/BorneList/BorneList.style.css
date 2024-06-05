@@ -187,7 +187,7 @@
 }
 
 .close-btn h3{
-    font-size: clamp(0.75rem, 0.90vw, 1.5rem);
+    font-size: clamp(0.50rem, 0.90vw, 1.5rem);
 }
 
 .close-btn:hover{
@@ -208,7 +208,7 @@
 
 }
 .prise-state-container h2{
-    font-size: clamp(0.75rem, 1vw, 1.2rem);
+    font-size: clamp(0.50rem, 1vw, 1.2rem);
 }
 
 .state-container{
@@ -331,7 +331,7 @@
 
 .prise-container h2{
     max-width: 220px;
-    width: clamp(0.75rem, 15vw, 15rem);
+    width: clamp(0.50rem, 15vw, 15rem);
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
@@ -370,7 +370,7 @@
 }
 
 .interact-btn h4{
-    font-size: clamp(0.75rem, 0.80vw, 1.5rem);
+    font-size: clamp(0.50rem, 0.80vw, 1.5rem);
 }
 
 .interact-btn:hover{
@@ -715,28 +715,20 @@
 }
 
 .borne-control-container h2 {
-    font-size: clamp(0.75rem, 1vw, 1.5rem);
+    font-size: clamp(0.50rem, 1vw, 1.5rem);
 }
 
+.edit-icon-list{
+    width: clamp(1rem, 3vw, 8rem);
+    height: clamp(1rem, 2vw, 8rem);
+    color: var(--primary-text-color);
+    opacity: 0.6;
+    position: absolute;
+    left: 5%
 
-/* @media screen and (max-width: 950px){
-    .borne-control-container{
+}
 
-        background-color: var(--menu-color);
-        border-radius: 10px;
-        position: absolute;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-        padding: 40px;
-        transition-duration: 200ms;
-        color: var(--primary-text-color);
-        gap: 20px;
-        overflow: hidden;
-        animation: control-open 200ms;
-    }
-
-    .borne-control-container h2{
-
-        font-size: 2vw;
-    }
-} */
+.edit-icon-list:hover{
+    cursor: pointer;
+    opacity: 1;
+}

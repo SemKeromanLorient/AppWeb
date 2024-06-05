@@ -695,3 +695,27 @@
     white-space: nowrap;
     max-width: 90%;
 }
+
+.middle-section{
+    margin-top: -15%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-direction: column;
+    width: calc(100% - 20px);
+    white-space:auto;
+    padding: 0px 10px;
+}
+
+.validate-btn{
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 200ms;
+}

@@ -196,6 +196,10 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
         }
     },[badge])
 
+    useEffect(() => {
+        console.log("OPTIONAL USER : " + optionalUser)
+    },[optionalUser])
+
 // --------------------------------------------- FIN USE EFFECT
 
 // --------------------------------------------- FONCTION
@@ -391,11 +395,34 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
         
                 })
             }
-
-
-           
+  
         }
+    }
 
+    function updateCurrentPrise(){
+        setPopupOption({
+            text: 'Vous souhaitez modifier l utilisateur de la prise ' + currentprise.prise,
+            secondaryText: `L'utilisateur ${saveTextPrise ? saveTextPrise : currentprise.use_by} deviendra l'utilisateur ${optionalUser}`,            
+            type: POPUP_QUESTION,
+            acceptText: 'Oui, je valide la modification',
+            declineText: 'Non, annuler',
+            onAccept: () => {
+                setStateGoal(1)
+                setOnWait(true);
+                socketSend('current_prise_update', {
+                    borne: borne.borne,
+                    prise: currentprise.prise,
+                    optionalUser: optionalUser
+                })
+                // //Délai
+                setTimeout(() => {
+                    refresh();
+                    setOptionalUser('');
+                }, 3000);    
+
+            },
+
+        })
     }
 
     const handleSelectBadge = (event) => {
@@ -424,7 +451,8 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
                     {
                         currentprise.use_by? <>
                             <h2 className="title-prise"> <ElecticIcon className="icon-elec-1" /> Prise {currentprise.prise} : {saveTextPrise !== '[object Object]' &&  saveTextPrise ? saveTextPrise : currentprise.use_by} </h2>
-                            <h3 className="third-title">La fermeture de la prise terminera <br/> la consommation.</h3>   
+                            <h3 className="third-title">La fermeture de la prise terminera <br/> la consommation.</h3>
+
                         </> : 
                         <>
                               <h2>La prise semble etre forcé</h2>
@@ -495,7 +523,7 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
             {
                 currentprise.state === 1 && extend && <>
 
-                    <h3 className="short-title">Pas de badge, indiquer la société à facturer</h3>
+                    <h3 className="short-title">Pas de badge ? Indiquer la société à facturer</h3>
 
                    
                         {getAuthorizationFor('MAP', 'update') &&  <form className="facture-name-container" onSubmit={handleInteract} >
@@ -506,6 +534,20 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
                 </>
             }
 
+            </div>
+
+            <div className="middle-section">
+                {
+                    currentprise.state === 4 && <>
+                            <h3 className="short-title">Vous souhaitez indiquer un autre bateau <br/> pour la consommation ?</h3>
+                            {getAuthorizationFor('MAP', 'update') && 
+                                <input value={optionalUser} onChange={({target}) => setOptionalUser(target.value)} className={"facturation-name "+(inputError? "error" : "")} type={'text'} placeholder={'Nom du bateau...'} />
+                            }
+                            <div onClick={updateCurrentPrise} className={"validate-btn"}>
+                                <h4>Valider</h4>
+                            </div>
+                    </>
+                }
             </div>
            
 
