@@ -34,7 +34,7 @@ function BorneMap(){
         
         const interval = setInterval(() => {
             fetchBornes();
-          }, 45000); // Récupération des données toutes les 45 secondes
+          }, 300000); // Récupération des données tout les 5 mins
 
         return () => {//quand on quitte la page on retire le flag
             clearInterval(interval); // Nettoyage de l'intervalle lors du démontage du composant

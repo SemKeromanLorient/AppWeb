@@ -72,7 +72,6 @@ function App() {
   const connectedLock = useRef(false);
 // --------------------------------------------------------------------------------
   function connect(){
-    console.log("Entry CONNECT (APP.JS)")
     //On récupere le userConnecté (Set depuis la page login.js)
     let userStorage = getConnectedUser();
 
@@ -80,7 +79,6 @@ function App() {
       //console.log("getConnectedUser (token): " + JSON.stringify(getConnectedUser('token')))
       if(!connectedLock.current){
         connectedLock.current = true;
-
         console.log('Send need-update')
         //Update du profile connecté
         postToServer('/utility/need-upgrade',{}, (({data}) => {
@@ -95,11 +93,8 @@ function App() {
               }
            */
           if(data.valid){
-
-            // console.log(data)
             //On setup le user dans le localstorage
             setConnectedUser(data.user)
-            console.log("TEST CONNECTEDUSER : " + JSON.stringify(data.user.access_level))
 
             //Attribue différents droits en fonction de l'utilisateur
             switch(data.user.access_level){
@@ -120,7 +115,6 @@ function App() {
             }
 
             connectToServer(getConnectedUser('token'), (connected) => {
-  
 
               if(!connected){
                 console.log("RECONNEXION EN COURS")
@@ -206,8 +200,6 @@ function App() {
   }
 
   function defaultRedirection(){
-
-    console.log("Interface TEST(1) : " + getConnectedUser('authorized_interface'))
 
     let interfaces = JSON.parse(getConnectedUser('authorized_interface'))
 
@@ -342,7 +334,7 @@ function App() {
                           
                           </>
 
-                        ):<Login/>}
+                        ):<Login connect={connect}/>}
 
 
                           <Toast option={toastOption} setOption={setToastOption} />

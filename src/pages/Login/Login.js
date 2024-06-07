@@ -10,9 +10,8 @@ import Axios from "axios";
 import { connectToServer } from "../../utils/serverSocketCom";
 import { setConnectedUser } from "../../utils/storageUtil";
 import { postToServer } from "../../utils/serverHttpCom.js";
-import { useNavigate } from "react-router-dom";
 
-function Login(){
+function Login({connect}){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -20,7 +19,6 @@ function Login(){
     const {setPopupOption} = useContext(PopupContext);
     const {setUser} = useContext(UserContext);
 
-    // const navigate = useNavigate();
 
     function handleLogin(e){
 
@@ -37,7 +35,7 @@ function Login(){
                         setConnectedUser(data.user)
                         if(connected){
                             setUser(data.user)
-                            // navigate('/supervision/map')
+                            connect()
                         } else {
                             setUser(null);
                         }

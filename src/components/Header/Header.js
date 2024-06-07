@@ -20,6 +20,7 @@ import { currentServerState, socketFlag } from "../../utils/serverSocketCom";
 import { useNavigate } from "react-router-dom";
 import { disconnectUser, getConnectedUser } from "../../utils/storageUtil";
 import { getToServer, postToServer } from "../../utils/serverHttpCom.js";
+import { disconnectSocket } from "../../utils/serverSocketCom";
 import moment from "moment";
 import { POPUP_QUESTION } from "../Popup/Popup";
 
@@ -142,6 +143,7 @@ function Header({paths}){
 
                 disconnectUser();
                 setUser(null);
+                disconnectSocket()
                 navigate("/supervision/")
 
             }

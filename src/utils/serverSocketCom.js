@@ -73,7 +73,7 @@ function connectToServer(token, callback){
         })
     
     } else {
-        throw new Error("La connexion est déjà établie.");
+        console.log("La connexion est déjà établie.");
     }
     
 }
