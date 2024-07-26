@@ -70,6 +70,7 @@ function Header({paths}){
     }, [burgerMenuOpen])
 
     useEffect(() => {
+        console.log("currentPageName : " + currentPageName)
         fetchNotifAndFilter()
     },[currentPageName])
 
@@ -159,7 +160,7 @@ function Header({paths}){
     }
 
     return <>
-    {currentPageName !=="SwitchPages" ? (
+    {(currentPageName !== "SwitchPages") && (currentPageName !== "SwitchPagesARN") ? (
         <div className="header">
         <div className="left-side">
             <div className={"menu-button "+(burgerMenuOpen? "active" : "")}>

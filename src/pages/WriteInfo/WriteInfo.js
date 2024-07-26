@@ -114,16 +114,16 @@ const WriteInfo = () => {
   function savePolicySize(number){
     switch(number){
       case 1:
-        updateFontSize2(policySize1,"1");
+        updateFontSize(policySize1,"1");
         break;
       case 2:
-        updateFontSize2(policySize2,"2");
+        updateFontSize(policySize2,"2");
         break;
       case 3:
-        updateFontSize2(policySize3,"3");
+        updateFontSize(policySize3,"3");
         break;
       case 4:
-        updateFontSize2(policySize4,"4"); 
+        updateFontSize(policySize4,"4"); 
         break;
       //Délai entre les pages
       case 5: 
@@ -166,13 +166,12 @@ const WriteInfo = () => {
     })
   }
 
-  function updateFontSize2(size,index){
+  function updateFontSize(size,index){
     postToServer('/font/update', {size,index}, ({data}) => {
       console.log("Success, update : " + JSON.stringify(data));
     })
   }
 
-  //C'est ici qu'a lieu la demande de reconnexion (lorsqu'on fait le postToServer)
   function addInfoMDP(INFO1, INFO2, INFO3, INFO4){
     
       postToServer('/infos/add', {INFO1, INFO2, INFO3, INFO4}, ({data}) => {
@@ -183,10 +182,10 @@ const WriteInfo = () => {
   function fetchInfo(){
     getToServer('/infos/lastInfo', {}, ({data}) => {
 
-        setInfo1(data[0].Info1.replace(/\n/g, '<br>'));
-        setInfo2(data[0].Info2.replace(/\n/g, '<br>'));
-        setInfo3(data[0].Info3.replace(/\n/g, '<br>'));
-        setInfo4(data[0].Info4.replace(/\n/g, '<br>'));
+        setInfo1(data[0].Info1.replace(/<br\s*\/?>/gi, '\n').trim());
+        setInfo2(data[0].Info2.replace(/<br\s*\/?>/gi, '\n').trim());
+        setInfo3(data[0].Info3.replace(/<br\s*\/?>/gi, '\n').trim());
+        setInfo4(data[0].Info4.replace(/<br\s*\/?>/gi, '\n').trim());
 
     })
   }
@@ -207,7 +206,7 @@ const WriteInfo = () => {
   }
 
   function fetchFontSize(){
-    getToServer('/font/', {} , ({data}) => {
+    getToServer('/font/getAll', {} , ({data}) => {
       setCurrentPolicySize1(data[0].Size1);
       setCurrentPolicySize2(data[0].Size2);
       setCurrentPolicySize3(data[0].Size3);
@@ -221,33 +220,33 @@ const WriteInfo = () => {
   }
 
   function Affichage1() {
-    updateFontSize2(14,"1");
-    updateFontSize2(14,"2");
-    updateFontSize2(14,"3");
+    updateFontSize(14,"1");
+    updateFontSize(14,"2");
+    updateFontSize(14,"3");
   }
 
   function Affichage2() {
-    updateFontSize2(18,"1");
-    updateFontSize2(18,"2");
-    updateFontSize2(18,"3");
+    updateFontSize(18,"1");
+    updateFontSize(18,"2");
+    updateFontSize(18,"3");
   }
 
   function Affichage3() {
-    updateFontSize2(24,"1");
-    updateFontSize2(24,"2");
-    updateFontSize2(24,"3");
+    updateFontSize(24,"1");
+    updateFontSize(24,"2");
+    updateFontSize(24,"3");
   }
   
   function Affichage4() {
-    updateFontSize2(18,"4");
+    updateFontSize(18,"4");
   }
 
   function Affichage5() {
-    updateFontSize2(24,"4");
+    updateFontSize(24,"4");
   }
 
   function Affichage6() {
-    updateFontSize2(30,"4");
+    updateFontSize(30,"4");
   }
 
   function moreOptionsMenu(){

@@ -16,6 +16,7 @@ import Badges from "./Badges/Badges";
 import SwitchPages from "./SwitchPages/SwitchPages";
 import WriteInfo from "./WriteInfo/WriteInfo";
 import SwitchPagesARN from "./SwitchPages/SwitchPagesARN";
+import WriteInfoARN from "./WriteInfo/WriteInfoARN";
 
 export {
     Bornecontrol,
@@ -35,5 +36,6 @@ export {
     Badges,
     SwitchPages,
     WriteInfo,
+    WriteInfoARN,
     SwitchPagesARN
 }

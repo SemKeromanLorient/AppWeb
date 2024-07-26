@@ -36,7 +36,6 @@ const PageSwitcher = () => {
 
   function fetchDelaiPage(){
     getToServer('/switchPage', {}, ({data}) => {
-      console.log("DATA DELAI PAGE : " + JSON.stringify(data[0].Page_Info))
       setDelai((data[0].delai)* 1000)
       const state1 = (data[0].Page_Info === 1) ? true : false;
       setPageInfoBoolean(state1);
@@ -50,10 +49,7 @@ const PageSwitcher = () => {
   }
 
   useEffect(() => {
-    console.log("TEST IN SWITCHPAGE")
     fetchDelaiPage()
-    console.log("PageInfoBoolean : " + PageInfoBoolean)
-
   },[])
 
   useEffect(() => {

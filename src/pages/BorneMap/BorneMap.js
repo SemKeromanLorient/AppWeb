@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BorneController, BorneControllerNew, MapView } from "../../components";
+import { BorneController, MapView } from "../../components";
 import "./BorneMap.style.css"
 import {ReactComponent as AddIcon} from '../../assets/icons/add-new.svg';
 import { removeSocketFlag, socketFlag } from "../../utils/serverSocketCom";
@@ -81,7 +81,7 @@ function BorneMap(){
 
         </MapView>
         {currentlySelected !== null && currentlySelected !== undefined && (
-            <BorneControllerNew currentlySelected={bornes[currentlySelected]} badges = {badges} setBornes={setBornes}/>
+            <BorneController currentlySelected={bornes[currentlySelected]} badges = {badges} setBornes={setBornes}/>
         )}
         
     </div>

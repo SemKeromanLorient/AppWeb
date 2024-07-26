@@ -1,8 +1,8 @@
 import React from 'react';
 import "./Info.css";
-import {ReactComponent as KeromanIcon} from "../../assets/icons/Logo_SEM_Keroman.svg"
+import {ReactComponent as KeromanIcon} from "../../../assets/icons/Logo_SEM_Keroman.svg"
 import { useEffect, useState } from 'react';
-import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
+import { postToServer, getToServer } from "../../../utils/serverHttpCom.js";
 import axios from 'axios';
 
 function Info() {
@@ -33,7 +33,7 @@ function Info() {
 
     
     function fetchFont(){
-        getToServer('/font/',{},({data}) => {
+        getToServer('/font/getAll',{},({data}) => {
             SetFontSize1((data[0]).Size1)
             SetFontSize2((data[0]).Size2)
             SetFontSize3((data[0]).Size3)

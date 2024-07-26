@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./OrdreCriee.css"; 
-import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
+import { postToServer, getToServer } from "../../../utils/serverHttpCom.js";
 //import jsonData from '../../excel/excel_data.json';
-import { SortableTable, Toast } from "../../components";
+import { SortableTable, Toast } from "../../../components";
 import axios from 'axios';
 
 //import { json } from 'stream/consumers';
@@ -185,7 +185,7 @@ function OrdreCriee(){
       }
 
     /**
-     * Initialise le tableau contenant toutes les données // FONCTIONNE PAS PARCEQUE ligne vide (revoir la logique pour ajouter les données)
+     * Initialise le tableau contenant toutes les données
      */
     function remplirTab(){
         let i,j;
@@ -207,8 +207,13 @@ function OrdreCriee(){
         let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
 
         if (date.getDay() === 0) {
-            // Si c'est dimanche, soustraire un jour à la date
-            date.setDate(date.getDate() - 1);
+            if (date.getHours() >= 20) {
+                // Si c'est dimanche entre 20h et minuit, passer au lundi
+                date.setDate(date.getDate() + 1);
+            } else {
+                // Sinon, passer au samedi
+                date.setDate(date.getDate() - 1);
+            }
         }
 
         const dateFormatee = date.toLocaleDateString('fr-FR', options);

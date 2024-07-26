@@ -1,0 +1,71 @@
+.primary-title{
+
+}
+
+.secondary-title{
+    font-size: 20px;
+    text-align: center;
+    color: var(--primary-text-color);
+    margin: 5px;
+}
+
+.sect-params{
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputARN {
+    height: 12vh;
+}
+
+.section-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.save-button-2 {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.6% 1.2%;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+
+  .input-delay{
+    text-align: center;
+    width: 15%;
+    margin-right: 40%;
+  }
+
+  .input-delay-defilate-info{
+    margin-top: 20%;
+    text-align: center;
+    margin-right: 40%;
+    width: 20%;
+    height: 80%;
+  }
+
+  .Med-col{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .on-off-button-ARN {
+    margin-left: 40%;
+    display: inline-block;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 280px;
+  }
