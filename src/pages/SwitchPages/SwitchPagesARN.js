@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { DefilateInfo, MétéoARN, Planning } from "../../components";
+import {getDataMeteoDays,getDataMeteoMarine, getDataWind} from "../../utils/apiExtern";
 import { postToServer, getToServer } from "../../utils/serverHttpCom.js";
 
 const PageSwitcherARN = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [dataMeteo, setDataMeteo] = useState();
+  const [dataMeteoMarine, setDataMeteoMarine] = useState();
+  const [dataWind, setDataWind] = useState();
 
   const [delaiDefilateInfo, setDelaiDefilateInfo] = useState(5000);
   const [delaiMeteo, setDelaiMeteo] = useState(5000);
@@ -19,11 +23,8 @@ const PageSwitcherARN = () => {
 
   useEffect(() => {
     fetchDelaiPage();
+    fetchDataApi();
   }, []);
-
-  useEffect(() => {
-    console.log("Current page : " + currentPage);
-  }, [currentPage]);
 
   useEffect(() => {
     if (currentPage === 1 && (!PageInfoBoolean && !PageEnvironnementBoolean)) {
@@ -36,15 +37,13 @@ const PageSwitcherARN = () => {
   }, [currentPage, PageInfoBoolean, PageEnvironnementBoolean, PageMeteoBoolean, PagePlanningBoolean]);
 
   const getDelaiForCurrentPage = () => {
+    fetchDataApi()
     switch (currentPage) {
       case 1:
-        console.log("1 : " + delaiDefilateInfo);
         return Math.max(delaiDefilateInfo, 5000);
       case 2:
-        console.log("2 : " + delaiMeteo);
         return Math.max(delaiMeteo, 5000);
       case 3:
-        console.log("3 : " + delaiPlanning);
         return Math.max(delaiPlanning, 5000);
       default:
         return 5000;
@@ -73,7 +72,7 @@ const PageSwitcherARN = () => {
       }
     };
   }, [fetchDone, currentPage, delaiDefilateInfo, delaiMeteo, delaiPlanning]);
-
+  
   function fetchDelaiPage() {
     getToServer('/switchPageARN', {}, ({ data }) => {
       setPageInfoBoolean(data[0].Page_Info === 1);
@@ -89,10 +88,44 @@ const PageSwitcherARN = () => {
     });
   }
 
+  function fetchDataApi(){
+    var date = new Date(); // Obtient la date et l'heure actuelles
+    var annee = date.getFullYear(); // Obtient l'année actuelle
+    var mois = ('0' + (date.getMonth() + 1)).slice(-2); // Obtient le mois actuel et ajoute un zéro devant s'il est inférieur à 10
+    var jour = ('0' + date.getDate()).slice(-2); // Obtient le jour actuel et ajoute un zéro devant s'il est inférieur à 10
+
+    var dateCourante = annee + '-' + mois + '-' + jour; 
+
+    var dateFin = new Date(); // Obtient la date et l'heure actuelles
+    dateFin.setDate(dateFin.getDate() + 5); // Ajoute 5 jours à la date actuelle
+
+    var anneeFin = dateFin.getFullYear(); // Obtient l'année
+    var moisFin = ('0' + (dateFin.getMonth() + 1)).slice(-2); // Obtient le mois (ajoute 1 car les mois sont indexés à partir de 0) et ajoute un zéro devant s'il est inférieur à 10
+    var jourFin = ('0' + dateFin.getDate()).slice(-2); // Obtient le jour et ajoute un zéro devant s'il est inférieur à 10
+
+    var dateDeFin = anneeFin + '-' + moisFin + '-' + jourFin;
+
+    getDataMeteoMarine(dateCourante,dateDeFin, response => {
+      setDataMeteoMarine(response)
+    }, () => {
+      console.log("Erreur lors du fetch de l'API")
+    })
+    getDataMeteoDays(6, response => {
+      setDataMeteo(response)
+    }, () => {
+      console.log("Erreur lors du fetch de l'API")
+    })
+    getDataWind(response => {
+      setDataWind(response)
+    }, () => {
+      console.log("Erreur lors du fetch de l'API")
+    })
+  }
+
   return (
     <>
       {(PageInfoBoolean || PageEnvironnementBoolean) && currentPage === 1 && <DefilateInfo />}
-      {PageMeteoBoolean && currentPage === 2 && <MétéoARN />}
+      {PageMeteoBoolean && currentPage === 2 && <MétéoARN data={dataMeteo} dataMarine={dataMeteoMarine} dataWind={dataWind}/>}
       {PagePlanningBoolean && currentPage === 3 && <Planning />}
     </>
   );

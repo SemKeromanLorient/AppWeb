@@ -16,7 +16,7 @@ import Maree from "./SwitchPage/Maree/Maree.js";
 import OrdreCriee from "./SwitchPage/OrdreCriee/OrdreCriee.js";
 import ExpandNotif from "./ExpandNotif/ExpandNotif.js";
 import DefilateInfo from "./SwitchPageARN/DefilateInfo/DefilateInfo.js";
-import MétéoARN from "./SwitchPageARN/Météo/Météo.js";
+import MétéoARN from "./SwitchPageARN/Météo/MétéoARN.js";
 import Planning from "./SwitchPageARN/Planning/Planning.js";
 export {
     Header,
