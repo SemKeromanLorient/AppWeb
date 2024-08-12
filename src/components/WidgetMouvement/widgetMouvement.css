@@ -1,0 +1,9 @@
+.sect-box-mouvement{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1.5px solid black;
+    width: 95%;
+    margin: 0.5%;
+}

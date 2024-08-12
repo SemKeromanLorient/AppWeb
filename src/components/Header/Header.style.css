@@ -472,8 +472,17 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--background-color
-    );
+    background-color: var(--background-color);
     opacity: 50px;
-    height: 50px; /* Modifier la hauteur selon vos besoins */
+    height: 7%;
+}
+
+.header-notHovering.white-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #F5F5F5; /* Arrière-plan blanc */
+    opacity: 50px;
+    height: 7%;
 }

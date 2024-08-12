@@ -1,0 +1,62 @@
+.container-planning-ARN{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #F5F5F5;
+}
+
+.title-planning{
+    font-size: 300%;
+    font-style:oblique;
+}
+
+.sect-title-planning{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1%;
+    padding-bottom: 1%;
+}
+
+.sect-days-planning{
+    width: 100%;
+    height: 88%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sect-day{
+    height: 100%;
+    width: 19%;
+    background-color: #98FB98;
+    margin: 0.2%;
+}
+
+.sect-header-day{
+    height: 15%;
+    width: 100%;
+    border-bottom: 0.2vh solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6%;
+}
+
+.sect-widget-mouvement{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-day{
+    font-size: 300%;
+    font-weight:600;
+}

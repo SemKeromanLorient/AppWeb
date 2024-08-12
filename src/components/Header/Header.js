@@ -235,7 +235,8 @@ function Header({paths}){
     ) : ( <>
 
         <div 
-            className={isHovering ? 'header' : 'header-notHovering'}
+            className={`${isHovering ? 'header' : 'header-notHovering'} ${currentPageName === "SwitchPagesARN" ? 'white-bg' : ''}`}
+            // className={isHovering ? 'header' : 'header-notHovering'}
             //className={`header ${isVisible ? 'header-notHovering' : ''}`}
             onMouseOver={handleMouseEnter}
             onMouseOut={handleMouseLeave}

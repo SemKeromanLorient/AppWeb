@@ -18,6 +18,7 @@ import ExpandNotif from "./ExpandNotif/ExpandNotif.js";
 import DefilateInfo from "./SwitchPageARN/DefilateInfo/DefilateInfo.js";
 import MétéoARN from "./SwitchPageARN/Météo/MétéoARN.js";
 import Planning from "./SwitchPageARN/Planning/Planning.js";
+import WidgetMouvement from "./WidgetMouvement/widgetMouvement.js"
 export {
     Header,
     Popup,
@@ -37,5 +38,6 @@ export {
     ExpandNotif,
     DefilateInfo,
     MétéoARN,
-    Planning
+    Planning,
+    WidgetMouvement
 }
