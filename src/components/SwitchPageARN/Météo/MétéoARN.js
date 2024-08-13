@@ -110,9 +110,9 @@ function MétéoARN({data,dataMarine,dataWind}){
     const formattedSunrise = formatTime(data.list[0].sunrise);
     const formattedSunset = formatTime(data.list[0].sunset);
 
-    return (<div className="container meteo-container">
+    return (<div className="container meteo-container-arn">
 
-        <div className='row division-3-1'>
+        <div className='row division-3-1-arn'>
 
             <div className="row first-row">
                 <div className='col-md-12'>
@@ -170,14 +170,14 @@ function MétéoARN({data,dataMarine,dataWind}){
                     <tbody>
                         <tr>
                             <th> Direction du vent</th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[1]}deg)`}} /></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[4]}deg)`}} /></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[7]}deg)`}}/></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[10]}deg)`}}/></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[13]}deg)`}}/></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[16]}deg)`}}/></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[19]}deg)`}}/></th>
-                            <th><ArrowIcon  className="arrow" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[22]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[1]}deg)`}} /></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[4]}deg)`}} /></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[7]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[10]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[13]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[16]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[19]}deg)`}}/></th>
+                            <th><ArrowIcon  className="arrow-arn" style={{ transform: `rotate(${dataWind.hourly.winddirection_20m[22]}deg)`}}/></th>
 
                         </tr>
                         <tr>
@@ -221,7 +221,7 @@ function MétéoARN({data,dataMarine,dataWind}){
 
         </div>
 
-        <div className='row division-3-2'>
+        <div className='row division-3-2-arn'>
 
             <div className="row first-row">
                 <div className='col-md-12'>
@@ -323,7 +323,7 @@ function MétéoARN({data,dataMarine,dataWind}){
 }
 
 /*
-        <div className='row division-3-3'>
+        <div className='row division-3-3-arn'>
             <h1 className='title-sect'>
                 <strong>Marée</strong>
             </h1>

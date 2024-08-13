@@ -5,23 +5,23 @@
 }
 
 
-.division-3-1{
+.division-3-1-arn{
     height: 40%;
     color: black;
 }
-.division-3-2{
+.division-3-2-arn{
     height: 40%;
     color: black;
     margin-top: 80px !important ;
 }
-.division-3-3{
+.division-3-3-arn{
     height: 60%;
     color: black;
 
 }
 
 
-.meteo-container {
+.meteo-container-arn {
     max-width: 100vw !important;
     min-height: 80vh !important;
     text-align: center;
@@ -60,7 +60,7 @@
     min-height: 150px;
 }
 
-.arrow{
+.arrow-arn{
     width: 24px;
     height: 24px;
     display: block;
@@ -75,7 +75,7 @@
     border: 1px solid black;
   }
 
-.arrow path{
+.arrow-arn path{
   fill: black;
 }
   .text-meteo-jour{
