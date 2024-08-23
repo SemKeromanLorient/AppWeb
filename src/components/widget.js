@@ -27,10 +27,11 @@ function Widget(data) {
       <iframe
         ref={iframeRef}
         src="about:blank"
-        width="700"
-        height="916"
+        width="700px"
+        height="920px"
+        overflow="hidden"
         frameBorder={0}
-        title="Widget IFrame"
+        title="Maree Shom"
       ></iframe>
     </div>
   );

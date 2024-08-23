@@ -35,9 +35,8 @@
 
 .table-container tbody td{
     border-right: 1px solid var(--border-color);
+    color: var(--primary-text-color);
 }
-
-
 
 .table-container thead th{
     position: relative;

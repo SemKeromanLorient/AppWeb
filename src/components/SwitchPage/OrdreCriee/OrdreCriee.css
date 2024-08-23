@@ -7,6 +7,15 @@
     margin: 0 auto;
   }
 
+.container-ordre-criee{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F5F5;
+}
+
 .affichageTable{
   display: flex;
   justify-content: center;
@@ -21,21 +30,20 @@
   font-size: 300%;
   font-weight: bold;
   margin-bottom: 3%; /* Ajoute une marge en bas du titre */
-  color: var(--primary-text-color);
+  color: black;
 
 }
 
 .colGauche{
+  color: black;
 }
 
 .colDroite{
   width: 24%;
+  color: black;
 }
 
-td{
-  /*font-size: 140%;*/
-  color: var(--primary-text-color);
-}
+
 
 .subTitle{
   font-size: 160%;
@@ -45,7 +53,7 @@ td{
 
 .totalTxt{
   font-size: 180%;
-  color: var(--primary-text-color);
+  color: black;
   text-align: center ;
   vertical-align: middle;
   margin-bottom: 2%;

@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Info.css";
-import {ReactComponent as KeromanIcon} from "../../../assets/icons/Logo_SEM_Keroman.svg"
+import {ReactComponent as KeromanIcon} from "../../../assets/icons/Logo_SEM_Keroman_Black.svg"
 import { useEffect, useState } from 'react';
 import { postToServer, getToServer } from "../../../utils/serverHttpCom.js";
 import axios from 'axios';
@@ -59,7 +59,7 @@ function Info() {
     }
 
     return (
-        <>
+        
         <div className='container-display'>
             <div className='row-container-1' style={{marginBottom: marginTitle}}>
                 
@@ -99,8 +99,7 @@ function Info() {
                 <div className='image-container'>
                     <img className='image-info-display' src="https://service.keroman.fr/images/imageCriee.jpg" alt="Aucune image" />
                 </div>
-            </div>
-        </>
+        </div>
             
     );
 }

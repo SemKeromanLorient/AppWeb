@@ -25,10 +25,9 @@ const downloadAndProcessExcel = async () => {
     const sheet = workbook.Sheets[sheetName];
     const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-    // Traitez les données comme vous le souhaitez
     console.log(jsonData);
 
-    // Enregistrez les données dans un fichier JSON si nécessaire
+    // Enregistre les données dans un fichier JSON
     fs.writeFileSync('excel_data.json', JSON.stringify(jsonData, null, 2));
   } catch (error) {
     console.error('Une erreur est survenue :', error);

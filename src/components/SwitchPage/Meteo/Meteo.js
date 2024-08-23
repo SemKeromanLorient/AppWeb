@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./Meteo.css"; 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import {currentDayMeteo, getDataMeteo} from "../../utils/apiExtern";
-import {ReactComponent as KeromanIcon} from "../../../assets/icons/Logo_SEM_Keroman.svg"
+import {ReactComponent as KeromanIcon} from "../../../assets/icons/Logo_SEM_Keroman_Black.svg"
 import { ReactComponent as ArrowIcon } from "../../../assets/icons/fleche.svg";
 
 function Meteo({data,dataMarine,dataWind}){

@@ -282,224 +282,224 @@ function OrdreCriee(){
     }
 
     return (
-        <>
-        <div className='affichageTable'>
-            <h1 className='titleTable'>
-                Tirage du {date}
-            </h1>
-            {
-                cotiere2.length === 0 && cotiere1.length != 0 && (
-                    <div className='affichageDoubleCotiere'>
-                            <table>
-                                <thead>
-                                <tr>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {cotiere1.slice(0, Math.ceil(cotiere1.length / 2)).map((item, index) => (
-                                    <tr key={index}>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{item}</td>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + Math.ceil(numRowsCot1/2) + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{cotiere1[index + Math.ceil(cotiere1.length / 2)]}</td>
-                                    </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                                <div className='infPart1Cot'>
-                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
-                                    <table className='tableTirage3'>
-                                        <thead className='testTHEAD'>
-                                        </thead>
-                                        <tbody>
-                                            {chunkArray(Object.entries(totalEspece1), 2).map((chunk, rowIndex) => (
-                                                <tr key={rowIndex}>
-                                                    {chunk.map(([key, value], cellIndex) => (
-                                                    <React.Fragment key={cellIndex}>
-                                                        <td className='especeTotal' style={{ fontSize: sizeTotal1 }}>{key}</td>
-                                                        <td className='totalEspece' style={{ fontSize: sizeTotal1 }}>{value}</td>
-                                                    </React.Fragment>
-                                                    ))}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                    </div>
-                )
-            }
-            {
-                cotiere1.length === 0 && cotiere2.length != 0 && (
-                    <div className='affichageDoubleCotiere'>
-                            <table>
-                                <thead>
-                                <tr>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => (
-                                    <tr key={index}>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
-                                    </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                                <div className='infPart1Cot'>
-                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
-                                    <table className='tableTirage3'>
-                                        <thead className='testTHEAD'>
-                                        </thead>
-                                        <tbody>
-                                            {chunkArray(Object.entries(totalEspece2), 2).map((chunk, rowIndex) => (
-                                                <tr key={rowIndex}>
-                                                    {chunk.map(([key, value], cellIndex) => (
-                                                    <React.Fragment key={cellIndex}>
-                                                        <td className='especeTotal' style={{ fontSize: sizeTotal2 }}>{key}</td>
-                                                        <td className='totalEspece' style={{ fontSize: sizeTotal2 }}>{value}</td>
-                                                    </React.Fragment>
-                                                    ))}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                    </div>
-                )
-            }
-            {
-                cotiere2.length != 0 && cotiere1.length != 0 && (
-                    <div className='affichageDoubleCotiere'>
-                        <div className='tablesContainer'>
-                            <div className='tablesGauche'>
-                                <h2 className='titleCotiere'>Cotiere 1</h2>
-                                <table className='tableTirage'>
-                                <thead>
+        <div className='container-ordre-criee'>
+            <div className='affichageTable'>
+                <h1 className='titleTable'>
+                    Tirage du {date}
+                </h1>
+                {
+                    cotiere2.length === 0 && cotiere1.length != 0 && (
+                        <div className='affichageDoubleCotiere'>
+                                <table>
+                                    <thead>
                                     <tr>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
-                                        <th className='subTitle'>Numéro</th>
-                                        <th className='subTitle'>Nom</th>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {cotiere1.slice(0, Math.ceil(cotiere1.length / 2)).map((item, index) => (
-                                    <tr key={index}>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{item}</td>
-                                        <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}> {index + Math.ceil(numRowsCot1/2) + 1}</td>
-                                        <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{cotiere1[index + Math.ceil(cotiere1.length / 2)]}</td>
-                                    </tr>
-                                    ))}
-                                </tbody>
-                                </table>
-                            </div>
-                            <div className='tablesDroite'>
-                                <h2 className='titleCotiere'>Cotiere 2</h2>
-                                <table className='tableTirage2'>
-                                    {
-                                        numRowsCot2 > 16 && (
-                                            <>
-                                            <thead>
-                                                <tr>
-                                                    <th className='subTitle'>Numéro</th>
-                                                    <th className='subTitle'>Nom</th>
-                                                    <th className='subTitle'>Numéro</th>
-                                                    <th className='subTitle'>Nom</th>
-                                                </tr>
-                                                </thead>
-                                            <tbody className='adjustementTable'>
-                                                {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => ( 
-                                                    <tr className='ligneAffichageCot2' key={index}>
-                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
-                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
-                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
-                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                            </>
-                                        )
-                                    } 
-                                    {
-                                        numRowsCot2 <=16 && (
-                                            <>
-                                            <thead>
-                                                <tr>
-                                                    <th className='subTitle'>Numéro</th>
-                                                    <th className='subTitle'>Nom</th>
-                                                </tr>
-                                                </thead>
-                                            <tbody className='adjustementTable'>
-                                                {cotiere2.map((item, index) => ( 
-                                                    <tr className='ligneAffichageCot2' key={index}>
-                                                        <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
-                                                        <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                            </>
-                                        )
-                                    }
-
-                                </table>
-                            </div>
-                        </div>
-                            <div className='containeurBas'>  
-                                <div className='resumeGauche'>
-                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
-                                    <table className='tableTirage3'>
-                                        <thead className='testTHEAD'>
-                                        </thead>
-                                        <tbody>
-                                            {chunkArray(Object.entries(totalEspece1), 2).map((chunk, rowIndex) => (
-                                                <tr key={rowIndex}>
-                                                    {chunk.map(([key, value], cellIndex) => (
-                                                    <React.Fragment key={cellIndex}>
-                                                        <td className='especeTotal' style={{ fontSize: sizeTotal1 }}>{key}</td>
-                                                        <td className='totalEspece' style={{ fontSize: sizeTotal1 }}>{value}</td>
-                                                    </React.Fragment>
-                                                    ))}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className='resumeDroite'>
-                                    <h2 className='totalTxt'> Tonnage total (KG) : {total[1]}</h2>
-                                    <table className='tableTirage4'>
+                                    </thead>
                                     <tbody>
-                                            {chunkArray(Object.entries(totalEspece2), 2).map((chunk, rowIndex) => (
-                                                <tr key={rowIndex}>
-                                                    {chunk.map(([key, value], cellIndex) => (
-                                                    <React.Fragment key={cellIndex}>
-                                                        <td className='especeTotal' style={{ fontSize: sizeTotal2 }}>{key}</td>
-                                                        <td className='totalEspece' style={{ fontSize: sizeTotal2 }}>{value}</td>
-                                                    </React.Fragment>
+                                    {cotiere1.slice(0, Math.ceil(cotiere1.length / 2)).map((item, index) => (
+                                        <tr key={index}>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{item}</td>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + Math.ceil(numRowsCot1/2) + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{cotiere1[index + Math.ceil(cotiere1.length / 2)]}</td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                    <div className='infPart1Cot'>
+                                        <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
+                                        <table className='tableTirage3'>
+                                            <thead className='testTHEAD'>
+                                            </thead>
+                                            <tbody>
+                                                {chunkArray(Object.entries(totalEspece1), 2).map((chunk, rowIndex) => (
+                                                    <tr key={rowIndex}>
+                                                        {chunk.map(([key, value], cellIndex) => (
+                                                        <React.Fragment key={cellIndex}>
+                                                            <td className='especeTotal' style={{ fontSize: sizeTotal1 }}>{key}</td>
+                                                            <td className='totalEspece' style={{ fontSize: sizeTotal1 }}>{value}</td>
+                                                        </React.Fragment>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                        </div>
+                    )
+                }
+                {
+                    cotiere1.length === 0 && cotiere2.length != 0 && (
+                        <div className='affichageDoubleCotiere'>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => (
+                                        <tr key={index}>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                    <div className='infPart1Cot'>
+                                        <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
+                                        <table className='tableTirage3'>
+                                            <thead className='testTHEAD'>
+                                            </thead>
+                                            <tbody>
+                                                {chunkArray(Object.entries(totalEspece2), 2).map((chunk, rowIndex) => (
+                                                    <tr key={rowIndex}>
+                                                        {chunk.map(([key, value], cellIndex) => (
+                                                        <React.Fragment key={cellIndex}>
+                                                            <td className='especeTotal' style={{ fontSize: sizeTotal2 }}>{key}</td>
+                                                            <td className='totalEspece' style={{ fontSize: sizeTotal2 }}>{value}</td>
+                                                        </React.Fragment>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                        </div>
+                    )
+                }
+                {
+                    cotiere2.length != 0 && cotiere1.length != 0 && (
+                        <div className='affichageDoubleCotiere'>
+                            <div className='tablesContainer'>
+                                <div className='tablesGauche'>
+                                    <h2 className='titleCotiere'>Cotiere 1</h2>
+                                    <table className='tableTirage'>
+                                    <thead>
+                                        <tr>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
+                                            <th className='subTitle'>Numéro</th>
+                                            <th className='subTitle'>Nom</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cotiere1.slice(0, Math.ceil(cotiere1.length / 2)).map((item, index) => (
+                                        <tr key={index}>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}>{index + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{item}</td>
+                                            <td className='colGauche' style={{ fontSize: sizeRowsCot1 }}> {index + Math.ceil(numRowsCot1/2) + 1}</td>
+                                            <td className='colDroite' style={{ fontSize: sizeRowsCot1 }}>{cotiere1[index + Math.ceil(cotiere1.length / 2)]}</td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <div className='tablesDroite'>
+                                    <h2 className='titleCotiere'>Cotiere 2</h2>
+                                    <table className='tableTirage2'>
+                                        {
+                                            numRowsCot2 > 16 && (
+                                                <>
+                                                <thead>
+                                                    <tr>
+                                                        <th className='subTitle'>Numéro</th>
+                                                        <th className='subTitle'>Nom</th>
+                                                        <th className='subTitle'>Numéro</th>
+                                                        <th className='subTitle'>Nom</th>
+                                                    </tr>
+                                                    </thead>
+                                                <tbody className='adjustementTable'>
+                                                    {cotiere2.slice(0, Math.ceil(cotiere2.length / 2)).map((item, index) => ( 
+                                                        <tr className='ligneAffichageCot2' key={index}>
+                                                            <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
+                                                            <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                                            <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + Math.ceil(numRowsCot2/2) + 1}</td>
+                                                            <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{cotiere2[index + Math.ceil(cotiere2.length / 2)]}</td>
+                                                        </tr>
                                                     ))}
-                                                </tr>
-                                            ))}
-                                        </tbody>
+                                                </tbody>
+                                                </>
+                                            )
+                                        } 
+                                        {
+                                            numRowsCot2 <=16 && (
+                                                <>
+                                                <thead>
+                                                    <tr>
+                                                        <th className='subTitle'>Numéro</th>
+                                                        <th className='subTitle'>Nom</th>
+                                                    </tr>
+                                                    </thead>
+                                                <tbody className='adjustementTable'>
+                                                    {cotiere2.map((item, index) => ( 
+                                                        <tr className='ligneAffichageCot2' key={index}>
+                                                            <td className='colGauche' style={{ fontSize: sizeRowsCot2 }}>{index + 1 }</td>
+                                                            <td className='colDroite' style={{ fontSize: sizeRowsCot2 }}>{item}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                                </>
+                                            )
+                                        }
+
                                     </table>
                                 </div>
                             </div>
-                  </div>
-                    
-                )
-            }
-          
-        </div>
-      </>
+                                <div className='containeurBas'>  
+                                    <div className='resumeGauche'>
+                                        <h2 className='totalTxt'> Tonnage total (KG) : {total[0]} </h2>
+                                        <table className='tableTirage3'>
+                                            <thead className='testTHEAD'>
+                                            </thead>
+                                            <tbody>
+                                                {chunkArray(Object.entries(totalEspece1), 2).map((chunk, rowIndex) => (
+                                                    <tr key={rowIndex}>
+                                                        {chunk.map(([key, value], cellIndex) => (
+                                                        <React.Fragment key={cellIndex}>
+                                                            <td className='especeTotal' style={{ fontSize: sizeTotal1 }}>{key}</td>
+                                                            <td className='totalEspece' style={{ fontSize: sizeTotal1 }}>{value}</td>
+                                                        </React.Fragment>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className='resumeDroite'>
+                                        <h2 className='totalTxt'> Tonnage total (KG) : {total[1]}</h2>
+                                        <table className='tableTirage4'>
+                                        <tbody>
+                                                {chunkArray(Object.entries(totalEspece2), 2).map((chunk, rowIndex) => (
+                                                    <tr key={rowIndex}>
+                                                        {chunk.map(([key, value], cellIndex) => (
+                                                        <React.Fragment key={cellIndex}>
+                                                            <td className='especeTotal' style={{ fontSize: sizeTotal2 }}>{key}</td>
+                                                            <td className='totalEspece' style={{ fontSize: sizeTotal2 }}>{value}</td>
+                                                        </React.Fragment>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                    </div>
+                        
+                    )
+                }
+            
+            </div>
+      </div>
     )
 }
 

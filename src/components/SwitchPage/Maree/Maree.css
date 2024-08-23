@@ -1,7 +1,9 @@
 .maree{
+    margin-top: -3%;
     width: 100%;
-    height: 100%;
+    height: 106%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #F5F5F5;
 }

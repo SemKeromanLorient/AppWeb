@@ -1,19 +1,6 @@
-// import React from 'react';
-// import { ReactComponent as KeromanIcon } from "../../../assets/icons/Logo_SEM_Keroman.svg";
-// import { useEffect, useState } from 'react';
-// import { getToServer } from "../../../utils/serverHttpCom.js";
-
-// function Planning() {
-//     return <>
-//     <iframe src="https://outlook.office365.com/owa/calendar/56e48bd57e794b4b9e4196a923ec3a9a@keroman.fr/a56c8fa487574adbb53ab6c52618f52814548381469027406089/calendar.html" width="1200" height="1000" frameborder="0" scrolling="no"></iframe>
-//     </>
-// }
-
-// export default Planning;
-
 import React, { useState, useEffect } from 'react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import { loginRequest, msalConfig } from '../../../authConfig';
+import { loginRequest } from '../../../authConfig';
 import axios from 'axios';
 import "./Planning.css";
 import { WidgetMouvement } from "../../../components";
@@ -36,7 +23,32 @@ function Planning() {
                         Authorization: `Bearer ${response.accessToken}`
                     }
                 }).then(res => {
-                    setEvents(res.data.value);
+                    const today = new Date();
+                    const currentDay = today.getDay();
+                    
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+                    startOfWeek.setHours(0, 0, 0, 0);
+                    
+                    const endOfWeek = new Date(startOfWeek);
+                    endOfWeek.setDate(startOfWeek.getDate() + 4); // Vendredi
+                    endOfWeek.setHours(23, 59, 59, 999);
+
+                    const filteredEvents = res.data.value
+                        .filter(event => {
+                            const eventDate = new Date(event.start.dateTime);
+                            return eventDate >= startOfWeek && eventDate <= endOfWeek;
+                        })
+                        .map(event => {
+                            const eventDate = new Date(event.start.dateTime);
+                            return {
+                                date: eventDate,
+                                category: event.categories && event.categories.length > 0 ? event.categories[0] : 'Uncategorized',
+                                subject: event.subject
+                            };
+                        });
+
+                    setEvents(filteredEvents);
                 }).catch(err => {
                     console.error(err);
                 });
@@ -50,98 +62,60 @@ function Planning() {
         );
     }
 
+    // Fonction pour trier les événements par heure de début
+    const sortEventsByTime = (events) => {
+        return events.sort((a, b) => a.date - b.date);
+    };
+
+    // Grouper les événements par jour de la semaine
+    const groupEventsByDay = (events) => {
+        const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
+        let groupedEvents = {};
+
+        daysOfWeek.forEach((day, index) => {
+            const dayEvents = events.filter(event => {
+                return event.date.getDay() === index + 1; // index + 1 car getDay() retourne 1 pour Lundi, etc.
+            });
+            groupedEvents[day] = sortEventsByTime(dayEvents);
+        });
+        
+        return groupedEvents;
+    };
+
+    const colorMapping = {
+        "Montée": "red",
+        "Descente": "blue",
+        "Arrêt Technique": "orange",
+        "Mvt terre-plein": "purple",
+        "Uncategorized": "gray"
+    };
+
+    const groupedEvents = groupEventsByDay(events);
+
     return (
         <div className='container-planning-ARN'>
             <div className='sect-title-planning'>
                 <h2 className='title-planning'>Planning</h2>
             </div>
             <div className='sect-days-planning'>
-
-                <div className='sect-day'>
-                    <div className='sect-header-day'>
-                        <h2 className='title-day'>
-                            Lundi
-                        </h2>
+                {Object.keys(groupedEvents).map(day => (
+                    <div className='sect-day' key={day}>
+                        <div className='sect-header-day'>
+                            <h2 className='title-day'>{day}</h2>
+                        </div>
+                        <div className='sect-widget-mouvement'>
+                            {groupedEvents[day].map(event => (
+                                <WidgetMouvement 
+                                    key={event.id} 
+                                    text={event.subject} 
+                                    couleur={colorMapping[event.category]} 
+                                    size={2}
+                                />
+                            ))}
+                        </div>
                     </div>
-                    <div className='sect-widget-mouvement'>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                        <WidgetMouvement text="Texte Petit" couleur="red" size={6}/>
-                    </div>
-                </div>
-
-                <div className='sect-day'>
-                    <div className='sect-header-day'>
-                        <h2 className='title-day'>
-                            Mardi
-                        </h2>
-                    </div>
-                    <div className='sect-widget-mouvement'>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                        <WidgetMouvement text="Texte moyen" couleur="blue" size={3}/>
-                    </div>
-                </div>
-
-                <div className='sect-day'>
-                    <div className='sect-header-day'>
-                        <h2 className='title-day'>
-                            Mercredi
-                        </h2>
-                    </div>
-                    <div className='sect-widget-mouvement'>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                        <WidgetMouvement text="Texte grand" couleur="orange" size={2}/>
-                    </div>
-                </div>
-
-                <div className='sect-day'>
-                    <div className='sect-header-day'>
-                        <h2 className='title-day'>
-                            Jeudi
-                        </h2>
-                    </div>
-                    <div className='sect-widget-mouvement'>
-                        <WidgetMouvement text="Texte très grand" couleur="purple" size={1}/>
-                        <WidgetMouvement text="Texte très grand" couleur="purple" size={1}/>
-                        <WidgetMouvement text="Texte très grand" couleur="purple" size={1}/>
-                        <WidgetMouvement text="Texte très grand" couleur="purple" size={1}/>
-                        <WidgetMouvement text="Texte très grand" couleur="purple" size={1}/>
-                    </div>
-                </div>
-
-                <div className='sect-day'>
-                    <div className='sect-header-day'>
-                        <h2 className='title-day'>
-                            Vendredi
-                        </h2>
-                    </div>
-                    <div className='sect-widget-mouvement'>
-
-                    </div>
-                </div>
-
-            </div>
-            {/* <ul>
-                {events.map(event => (
-                    <li key={event.id}>{event.subject} - {new Date(event.start.dateTime).toLocaleString()}</li>
                 ))}
-            </ul> */}
+            </div>
         </div>
     );
 }
