@@ -33,7 +33,6 @@ function Consommation({}){
 
     useEffect(() => {
         document.title = 'Supervision | Consommations'
-        console.log("Consommation : " + consommations)
     }, [])
 
     useEffect(() => {
@@ -43,11 +42,8 @@ function Consommation({}){
     }, [startDate, endDate])
 
     useEffect(() => {
-        console.log("Changement de mois : " + monthFilter)
         const monthNumber = parseInt(monthFilter, 10);
         const today = moment();  
-        console.log("Today (mois) : " + today.month())      
-        console.log("Today (année) : " + today.year())
         
         switch (monthNumber) {
             case 0:
@@ -265,27 +261,16 @@ function Consommation({}){
 
     function fetchConsommation(){    
 
-        console.log('Get consommation from '+startDate+' to '+endDate+'... (/supervision/src/pages/Consommation/Consommation.js)')
-
-        console.log({from: startDate, to: endDate})
 
         postToServer('/consommations', {from: startDate+' 00:00', to: endDate+' 23:59'}, ({data}) => {
 
-            console.log(data)
-            //console.log("Start date : " + data.consommation.start_date)
-
             setConsommations(data.consommation)
         })
-
-        console.log("Test fin fetchConso")
-
-        
 
     }
 
 
     function handleStartDateChange(event){
-        console.log(event.target.value)
         setStartDate(event.target.value)
     }
 
@@ -333,8 +318,6 @@ function Consommation({}){
      * @returns true si la conso est eau et pas arn
      */
     function filterDataEau(conso){
-        console.log("TEST FILTERDATAEAU")
-        console.log("Conso.source : " + conso.source);
         if (conso.source === "Eau" && conso.zone != "ARN") return true;
         else return false;
     }
@@ -378,7 +361,6 @@ function Consommation({}){
     }
 
     function handleMonthFilterChange({nativeEvent}){
-        console.log("Mois : " + nativeEvent.target.value)
         setMonthFilter(nativeEvent.target.value)
     }
 
@@ -389,8 +371,6 @@ function Consommation({}){
      * @param {*} callback 
      */
     function cumulConsoBateau(data,type){
-
-        console.log("Fonction cumulConsoBateau");
 
         let dataCumul = [
             {
@@ -422,7 +402,6 @@ function Consommation({}){
             hasToAdd = true;
         }
 
-        console.log("1 ere étape réussi");
         // Parcours le tableau cumul et ajoute les conso a la ligne conso du bateau
 
         for (let i = 0; i < data.length; i++){
@@ -433,7 +412,6 @@ function Consommation({}){
             }
         }
 
-        console.log("Data du nouveau tableau cumul : " + JSON.stringify(dataCumul));
         return dataCumul
         
     }
@@ -442,8 +420,6 @@ function Consommation({}){
      * Fonction permettant de trier les conso par borne afin d'en faire un cumul
      */
     function cumulConsoBorne(data){
-
-        console.log("Fonction cumulConsoBorne");
 
         let dataCumul = [
             {
@@ -489,14 +465,6 @@ function Consommation({}){
 
         return dataCumul
         
-    }
-
-    function handleCellClick(newValue, row, headerValue) {
-        // row[headerValue.column] = newValue;
-        console.log("TEST handleCellClick 1 : " + newValue)
-        console.log("TEST handleCellClick 2 : " + JSON.stringify(row))
-        console.log("TEST handleCellClick 3 : " + JSON.stringify(headerValue))
-
     }
 
     /**
@@ -799,8 +767,6 @@ function Consommation({}){
 
         let dataCumulParBorne = cumulConsoBorne(dataNoArn)
 
-        console.log("dataCumulParBorne : " + JSON.stringify(dataCumulParBorne));
-
         const sortedData = dataCumulParBorne
         .filter(row => row.conso > 0) // Filtrez les lignes avec conso > 0
         .map(row => [
@@ -831,9 +797,6 @@ function Consommation({}){
             cell.alignment = { horizontal: 'center' };
             });
         });
-
-        // FIN des feuilles
-        console.log("Data conso JSON : " + JSON.stringify(consommations));
 
         //Créer le fichier Excel et télécharger
         wb.xlsx.writeBuffer().then(buffer => {
@@ -920,7 +883,7 @@ function Consommation({}){
         emptyMessage={'Aucune consommation sur cette période'}
         data={consommations.filter(filterFunction)} header={[
             {label: "Numéro", column: 'numero', type:'number'},
-            {label: "Bateau/entreprise", column: 'user', type: 'string', onClick: handleCellClick ,onDoubleClick: (boatname) => setCompareValue(boatname)},
+            {label: "Bateau/entreprise", column: 'user', type: 'string' ,onDoubleClick: (boatname) => setCompareValue(boatname)},
             {label: "Date d'ouverture", column: 'start_date', type: 'date', processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},
             {label: "Date de fermeture", column: 'end_date', type: 'date',defaultValue: '-',  processValue: (value) => value? value !== '-'? moment(value).format('DD/MM/YYYY\xa0\xa0\xa0HH:mm') : '-' : '-'},
             {label: "Borne", column: 'borne', type: 'number'},

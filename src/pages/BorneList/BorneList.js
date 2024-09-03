@@ -112,10 +112,6 @@ function BorneList(){
 
     }, [])
 
-    useEffect(() => {
-        console.log(quickSearch)
-    }, [quickSearch])
-
     function fetchBornes(){
         postToServer('/bornes/', {}, ({data}) => {
 
@@ -282,7 +278,6 @@ function BorneControl({borne,badges,fetchBornes,send}){
     {currentPriseOpen && <div className="background-dim"/>}
     
     {(currentPriseOpen && currentBadgeOpen) && <UserSelectionPrise badges={badges} send={send} setOpen={setCurrentBadgeOpen} setCurrentPriseOpen={setCurrentPriseOpen} prise={currentPriseOpen} fetchBornes={fetchBornes} borne={borne}/>}
-    {/* {selectBadgeOpen && <UserSelectionPrise badges={badges} send={send} setOpen={setCurrentPriseOpen} prise={currentPriseOpen} fetchBornes={fetchBornes} borne={borne}/>} */}
 
     {(currentPriseOpen && selectNameOpen) && <UserSelectionText 
         borne={borne}
@@ -629,7 +624,6 @@ function PriseRow({send, prise, setCurrentPriseOpen, setCurrentBadgeOpen, setSel
             <PriseState Icon={NoElecIcon} currentState={prise.state} targetState={1} info={'Prise libre'} />
             <PriseState Icon={ElecticIcon} currentState={prise.state} targetState={4} info={optionalText !== '' ? 'Prise alimentée pour ' + optionalText : (prise.use_by ? 'Prise alimentée pour ' + prise.use_by : 'Prise alimentée')} />
             <PriseState Icon={StopIcon} currentState={prise.state} targetState={8} info={'Prise en défaut'} />
-            {/* <PriseState Icon={IssueIcon} currentState={prise.state} targetState={2} info={'Problème sur la prise'} /> */}
 
         </div>
 

@@ -39,12 +39,13 @@
 }
 
 .table-container thead th{
-    position: relative;
+    position: sticky;
     color: var(--primary-color);
-    background-color: var(--soft-hover-color);
+    /* background-color: var(--soft-hover-color); */
+    background-color: black;
     transition-duration: 200ms;
     border-right: 1px solid var(--border-color);
-
+    top: 0;
 
 }
 
@@ -53,12 +54,14 @@
 }
 
 .table-container thead th.selected{
-    background-color: var(--input-background-color);
+    /* background-color: var(--input-background-color); */
+    background-color: black;
 }
 
 .table-container thead th:hover{
-    background-color: var(--input-background-color);
+    /* background-color: var(--input-background-color); */
     transition-duration: 200ms;
+    cursor: pointer;
 
 }
 

@@ -15,11 +15,6 @@ const WriteInfoARN = () => {
   const [policySize3, setPolicySize3] = useState(0);
   const [policySize4, setPolicySize4] = useState(0);
 
-  const [currentPolicySize1, setCurrentPolicySize1] = useState(0);
-  const [currentPolicySize2, setCurrentPolicySize2] = useState(0);
-  const [currentPolicySize3, setCurrentPolicySize3] = useState(0);
-  const [currentPolicySize4, setCurrentPolicySize4] = useState(0);
-
   const [info1, setInfo1] = useState(null)
   const [info2, setInfo2] = useState(null)
   const [info3, setInfo3] = useState(null)
@@ -29,11 +24,8 @@ const WriteInfoARN = () => {
   const [delaiPageMétéo, setDelaiPageMétéo] = useState(0);
   const [delaiPagePlanning, setDelaiPagePlanning] = useState(0);
 
-  const [currentDelaiPage, setCurrentDelaiPage] = useState(10);
-
   const [inputValuesMessage, setInputValuesMessage] = useState(['', '']);
   const [inputValuesEnvironnement, setInputValuesEnvironnement] = useState(['', '']);
-  const [imageFile, setImageFile] = useState(null);
 
   const [options, setOptions] = useState(false);
 
@@ -220,9 +212,6 @@ const WriteInfoARN = () => {
     }
 
     {options && 
-    // <div className='form-text'>
-    //   <h1> TEST OPTIONS PARAMETRES </h1>
-    // </div>
 
     <div className='params-update'>
             <div className='mainSect'>

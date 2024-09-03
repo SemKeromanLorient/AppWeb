@@ -97,7 +97,6 @@ const PageSwitcher = () => {
           return currentPage + 1;
         }
       });
-      console.log("CurrentPage : " + currentPage)
     }, Math.max(delai, 5000));
 
     return () => {

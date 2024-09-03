@@ -77,7 +77,6 @@ function App() {
     let userStorage = getConnectedUser();
 
     if(getConnectedUser('token')){
-      //console.log("getConnectedUser (token): " + JSON.stringify(getConnectedUser('token')))
       if(!connectedLock.current){
         connectedLock.current = true;
         console.log('Send need-update')
@@ -94,10 +93,8 @@ function App() {
               }
            */
           if(data.valid){
-            //On setup le user dans le localstorage
             setConnectedUser(data.user)
 
-            //Attribue différents droits en fonction de l'utilisateur
             switch(data.user.access_level){
               case "Administrateur":
                 case 'Dev':
@@ -165,7 +162,7 @@ function App() {
     }
 
   }
-// --------------------------------------------------------------------------------
+
   useEffect(() => {
 
     connect()
@@ -189,9 +186,7 @@ function App() {
 
 
   useEffect(() => {
-    // console.log("TEST CONNECTION IN APP.JS")
     if(user)connectedLock.current = false;
-    // if(!connected)connect();
   }, [user])
 
 

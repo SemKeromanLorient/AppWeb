@@ -49,12 +49,8 @@ function Header({paths}){
         setIsHovering(false);
         setTimeout(() => {
             setIsVisible(false);
-          }, 300); // Temps correspondant à la durée de transition dans le CSS
+          }, 300);
       };
-
-    useEffect(() => {
-        console.log("TEST USER : " + JSON.stringify(user))
-    },[user])
 
     useEffect(() => {
 
@@ -110,7 +106,6 @@ function Header({paths}){
     function fetchNotifAndFilter(){
         postToServer('/notificationWeb',{}, (data) => {
         let currentData = data.data;
-        console.log("TEST FECTHDATA : " + JSON.stringify(currentData))
         //Premier filtre
         currentData = currentData.filter(notification => {
             return notification.user_interface === user.access_level
@@ -236,8 +231,6 @@ function Header({paths}){
 
         <div 
             className={`${isHovering ? 'header' : 'header-notHovering'} ${(currentPageName === "SwitchPagesARN") || (currentPageName === "SwitchPages") ? 'white-bg' : ''}`}
-            // className={isHovering ? 'header' : 'header-notHovering'}
-            //className={`header ${isVisible ? 'header-notHovering' : ''}`}
             onMouseOver={handleMouseEnter}
             onMouseOut={handleMouseLeave}
             >

@@ -17,12 +17,6 @@ function BornePin({borne, bornes,setBornes}){
         setBornes(borneCopy);
 
      
-/*
-        setPosition({
-            latitude: event.lngLat.lat,
-            longitude: event.lngLat.lng
-        })
-*/
     }
 
     return <Marker 

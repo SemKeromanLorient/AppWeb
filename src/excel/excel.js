@@ -8,7 +8,6 @@ const cron = require('node-cron');
 // Fonction pour télécharger le fichier Excel et le convertir en JSON
 const downloadAndProcessExcel = async () => {
   try {
-    //https://criee.keroman.fr/lor/data/data_cotiere_acheteur_exempleCriee2Only.xls
     const excelUrl =  'https://criee.keroman.fr/lor/data/data_cotiere_acheteur.xls';
 
     // Télécharge le fichier Excel

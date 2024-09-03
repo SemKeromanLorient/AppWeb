@@ -22,7 +22,6 @@ function Info() {
     function fetchInfo(){
         getToServer('/infos/lastInfo', {}, ({data}) => {
 
-            //console.log("Data : " + JSON.stringify(data[0]))
             setInfo1(data[0].Info1.replace(/\n/g, '<br>'));
             setInfo2(data[0].Info2.replace(/\n/g, '<br>'));
             setInfo3(data[0].Info3.replace(/\n/g, '<br>'));

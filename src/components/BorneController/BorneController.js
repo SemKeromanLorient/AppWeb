@@ -20,6 +20,7 @@ import Lottie from 'lottie-react'
 import loadingAnimation from "../../assets/lotties/loading-animation.json";
 import { useNavigate, useParams } from "react-router-dom";
 import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
+import { currentServerState, socketFlag } from "../../utils/serverSocketCom";
 
 
 /**
@@ -30,15 +31,15 @@ import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
  */
 function BorneController({currentlySelected,badges,setBornes}){
 
-    //Variable regardant si le menu déroulant est on ou off
+    //Booléen pour menu déroulant
     const [isExpand, setExpand] = useState(false);
-    //Variable stockant la prise sélectionner
+    //Variable pour la prise sélectionner
     const [currentPriseSelected, setCurrentPriseSelected] = useState(null);
     //Exemples : 1001,1002,1003,1004 stock le num de la prise ici pour borne 10 prise 01,02, ...
     const { prise_id } = useParams();
-    //Variable booleen indiquant où on doit se situer
+    //Booléen pour savoir où on doit se situer
     const [pageHub, setPageHub] = useState(true);
-    //Variable stockant le text optionnel avant l'activation d'une prise
+    //Variable pour le text optionnel avant activation d'une prise
     const [optionalText, setOptionalText] = useState("");
 
     useEffect( () => {
@@ -46,14 +47,14 @@ function BorneController({currentlySelected,badges,setBornes}){
         setPageHub(true)
     },[])
 
-    // Effet pour réinitialiser les états lors du changement de borne
+    // Réinitialisation d'état lors du changement de borne
     useEffect(() => {
         resetComponentState();
     }, [currentlySelected]);
 
     const navigate = useNavigate();
 
-    // Fonction pour réinitialiser les états du composant
+    // Réinitalisation d'états du composant
     const resetComponentState = () => {
         setExpand(false);
         setCurrentPriseSelected(null);
@@ -61,7 +62,7 @@ function BorneController({currentlySelected,badges,setBornes}){
         setOptionalText("");
     };
 
-    //Quand on clique sur la fleche dans le menu
+    //Développement menu via fleche
     function handleExpand(){
 
         if(isExpand){
@@ -142,26 +143,78 @@ function BorneController({currentlySelected,badges,setBornes}){
 
 function PriseControl({prises, borne, setPriseData, setBornes, badges}){
 
+    const connections = [
+        { ip: '192.168.150.90', number: 1 }, //Borne 1
+        { ip: '192.168.150.91', number: 2  }, //Borne 2
+        { ip: '192.168.150.92', number: 3 }, //Borne 3
+        { ip: '192.168.150.93', number: 4 }, //Borne 4
+        { ip: '192.168.150.94', number: 5 }, //Borne 5
+        { ip: '192.168.150.95', number: 6 }, //Borne 6
+        { ip: '192.168.150.96', number: 7 }, //Borne 7
+        { ip: '192.168.150.97', number: 8 }, //Borne 8
+        { ip: '192.168.150.98', number: 9 }, //Borne 9
+        { ip: '192.168.150.99', number: 10 }, //Borne 10
+        { ip: '192.168.150.100', number: 11 }, //Borne 11
+        { ip: '192.168.150.101', number: 12 }, //Borne 12
+        { ip: '192.168.150.102', number: 13 }, //Borne 13
+        { ip: '192.168.150.103', number: 14 }, //Borne 14 
+        { ip: '192.168.150.104', number: 15 }, //Borne 15 
+        { ip: '192.168.150.114', number: 25 }, //Borne 25 // Nouvelle
+        { ip: '192.168.150.115', number: 26 }, //Borne 26 // Nouvelle
+        { ip: '192.168.150.116', number: 27 }, //Borne 27 // Nouvelle
+        { ip: '192.168.150.117', number: 28 }, //Borne 28 // Nouvelle
+        { ip: '192.168.150.118', number: 29 }, //Borne 29 // Nouvelle 
+        { ip: '192.168.150.119', number: 30 }, //Borne 30 // Nouvelle
+        { ip: '192.168.150.120', number: 31 }, //Borne 31 // Nouvelle
+        { ip: '192.168.150.121', number: 32 }, //Borne 32
+        { ip: '192.168.150.122', number: 33 }, //Borne 33
+        { ip: '192.168.150.123', number: 34 }, //Borne 34
+        { ip: '192.168.150.124', number: 35 }, //Borne 35
+        { ip: '192.168.150.126', number: 37 }, //Borne 37
+        { ip: '192.168.150.127', number: 38 }, //Borne 38
+        { ip: '192.168.150.128', number: 39 }, //Borne 39
+        { ip: '192.168.150.129', number: 40 }, //Borne 40
+        { ip: '192.168.150.130', number: 41 }, //Borne 41
+        { ip: '192.168.150.131', number: 42 }, //Borne 42
+        { ip: '192.168.150.132', number: 43 }, //Borne 43
+        { ip: '192.168.150.133', number: 44 }, //Borne 44
+        { ip: '192.168.150.133', number: 45 }, //Borne 45
+        { ip: '192.168.150.133', number: 46 }, //Borne 46
+        { ip: '192.168.150.134', number: 47 }, //Borne 47
+        { ip: '192.168.150.134', number: 48 }, //Borne 48
+        { ip: '192.168.150.134', number: 49 }, //Borne 49
+        { ip: '192.168.150.139', number: 50 }, //Borne 50
+      ];
+
     const [optionalUser, setOptionalUser] = useState('');
     const [saveTextPrise, setSaveTextPrise] = useState('');
     const [onWait, setOnWait] = useState(false);
     const [inputError, setInputError] = useState(false);
-    //Variable stockant le badge selectionné
+    //Variable pour le badge selectionné
     const [badge, setBadge] = useState(null);
-    //Variable stockant le filtre de badge
+    //Variable pour le filtre de badge
     const [selectBadgeFilter, setSelectBadgeFilter] = useState("");
-    //Variable stockant l'information de l'affichage ou non du champ text optionnel
+    //Variable pour l'information de l'affichage ou non du champ text optionnel
     const [extend, setExtend] = useState(false);
     //Etat de la prise actuellement utilisé
     const [stateGoal, setStateGoal] = useState(0);
-    //Variable de la prise sélectionner, correspondant juste à son id
+    //Variable pour la prise sélectionner, correspondant juste à son id
     const {prise_id} = useParams();
     //Variable contenant les données de la prise sélectionner (pas seulement son id)
     const [currentprise, setCurrentPrise] = useState(null);
+    //Booléean contenant l'information de si l'utilisateur est bien connecté au serveur
+    const [serverState, setServerState] = useState(false);
+    const [borneState, setBorneState] = useState(false)
+
     const {setPopupOption} = useContext(PopupContext);
     const [defile, setDefile] = useState(false)
     
 // ---------------------------------------- USE EFFECT
+
+    useEffect(() => {
+        verifConnexionDatabase();
+        verifConnexionBorne();
+    },[])
 
     //Dès que la prise sélectionner change ou que la liste des prises change alors setup la nouvelle currentPrise
     useEffect(() => {
@@ -230,7 +283,7 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
     }
 
     function refresh(){
-        //Get les infos des bornes et set ces infos avec setBornes
+        //Récupère les infos des bornes et let setup avec setBornes
         postToServer('/bornes/', {}, ({data}) => {
             setBornes(data.filter((borne) => !!borne))
             console.log("Info borne update !")
@@ -245,157 +298,149 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
 
         e.preventDefault();
 
-        if(stateGoal === currentprise.state){
+        if (serverState && borneState){
 
-            /*
-            if(currentprise.state === 1 && getAuthorizationFor('MAP', 'update') &&  userToOpen === ""){
-                console.log("Test in currentprise.state === 1 (2)")
-                setInputError(true)
-                setTimeout(() => {
+            if(stateGoal === currentprise.state){
 
-                    setInputError(false);
+                if(currentprise.state === 1){
 
-                }, 500)
-                return;
-            } */
+                    setPopupOption({
+
+                        text: 'Ouvrir la prise '+currentprise.prise+' ?',
+                        //Regarder a qui sera la conso et l'afficher dans un texte
+                        secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : (badge.name + " - " + badge.username)}`,                    
+                        type: POPUP_QUESTION,
+                        acceptText: 'Oui, ouvrir la prise', 
+                        declineText: 'Non, annuler',
+                        onAccept: () => { 
+
+                            //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
+                            setStateGoal(4)
+                            setOnWait(true);
+                            //Envoie du socket commande 'prise_update' avec comme params :
+                            socketSend('prise_update', {
+                                zone: borne.zone,
+                                user: badge.username,
+                                borne: borne.borne,
+                                prise: currentprise.prise,
+                                state: "ON",
+                                badge: badge.number,
+                                optionalUser: optionalUser ? optionalUser : `${badge.name} - ${badge.username}`
+                            })
+                            //Délai
+                            setTimeout(() => {
+                                refresh();
+                                setOptionalUser('');
+                            }, 3000);           
+                        },
+            
+                    })
+                }
+
+                if(currentprise.state === 2){
+
+                    setPopupOption({
+
+                        text: 'Ouvrir la prise '+currentprise.prise+' ?',
+                        //Regarder a qui sera la conso et l'afficher dans un texte
+                        secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : badge.username}`,                    
+                        type: POPUP_QUESTION,
+                        acceptText: 'Oui, ouvrir la prise', 
+                        declineText: 'Non, annuler',
+                        onAccept: () => { 
+
+                            //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
+                            setStateGoal(4)
+                            setOnWait(true);
+                            //Envoie du socket commande 'prise_update' avec comme params :
+                            socketSend('prise_update', {
+                                zone: borne.zone,
+                                user: badge.username,
+                                borne: borne.borne,
+                                prise: currentprise.prise,
+                                state: "ON",
+                                badge: badge.number,
+                                optionalUser: optionalUser ? optionalUser : `${badge.name} - ${badge.username}`
+                            })
+                            //Délai
+                            setTimeout(() => {
+                                refresh();
+                                setOptionalUser('');
+                            }, 3000);           
+                        },
+            
+                    })
+                }
 
 
 
-            if(currentprise.state === 1){
+                if(currentprise.state === 4){
+                    setPopupOption({
 
-                setPopupOption({
+                        text: 'Fermer la prise '+currentprise.prise+' ?',
+                        secondaryText: 'Ceci mettra fin à la consommation',
+                        type: POPUP_QUESTION,
+                        acceptText: 'Oui, fermer la prise',
+                        declineText: 'Non, annuler',
+                        onAccept: () => {
 
-                    text: 'Ouvrir la prise '+currentprise.prise+' ?',
-                    //Regarder a qui sera la conso et l'afficher dans un texte
-                    secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : (badge.name + " - " + badge.username)}`,                    
-                    type: POPUP_QUESTION,
-                    acceptText: 'Oui, ouvrir la prise', 
-                    declineText: 'Non, annuler',
-                    onAccept: () => { 
+                            setStateGoal(1) 
+                            setOnWait(true);
+                            socketSend('prise_update', {
+                                zone: borne.zone,
+                                borne: borne.borne,
+                                prise: currentprise.prise,
+                                state: "OFF",
+                                badge: badges[0].number,
+                                optionalUser: optionalUser
+                            })
+                            //Délai
+                            setTimeout(() => {
+                                refresh();
+                                setOptionalUser('');
+                            }, 5000);    
 
-                        //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
-                        setStateGoal(4)
-                        setOnWait(true);
-                        //Envoie du socket commande 'prise_update' avec comme params :
-                        socketSend('prise_update', {
-                            zone: borne.zone,
-                            user: badge.username,
-                            borne: borne.borne,
-                            prise: currentprise.prise,
-                            state: "ON",
-                            badge: badge.number,
-                            optionalUser: optionalUser ? optionalUser : `${badge.name} - ${badge.username}`
-                        })
-                        //Délai
-                        setTimeout(() => {
-                            refresh();
-                            setOptionalUser('');
-                        }, 3000);           
-                    },
-        
-                })
+                        },
+            
+                    })
+                }
+
+
+                if(currentprise.state === 3){
+                    setPopupOption({
+
+                        text: 'La prise '+currentprise.prise+' est bloqué ?',
+                        secondaryText: 'à effectuer uniquement si la prise est bloqué.',
+                        type: POPUP_QUESTION,
+                        acceptText: 'Oui, forcer ça fermeture',
+                        declineText: 'Non, annuler',
+                        onAccept: () => {
+
+                            setStateGoal(1)
+                            setOnWait(true);
+                            socketSend('prise_update', {
+                                zone: borne.zone,
+                                borne: borne.borne,
+                                prise: currentprise.prise,
+                                state: "OFF",
+                                badge: badge.number,
+                                optionalUser: optionalUser
+                            })
+                            //Délai
+                            setTimeout(() => {
+                                refresh();
+                                setOptionalUser('');
+                            }, 3000);    
+
+                        },
+            
+                    })
+                }
+    
             }
 
-            if(currentprise.state === 2){
-
-                setPopupOption({
-
-                    text: 'Ouvrir la prise '+currentprise.prise+' ?',
-                    //Regarder a qui sera la conso et l'afficher dans un texte
-                    secondaryText: `La facture sera au nom de ${optionalUser ? optionalUser : badge.username}`,                    
-                    type: POPUP_QUESTION,
-                    acceptText: 'Oui, ouvrir la prise', 
-                    declineText: 'Non, annuler',
-                    onAccept: () => { 
-
-                        //On setup la prise à 4 permettant qu'elle soit compté comme étant en utilisation
-                        setStateGoal(4)
-                        setOnWait(true);
-                        //Envoie du socket commande 'prise_update' avec comme params :
-                        socketSend('prise_update', {
-                            zone: borne.zone,
-                            user: badge.username,
-                            borne: borne.borne,
-                            prise: currentprise.prise,
-                            state: "ON",
-                            badge: badge.number,
-                            optionalUser: optionalUser ? optionalUser : `${badge.name} - ${badge.username}`
-                        })
-                        //Délai
-                        setTimeout(() => {
-                            refresh();
-                            setOptionalUser('');
-                        }, 3000);           
-                    },
-        
-                })
-            }
-
-
-
-            if(currentprise.state === 4){
-                setPopupOption({
-
-                    text: 'Fermer la prise '+currentprise.prise+' ?',
-                    secondaryText: 'Ceci mettra fin à la consommation',
-                    type: POPUP_QUESTION,
-                    acceptText: 'Oui, fermer la prise',
-                    declineText: 'Non, annuler',
-                    onAccept: () => {
-
-                        setStateGoal(1) 
-                        setOnWait(true);
-                        socketSend('prise_update', {
-                            zone: borne.zone,
-                            borne: borne.borne,
-                            prise: currentprise.prise,
-                            state: "OFF",
-                            badge: badges[0].number,
-                            optionalUser: optionalUser
-                        })
-                        //Délai
-                        setTimeout(() => {
-                            refresh();
-                            setOptionalUser('');
-                        }, 5000);    
-
-                    },
-        
-                })
-            }
-
-
-            if(currentprise.state === 3){
-                setPopupOption({
-
-                    text: 'La prise '+currentprise.prise+' est bloqué ?',
-                    secondaryText: 'à effectuer uniquement si la prise est bloqué.',
-                    type: POPUP_QUESTION,
-                    acceptText: 'Oui, forcer ça fermeture',
-                    declineText: 'Non, annuler',
-                    onAccept: () => {
-
-                        setStateGoal(1)
-                        setOnWait(true);
-                        socketSend('prise_update', {
-                            zone: borne.zone,
-                            borne: borne.borne,
-                            prise: currentprise.prise,
-                            state: "OFF",
-                            badge: badge.number,
-                            optionalUser: optionalUser
-                        })
-                        //Délai
-                        setTimeout(() => {
-                            refresh();
-                            setOptionalUser('');
-                        }, 3000);    
-
-                    },
-        
-                })
-            }
-  
+        } else{
+            console.error("Erreur : Impossible de se connecter à la base de donnée")
         }
     }
 
@@ -414,7 +459,7 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
                     prise: currentprise.prise,
                     optionalUser: optionalUser
                 })
-                // //Délai
+                //Délai
                 setTimeout(() => {
                     refresh();
                     setOptionalUser('');
@@ -423,6 +468,40 @@ function PriseControl({prises, borne, setPriseData, setBornes, badges}){
             },
 
         })
+    }
+
+    function verifConnexionDatabase(){
+        //Faire un ping à l'adresse du serveur de bdd
+
+        //Vérifie si l'utilisateur est bien connecté à la base de données
+        currentServerState(setServerState)
+        socketFlag('connection_made', () => {
+            console.log('connected')
+            setServerState(true)})
+        socketFlag('disconnection', () => setServerState(false))
+
+
+
+    }
+
+    function verifConnexionBorne(){
+        //Vérifie si l'utilisateur peut ping sans erreur la borne
+        const connection = connections.find(conn => conn.number === borne.borne);
+        if (connection) {
+            getToServer('/utility/ping/' + connection.ip, {}, ({data}) => {
+                if (data.alive) {
+                    console.log(`La borne ${borne.borne} est connectée.`);
+                    setBorneState(true)
+                } else {
+                    console.error(`La borne ${borne.borne} ne répond pas.`);
+                    setBorneState(false)
+                }
+            }, (err) => {
+                console.log("Erreur pour ping la borne : ",err)
+
+            })
+
+        }
     }
 
     const handleSelectBadge = (event) => {

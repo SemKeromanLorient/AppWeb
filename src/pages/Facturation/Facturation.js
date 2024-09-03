@@ -29,7 +29,6 @@ function Facturation(){
         
             let conso = [...data];
             let factures = []
-            console.log(conso)
             for(let a_conso of conso){
 
                 if(!a_conso.checked){

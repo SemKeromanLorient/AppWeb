@@ -20,10 +20,6 @@ function Maree() {
     fetchData();
   }, []); 
 
-  useEffect(() => {
-    console.log("SCRIPT TEST : " + script)
-  }, [script]);
-
   return (
     <div className='maree'> 
       <Widget data={script} />

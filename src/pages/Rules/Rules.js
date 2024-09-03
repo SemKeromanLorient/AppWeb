@@ -110,13 +110,6 @@ function Rules(){
 
 function RuleRow({rule, index, onClick}){
 
-    useEffect(() => {
-
-        console.log(rule)
-
-    }, [rule])
-
-
     function handleOnClick(){
 
         onClick(index)
@@ -159,12 +152,6 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
     }, [])
 
     useEffect(() => {
-        console.log("TEST DONNEES ZONES : " + JSON.stringify(zones))
-    },[zones])
-
-    useEffect(() => {
-
-        console.log(rule)
 
         if(rule){
 
@@ -367,12 +354,6 @@ function RuleForm({rule, isOpen, setOpen, onSubmit, setSelectedRule}){
 
     }, [])
 
-    useEffect(() => {
-
-        console.log(authorizedInterface)
-
-    }, [authorizedInterface]) 
-
     return <form className={"rules-form "+(!isOpen? "hidden" : "")} onSubmit={handleConfirm}>
 
         <div onClick={closeForm} className="go-back">
@@ -505,8 +486,6 @@ function InterfaceRow({authInterface, setAuthInterface, interfaceObj, onChange})
     function changeAuthState(interfaceID, state){
 
         let authorized = authInterface;
-
-        console.log(authInterface)
 
         if(authorized[interfaceObj._id]){
             authorized[interfaceObj._id][interfaceID] = state;

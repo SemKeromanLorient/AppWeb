@@ -61,7 +61,7 @@ function MapView({bornes, setCurrentSelected, currentlySelected}){
     return <>
           <Map
           initialViewState={{
-            latitude: 47.728915, //port de peche
+            latitude: 47.728915,
             longitude: -3.366080,
             zoom: 16,
             bearing: 0,

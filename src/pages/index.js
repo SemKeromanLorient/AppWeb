@@ -11,7 +11,6 @@ import Notification from "./Notification/Notification";
 import Facturation from "./Facturation/Facturation";
 import Absences from "./Absences/Absences";
 import BorneList from "./BorneList/BorneList";
-// import Tickets from "./Tickets/Tickets";
 import Badges from "./Badges/Badges";
 import SwitchPages from "./SwitchPages/SwitchPages";
 import WriteInfo from "./WriteInfo/WriteInfo";
@@ -32,7 +31,6 @@ export {
     Facturation,
     Absences,
     BorneList,
-    // Tickets,
     Badges,
     SwitchPages,
     WriteInfo,

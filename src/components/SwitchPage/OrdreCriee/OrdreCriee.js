@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./OrdreCriee.css"; 
 import { postToServer, getToServer } from "../../../utils/serverHttpCom.js";
-//import jsonData from '../../excel/excel_data.json';
 import { SortableTable, Toast } from "../../../components";
 import axios from 'axios';
-
-//import { json } from 'stream/consumers';
 
 function OrdreCriee(){
     //Corresponds à toutes les données sous format json (Pas encore trié)
@@ -51,48 +48,32 @@ function OrdreCriee(){
         setNumRowsTotalEspece1(Object.keys(totalEspece1).length)
         setNumRowsTotalEspece2(Object.keys(totalEspece2).length)
     },[jsonData])
-
-    useEffect(() => {
-        console.log("DATE : " + date)
-    },[date])
     
     useEffect( () => {
-        console.log("TEST TOTAL ESPECE 1 : " + JSON.stringify(totalEspece1));
         setNumRowsTotalEspece1(Object.keys(totalEspece1).length);
     },[totalEspece1])
 
 
     useEffect( () => {
-        console.log("TEST TOTAL ESPECE 2 : " + JSON.stringify(totalEspece2));
         setNumRowsTotalEspece2(Object.keys(totalEspece2).length);
     },[totalEspece2])
 
-    useEffect(() => {
-        console.log("TOTAL :  " + total)
-    },[total])
 
-    //Semble obsolète
     useEffect(() => {
         if (cotiere1.length > 0){
-            console.log("cotiere1 : " +  cotiere1)
             setCotiere1(cotiere1)
             setNumRowsCot1(cotiere1.length)
-            console.log("nombre de lignes cotiere 1 : " + numRowsCot1)
         }
     },[cotiere1])
 
-    //Semble obsolète
     useEffect(() => {
         if (cotiere2.length > 0){
-            console.log("cotiere2 : " +  cotiere2)
             setCotiere2(cotiere2)
             setNumRowsCot2(cotiere2.length)
-            console.log("nombre de lignes cotiere 2 : " + numRowsCot2)
         }
     },[cotiere2])
 
     useEffect(() => {
-        console.log("TEST IN NUMROWSCOT1")
         if (numRowsCot1 >= 10 && numRowsCot1 < 15){
             setSizeRowsCot1("140%");
         } else if (numRowsCot1 >= 15 && numRowsCot1 < 20){
@@ -109,7 +90,6 @@ function OrdreCriee(){
     },[numRowsCot1])
 
     useEffect(() => {
-        console.log("TEST IN NUMROWSCOT2")
         if (numRowsCot2 >= 0 && numRowsCot2 < 5){
             setSizeRowsCot2("140%");
         } else if (numRowsCot2 >= 5 && numRowsCot2 < 10){
@@ -126,7 +106,6 @@ function OrdreCriee(){
     },[numRowsCot2])
 
     useEffect(() => {
-        console.log("TEST IN numRowsTotalEspece1 : " + numRowsTotalEspece1)
         if (numRowsTotalEspece1 >= 0 && numRowsTotalEspece1 <= 4){
             setSizeTotal1("140%");
         } else if (numRowsTotalEspece1 > 4 && numRowsTotalEspece1 <= 6){
@@ -143,7 +122,6 @@ function OrdreCriee(){
     },[numRowsTotalEspece1])
 
     useEffect(() => {
-        console.log("TEST IN numRowsTotalEspece2")
         if (numRowsTotalEspece1 >= 0 && numRowsTotalEspece1 <= 4){
             setSizeTotal2("140%");
         } else if (numRowsTotalEspece1 > 4 && numRowsTotalEspece1 <= 6){
@@ -165,8 +143,6 @@ function OrdreCriee(){
           
           if (response.status === 200) {
             const data = response.data;
-            // Utilisez les données comme vous le souhaitez
-            console.log('Données JSON récupérées :', data);
             setJsonData(data)
           } else {
             console.error('La requête a échoué avec un statut :', response.status);
@@ -224,7 +200,6 @@ function OrdreCriee(){
 
             //Si on est à la fin de la vente cotière 1 + on vérifie si on a des données dans cotiere 1
             if (jsonData[i][0] === "TOTAL VENTE COTIERE 1 " && cotiere1.length > 0){
-                console.log("Total vente cotiere 1 ")
                 j++; //On passe à la cotière 2
                 //On ajoute ce qui faut pour les totaux (correspondant au totaux des prévisions cotière 1)
                 total.push(jsonData[i][15])
@@ -241,7 +216,6 @@ function OrdreCriee(){
 
             //Si on est à la fin de la vente cotière 2 + on vérifie si on a des données dans cotiere 2
             else if(jsonData[i][0] === "TOTAL VENTE COTIERE2"){
-                console.log("Total vente cotiere 2 ")
                 j++; //Fin des push pour les cotières 1 et 2
                 //On ajoute ce qui faut pour les totaux (correspondant au totaux des prévisions cotière 2) 
                 total.push(jsonData[i][15])
@@ -271,12 +245,6 @@ function OrdreCriee(){
 
     }
 
-    /*
-        if (!cotiere1 || cotiere1.length === 0 ){
-    */
-   /* code modifié le 9 février 
-            on affiche le message si les deux ventes sont vides
-   */
     if ((!cotiere1 || cotiere1.length === 0) && (!cotiere2 || cotiere2.length === 0)) {
         return <h1> Ordre de vente criée indisponible </h1>
     }

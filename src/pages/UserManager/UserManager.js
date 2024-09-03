@@ -22,8 +22,6 @@ function UserManager(){
 
         fetchUserList();
 
-        console.log("TEST DoubleUseEffect")
-
     }, [])
 
     function fetchUserList(){
@@ -43,8 +41,6 @@ function UserManager(){
 
     useEffect(() => {
 
-        console.log("currentUser Change : " + JSON.stringify(currentUser))
-
         setFormOpen(!!currentUser);
 
     }, [currentUser])
@@ -54,12 +50,6 @@ function UserManager(){
     return <div className="user-manager-container">
 
         <UserControlHeader setCurrentUser={setCurrentUser} setFormOpen={setFormOpen} filter={searchFilter} setFilter={setSearchFilter} />
-
-        {/*
-        <div className="users-list">
-            {userList.map((user, index) => <UserItem setCurrentUser={setCurrentUser} user={user} key={index} />)}
-        </div>
-        */}
 
         <SortableTable data={userList} emptyMessage={'Aucun utilisateurs'} onRowClick={() => {
 
@@ -125,9 +115,6 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
     const [userTypes, setUserTypes] = useState([])
     const {setPopupOption} = useContext(PopupContext);
 
-    useEffect(() => {
-        console.log("Info user : " + JSON.stringify(user))
-    },[user])
 
     //Empeche les bugs avec sortable table
     const [val,setVal] = useState("");  
@@ -249,7 +236,6 @@ function UserForm({user, isOpen, setUser, setFormOpen, onValid, userList}){
 
         if(user){
             
-            console.log(user)
             setPassword("xxxxxx")
             setUsername(user.username)
             setAccessLevel(user.accessLevel)

@@ -13,10 +13,6 @@ const POPUP_QUESTION = 3;
 
 function Popup({option, setOption}){
 
-    //useEffect( () => {
-      //  console.log("Options : " + JSON.stringify(option))
-    //},[option])
-
     function handleOnAccept(){
         if(option.onAccept){
             option.onAccept();

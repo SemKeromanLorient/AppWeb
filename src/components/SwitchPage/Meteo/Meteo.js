@@ -7,11 +7,6 @@ import { ReactComponent as ArrowIcon } from "../../../assets/icons/fleche.svg";
 
 function Meteo({data,dataMarine,dataWind}){
 
-    useEffect( () => {
-        console.log("TEST DoubleUseEffect")
-        console.log("Data marine : " + JSON.stringify(dataMarine))
-    },[])
-
     if (!data || !dataMarine || !dataWind) {
         // Gérez le cas où les données météo ne sont pas encore disponibles
         return <div>Chargement des données météo...</div>;
@@ -73,36 +68,6 @@ function Meteo({data,dataMarine,dataWind}){
     const m4Houle = calculerMoyenne(dataHouleJ4);
     const m5Houle = calculerMoyenne(dataHouleJ5);
     const m6Houle = calculerMoyenne(dataHouleJ6);
-
-    // Rotation des images en fonction du vent
-/*
-    const arrowImages1 = document.getElementsByClassName("arrow-1");
-    arrowImages1[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages2 = document.getElementsByClassName("arrow-2");
-    arrowImages2[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-    
-    const arrowImages3 = document.getElementsByClassName("arrow-3");
-    arrowImages3[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages4 = document.getElementsByClassName("arrow-4");
-    arrowImages4[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages5 = document.getElementsByClassName("arrow-5");
-    arrowImages5[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages6 = document.getElementsByClassName("arrow-6");
-    arrowImages6[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages7 = document.getElementsByClassName("arrow-7");
-    arrowImages7[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`;
-
-    const arrowImages8 = document.getElementsByClassName("arrow-8");
-    arrowImages8[0].style.transform = `rotate(${dataWind.hourly.winddirection_10m[0]}deg)`; */
-    //TEST direction du vent
-
-    //console.log("Info data " + JSON.stringify(data.list[1].deg))
-    //console.log("TEST DIRECTION VENT : " + degreValToString(data.list[1].deg))
 
 
     const formatTime = (time) => {
@@ -327,13 +292,6 @@ function Meteo({data,dataMarine,dataWind}){
 
 }
 
-/*
-        <div className='row division-3-3'>
-            <h1 className='title-sect'>
-                <strong>Marée</strong>
-            </h1>
-        </div>
-*/
 function echelleDouglas(valeur) {
     
     if (valeur === 0){
@@ -416,7 +374,6 @@ function calculerMultipleMoyenne(tableau) {
     
     var moyennes = [];
     var nbJour = Math.floor(tableau.length / 24); // Nombre entier de jours complets
-    console.log("TEST NBJour : " + nbJour)
 
     for(let j = 0; j < nbJour; j++){
 

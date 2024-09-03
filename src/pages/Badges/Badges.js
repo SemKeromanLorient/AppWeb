@@ -8,9 +8,7 @@ import { Source } from "react-map-gl";
 import { PopupContext, UserContext } from "../../contexts";
 import { POPUP_ERROR } from "../../components/Popup/Popup";
 
-// import { use } from "../../../../api/routers/mobile/userRouter.js";
 
-//import { TableContext } from "../../contexts";
 /**
  * Pour le moment set les badges en permanence  
  * @returns 
@@ -38,11 +36,9 @@ function Badges(){
 
     useEffect(() => {
         fetchBadges();
-        console.log("Badges : " + JSON.stringify(badges))
       }, []);
 
     useEffect(() => { 
-        console.log("test")
         const storedRow = localStorage.getItem("row");
         if (storedRow) {
             setRow(storedRow.replace(/"/g, ''));
@@ -50,14 +46,8 @@ function Badges(){
       }, []);    
 
     useEffect(() => {
-        console.log("Val : " + val)
         setRow(val.replace(/"/g, ''));
-        console.log("row : " + row);
     }, [val])
-
-    useEffect(() => {
-        console.log("SelectedBadge : " + JSON.stringify(selectedBadge))
-    },[selectedBadge])
 
     function handleGetRowData(data){
         const { name, username } = data;
@@ -65,8 +55,6 @@ function Badges(){
     }
 
     function filterFunction(badge){
-
-        //Param anciennement conso
         
         if(NameFilter !== '' && !badge.name.toUpperCase().includes(NameFilter.toUpperCase()))return false;
 
@@ -88,7 +76,6 @@ function Badges(){
     }
 
     function updateBadge(idBadge,name,username,authorized,date){
-        console.log("UpdateBadge !")
         if (idBadge,name, username, authorized, date){
             postToServer('/badges/update',{
                 id: idBadge,
@@ -97,7 +84,6 @@ function Badges(){
                 authorized: authorized,
                 date: date
             },(res) => {
-                console.log("Resultat update : " + res.data)
                 setPopupOption({
 
                     secondaryText: 'Votre modification à bien été enregistré',
@@ -112,7 +98,6 @@ function Badges(){
     }
 
     const deleteBadge = () => {
-        console.log("DeleteBadge !");
         if (row) {
             // Empêcher la fonction de suppression de se déclencher si le bouton "Supprimer" n'a pas été cliqué explicitement
             if (window.confirm("Voulez-vous vraiment supprimer ce badge ?")) {
@@ -120,7 +105,6 @@ function Badges(){
                 postToServer('/badges/delete', {
                     id: row,
                 }, (res) => {
-                    console.log("Resultat delete : " + res.data);
                     setPopupOption({
                         secondaryText: "Le badge vient d'être supprimé",
                         acceptText: 'Ok'    
@@ -144,8 +128,6 @@ function Badges(){
         const wb = new ExcelJS.Workbook();
         // Données facturation pour les différentes pages
         const data = badges.filter(filterFunction);
-
-        console.log("data : " + JSON.stringify(data));
 
         // définir la largeur souhaitée de la première colonne (numéro 1)
         const columnWidth = 40;

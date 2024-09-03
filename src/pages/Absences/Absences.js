@@ -44,28 +44,6 @@ function Absences(){
 
 }
 
-function Pendings(){
-
-    return <div>
-
-    </div>
-
-}
-
-
-function Requests(){
-
-
-    return <div>
-
-
-
-
-    </div>
-
-}
-
-
 function CreateNew({isOpen, setOpen, onSubmit}){
 
     const [absentType, setAbsentType] = useState(0);

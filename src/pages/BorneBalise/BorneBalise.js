@@ -124,9 +124,6 @@ function BorneBalise(){
 
     function handleValid(){
         
-        console.log('click')
-
-
         setPopupOption({
             type: POPUP_QUESTION,
             text: 'Etes-vous sur de vouloir enregistrer les modification ?',
@@ -773,7 +770,7 @@ function BorneRow({bornes, zones, setCurrentSelected, currentSelected, setBornes
    
     function validName(event){
 
-        if(event.keyCode === 13){//enter
+        if(event.keyCode === 13){
 
             clearNameFocus();
 

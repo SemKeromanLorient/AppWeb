@@ -11,8 +11,7 @@ import { postToServer , getToServer} from "../../utils/serverHttpCom.js";
 function SortableTable({data, header, filter, emptyMessage, setVal, onClickRowAllData }){
 
     //order -> asc = Du plus petit au plus grand, desc = du plus grand au plus petit.
-
-    const [sort, setSort] = useState({//trie par défaut
+    const [sort, setSort] = useState({
         column: 'start_date',
         order: 'desc'
     });
@@ -74,7 +73,6 @@ function SortableTable({data, header, filter, emptyMessage, setVal, onClickRowAl
     }
 
     function updateInfoConso(borne, prise, dateStart, dateClose, IdBusiness){
-        console.log("TEST updateInfoConso")
         postToServer('/consommations/UpdateConso', {borne: borne, prise: prise, dateStart: dateStart, dateClose: dateClose, IdBusiness: IdBusiness}, ({data}) => {
             console.log("Data consommations/UpdateConso : " + JSON.stringify(data))
         })

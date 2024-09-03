@@ -23,7 +23,7 @@ function Planning() {
                         Authorization: `Bearer ${response.accessToken}`
                     },
                     params: {
-                        '$top': 50  // Demande jusqu'à 50 événements
+                        '$top': 50  // 50 événements
                     }
                 }).then(res => {
                     const today = new Date();
@@ -34,16 +34,14 @@ function Planning() {
                     startOfWeek.setHours(0, 0, 0, 0);
                     
                     const endOfWeek = new Date(startOfWeek);
-                    endOfWeek.setDate(startOfWeek.getDate() + 4); // Vendredi
+                    endOfWeek.setDate(startOfWeek.getDate() + 4);
                     endOfWeek.setHours(23, 59, 59, 999);
                     const filteredEvents = res.data.value
                         .filter(event => {
                             const eventDate = new Date(event.start.dateTime);
-                            console.log("EventDate : " + eventDate)
                             return eventDate >= startOfWeek && eventDate <= endOfWeek;
                         })
                         .map(event => {
-                            console.log("TEST 1 : " + event)
                             const eventDate = new Date(event.start.dateTime);
                             return {
                                 date: eventDate,
@@ -51,7 +49,6 @@ function Planning() {
                                 subject: event.subject
                             };
                         });
-                    console.log("TEST 2 : " + JSON.stringify(filteredEvents))
                     setEvents(filteredEvents);
                 }).catch(err => {
                     console.error(err);
@@ -73,7 +70,6 @@ function Planning() {
 
     // Grouper les événements par jour de la semaine
     const groupEventsByDay = (events) => {
-        console.log("Events : " + events)
         const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
         let groupedEvents = {};
 
@@ -83,7 +79,6 @@ function Planning() {
             });
             groupedEvents[day] = sortEventsByTime(dayEvents);
         });
-        console.log("GroupedEvents : " + JSON.stringify(groupedEvents))
         return groupedEvents;
     };
 

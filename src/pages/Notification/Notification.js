@@ -31,21 +31,6 @@ function Notification(){
         fetchUserAccess()
     },[])
 
-    useEffect(() => {
-        console.log("formData : " + JSON.stringify(formData))
-    },[formData])
-
-    useEffect(() => {
-        console.log("DataPages : " + JSON.stringify(dataPages))
-    },[dataPages])
-
-    useEffect(() => {
-        console.log("DataUserAccess : " + JSON.stringify(dataUserAccess))
-    },[dataUserAccess])
-
-    useEffect(() => {
-        console.log("IDs selected : " + JSON.stringify(selectedNotif))
-    },[selectedNotif])
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -86,14 +71,12 @@ function Notification(){
 
         if (modeFormulaire === 'insert'){
             postToServer('/notificationWeb/insert',{titre,contenu,page,interface_utilisateur,activer},({res}) => {
-                console.log("Resultat insert : " + JSON.stringify(res))
                 handleReset()
                 fetchNotifications()
             })
         } else if (modeFormulaire === 'edit') {
             let id = currentId;
             postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer},({res}) => {
-                console.log("Resultat update : " + JSON.stringify(res))
                 handleReset()
                 fetchNotifications()
             })
@@ -158,7 +141,6 @@ function Notification(){
         for (let i = 0; i < selectedNotif.length; i++){
             let id = selectedNotif[i].id
             postToServer('/notificationWeb/delete',{id},({res}) => {
-                console.log("Resultat delete : " + JSON.stringify(res))
                 fetchNotifications()
             })
         }
@@ -173,7 +155,6 @@ function Notification(){
             let interface_utilisateur = selectedNotif[i].user_interface;
             let activer = 1;
             postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
-                console.log("Resultat activation notification : " + JSON.stringify(res))
                 fetchNotifications()
             })
         }
@@ -188,7 +169,6 @@ function Notification(){
             let interface_utilisateur = selectedNotif[i].user_interface;
             let activer = 0;
             postToServer('/notificationWeb/update',{id,titre,contenu,page,interface_utilisateur, activer}, ({res}) => {
-                console.log("Resultat activation notification : " + JSON.stringify(res))
                 fetchNotifications()
             })
         }
@@ -213,23 +193,9 @@ function Notification(){
     }
 
     const isPageSelected = (pageName) => {
-        console.log("isPageSelected TEST")
         return formData.page.includes(pageName);
     };
 
-    function testFunction(){
-        console.log("CLIQUE SELECT")
-    }
-
-    // <label className='notif-label'>
-    //     Page :
-    //     <input className='notif-input' type="text" name="page" value={formData.page} onChange={handleInputChange} />
-    // </label>
-
-    // <label className='notif-label'>
-    //     User :
-    //     <input className='notif-input' type="text" name="user" value={formData.user} onChange={handleInputChange} />
-    // </label>
     return <>
     <div className='col col-left'>
         <div className='notif-form-title'>

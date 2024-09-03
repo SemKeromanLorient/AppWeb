@@ -33,10 +33,12 @@ function BorneMap(){
         document.title = 'Supervision | Carte des bornes'
         
         const interval = setInterval(() => {
-            fetchBornes();
-          }, 300000); // Récupération des données tout les 5 mins
+            console.log("TEST FetchBorne in interval")
+            fetchBornesUpdate();
+          }, 20000); // Récupération des données tout les 5 mins // 300000
 
         return () => {//quand on quitte la page on retire le flag
+            console.log("TEST ClearInterval")
             clearInterval(interval); // Nettoyage de l'intervalle lors du démontage du composant
             removeSocketFlag('bornes');
 
@@ -46,7 +48,6 @@ function BorneMap(){
 
     
     function fetchBornes(){
-        console.log("FETCHBORNES")
         postToServer('/bornes/', {}, ({data}) => {
             setBornes(data.filter((borne) => !!borne))
 
@@ -54,6 +55,24 @@ function BorneMap(){
             console.log("Erreur lors de la récupération des bornes : ",err)
 
         })
+    }
+
+    function fetchBornesUpdate() {
+        postToServer('/bornes/', {}, ({ data }) => {
+            const newBornes = data.filter((borne) => !!borne);
+
+            setBornes((prevBornes) => {
+                const updatedBornes = prevBornes.map((borne, index) => {
+                    const newBorne = newBornes[index];
+                    // Compare les propriétés des bornes pour voir si elles ont changé
+                    return JSON.stringify(borne) !== JSON.stringify(newBorne) ? newBorne : borne;
+                });
+                // Ne met à jour l'état que si une modification a été détectée
+                return JSON.stringify(prevBornes) !== JSON.stringify(updatedBornes) ? updatedBornes : prevBornes;
+            });
+        }, (err) => {
+            console.log("Erreur lors de la récupération des bornes : ", err);
+        });
     }
 
     function fetchBadges(){
@@ -66,15 +85,6 @@ function BorneMap(){
 
         })
     }
-    
-    /**
-     * Timer de refresh des infos bornes
-    */
-    // setTimeout(() => {
-    //     console.log("TEST REFRESH PAGE BORNEMAP")
-    //     fetchBornes();
-    // }, 15000);
-    
 
     return <div className="map-container">
         <MapView setCurrentSelected={setCurrentlySelected} bornes={bornes}>
@@ -88,9 +98,4 @@ function BorneMap(){
 
 }
 
-// {
-//     currentlySelected !== undefined && (
-//         <BorneController currentlySelected={bornes[currentlySelected]}  />
-//     )
-// }
 export default BorneMap;
